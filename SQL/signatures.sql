@@ -1,0 +1,11 @@
+-- ==============================================================================
+-- STORED PROCEDURE SIGNATURES FOR PINJEMIN PROJECT (PPL B-1)
+-- ==============================================================================
+-- [PROCS-USERS]
+-- >> getUserWithUID(in varUID int)
+-- >> getUserWithAccountName(in varAccName varchar(60))
+-- >> createNewUser(in varAccountName varchar(60), in varRealName varchar(80),
+--      in varBio varchar(240), in varFakultas varchar(60),
+--      in varProdi varchar(60), in varTelepon varchar(15))
+-- ==============================================================================
+
