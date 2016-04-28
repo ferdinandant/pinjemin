@@ -34,7 +34,7 @@ public class UtilityConnection
 	 * @return hasil kembalian (String) yang ditulis oleh server. Jika berupa data
 	 *   seharusnya server sudah meng-encode-nya dalam bentuk JSON.
 	 * ============================================================================== */
-	public static String submitPhp(String phpFile, Map<String,String> dataToSend) {
+	public static String runPhp(String phpFile, Map<String,String> dataToSend) {
 		try {
 			URL url = new URL(HOST_ADDRESS + phpFile);
 

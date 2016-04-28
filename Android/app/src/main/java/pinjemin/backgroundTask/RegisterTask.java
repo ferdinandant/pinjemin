@@ -9,7 +9,6 @@
 
 package pinjemin.backgroundTask;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,7 +22,7 @@ import pinjemin.utility.UtilityConnection;
 
 public class RegisterTask extends AsyncTask<Void,Object,Void>
 {
-	public static String PHP_PATH = "register.php";
+	public static final String PHP_PATH = "register.php";
 
 	private Context context;
 	private TreeMap<String,String> dataToSend;
@@ -39,7 +38,7 @@ public class RegisterTask extends AsyncTask<Void,Object,Void>
 	@Override
 	protected Void doInBackground(Void... params) {
 		// kirim data yang dimasukkan saat registrasi ke database
-		UtilityConnection.submitPhp(PHP_PATH, dataToSend);
+		UtilityConnection.runPhp(PHP_PATH, dataToSend);
 		return null;
 	}
 

@@ -27,7 +27,7 @@ import pinjemin.utility.UtilityConnection;
 
 public class LoginTask extends AsyncTask<Void,Void,Void>
 {
-	public static String PHP_PATH = "login.php";
+	public static final String PHP_PATH = "login.php";
 
 	private Context context;
 	private TreeMap<String,String> dataToSend;
@@ -50,7 +50,7 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 			// koneksi ke server, kirimkan data login
 			// login berhasil: server mengembalikan data user
 			// login gagal: server mengembalikan empty set
-			String serverResponse = UtilityConnection.submitPhp(PHP_PATH, dataToSend);
+			String serverResponse = UtilityConnection.runPhp(PHP_PATH, dataToSend);
 
 			// parse data JSON yang diterima dari server
 			jsonResponseObject = new JSONObject(serverResponse);

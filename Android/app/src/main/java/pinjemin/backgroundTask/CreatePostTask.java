@@ -34,7 +34,7 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 	 * ============================================================================== */
 	@Override
 	protected Void doInBackground(Void... params) {
-		UtilityConnection.submitPhp(phpFilePath, dataToSend);
+		UtilityConnection.runPhp(phpFilePath, dataToSend);
 		return null;
 	}
 

@@ -18,109 +18,114 @@ import java.util.List;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.R;
 
-public class TimelineFragment extends Fragment {
 
-    private TabLayout tabLayout;
-    private CustomViewPager viewPager;
-    private int test = 0;
-    //private ViewPager viewPager;
+public class TimelineFragment extends Fragment
+{
 
-    public TimelineFragment() {
-        // Required empty public constructor
-    }
+	private TabLayout tabLayout;
+	private CustomViewPager viewPager;
+	private int test = 0;
+	//private ViewPager viewPager;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	public TimelineFragment() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+									 Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        tabLayout.setupWithViewPager(viewPager);
+		tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+		viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
+		setupViewPager(viewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.btn_post);
+		tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
+		FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.btn_post);
 
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        test = 0;
-                        break;
-                    case 1:
-                        test = 1;
-                        break;
-                }
-            }
+		viewPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener()
+		{
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			@Override
+			public void onPageSelected(int position) {
+				switch (position) {
+					case 0:
+						test = 0;
+						break;
+					case 1:
+						test = 1;
+						break;
+				}
+			}
 
-            }
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+			@Override
+			public void onPageScrollStateChanged(int state) {}
+		});
 
-            }
-        });
+		fab.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View view) {
+				if (test == 0) {
+					startActivity(new Intent(getActivity(), CreatePostDemand.class));
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (test == 0) {
-                    startActivity(new Intent(getActivity(), CreatePostDemand.class));
+				}
+				else {
+					startActivity(new Intent(getActivity(), CreatePostSupply.class));
+				}
+			}
+		});
 
-                } else {
-                    startActivity(new Intent(getActivity(), CreatePostSupply.class));
-                }
-            }
-        });
+		return view;
+	}
 
-        return view;
-    }
+	private void setupViewPager(ViewPager viewPager) {
+		ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+		adapter.addFragment(new TimelineDemandFragment(), "Permintaan");
+		adapter.addFragment(new TimelineSupplyFragment(), "Penawaran");
+		viewPager.setAdapter(adapter);
+	}
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new TimelineDemandFragment(), "Permintaan");
-        adapter.addFragment(new TimelineSupplyFragment(), "Penawaran");
-        viewPager.setAdapter(adapter);
-    }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+	// --- inner class declaration ---
 
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
+	class ViewPagerAdapter extends FragmentPagerAdapter
+	{
+		private final List<Fragment> mFragmentList = new ArrayList<>();
+		private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
+		public ViewPagerAdapter(FragmentManager manager) {
+			super(manager);
+		}
 
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+		@Override
+		public Fragment getItem(int position) {
+			return mFragmentList.get(position);
+		}
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
+		@Override
+		public int getCount() {
+			return mFragmentList.size();
+		}
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
+		public void addFragment(Fragment fragment, String title) {
+			mFragmentList.add(fragment);
+			mFragmentTitleList.add(title);
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return mFragmentTitleList.get(position);
+		}
+	}
 }

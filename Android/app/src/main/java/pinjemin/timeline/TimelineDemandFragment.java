@@ -34,9 +34,7 @@ public class TimelineDemandFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
-            String[] inputReceive = {"PID", "UID", "Timestamp", "NamaBarang", "Deskripsi", "LastNeed", "AccountName"};
-
-            PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(getActivity(), "postDemand", inputReceive);
+            PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(getActivity(), "postDemand");
             populateTimelineTask.execute();
 
             //BackgroundTaskDatabase backgroundTaskDatabase = new BackgroundTaskDatabase(getActivity(), "getpermintaantimeline.php", "receive", "postDemand", inputReceive);

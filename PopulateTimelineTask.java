@@ -15,14 +15,20 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import pinjemin.adapter.TimelineDemandAdapter;
@@ -40,8 +46,11 @@ import pinjemin.utility.UtilityDate;
 
 public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 {
-	public static final String PHP_PATH_SUPPLY_TIMELINE = "getpenawarantimeline.php";
-	public static final String PHP_PATH_DEMAND_TIMELINE = "getpermintaantimeline.php";
+	public static String PHP_PATH_SUPPLY_TIMELINE = "getpenawarantimeline.php";
+	public static String PHP_PATH_DEMAND_TIMELINE = "getpermintaantimeline.php";
+
+	private static String host = UtilityConnection.HOST_ADDRESS;
+	private String jsonResponseString;
 
 	private Activity activity;
 	private Context context;
@@ -53,23 +62,27 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	private RecyclerView.Adapter adapter;
 	private RecyclerView.LayoutManager layoutManager;
 
-	// penampung object RecyclerView:
+	// penampung bbject RecyclerView:
 	private String[] inputReceive;
 	private ArrayList<PostSupply> arraySupply;
 	private ArrayList<PostDemand> arrayDemand;
-
 
 	public PopulateTimelineTask(Context context, String objectType) {
 		this.context = context;
 		this.activity = (Activity) context;
 		this.objectType = objectType;
+		this.inputReceive = inputReceive;
 
 		// configure file path yang benar
 		if (objectType.equals("postSupply")) {
 			this.path = PHP_PATH_SUPPLY_TIMELINE;
+			this.inputReceive = new String[] {
+				"PID", "UID", "Timestamp", "NamaBarang", "Deskripsi", "LastNeed", "AccountName"};
 		}
 		else if (objectType.equals("postDemand")) {
 			this.path = PHP_PATH_DEMAND_TIMELINE;
+			this.inputReceive = new String[] {
+				"PID", "UID", "Timestamp", "NamaBarang", "Deskripsi", "Harga", "AccountName"};
 		}
 	}
 
@@ -122,55 +135,62 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	@Override
 	protected Void doInBackground(Void... params) {
 		try {
-			// kirim permintaan ke server, tanpa mengirimkan parameter apa pun
-			String serverResponse = UtilityConnection.runPhp(path, null);
+			/*
+			URL url = new URL(host + path);
+			HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-			// parse data JSON yang diterima dari server (berisi daftar post)
-			JSONObject jsonResponseObject = new JSONObject(serverResponse);
-			JSONArray jsonResponseArray = jsonResponseObject.getJSONArray("server_response");
-			int jsonResponseArrayLength = jsonResponseArray.length();
+			InputStream inputStream = httpURLConnection.getInputStream();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-			for (int i = 0; i < jsonResponseArrayLength; i++) {
-				JSONObject postInstance = jsonResponseArray.getJSONObject(i);
+			StringBuilder stringBuilder = new StringBuilder();
 
-				// extract fields dari postInstance:
-				String dataPID = postInstance.getString("PID");
-				String dataUID = postInstance.getString("UID");
-				String dataTimestamp = postInstance.getString("Timestamp");
-				String dataNamaBarang = postInstance.getString("NamaBarang");
-				String dataDeskripsi = postInstance.getString("Deskripsi");
-				String dataAccountName = postInstance.getString("AccountName");
-				String dataFormattedDate = UtilityDate.formatPostTimestamp(dataTimestamp);
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				stringBuilder.append(line + "\n");
+			}
+
+			bufferedReader.close();
+			inputStream.close();
+			httpURLConnection.disconnect();
+
+			jsonResponseString = stringBuilder.toString().trim();
+
+			JSONObject jsonObject = new JSONObject(jsonResponseString);
+			JSONArray jsonArray = jsonObject.getJSONArray("server_response");
+
+			String[] input = new String[inputReceive.length];
+
+			int count = 0;
+			while (count < jsonArray.length()) {
+				JSONObject JO = jsonArray.getJSONObject(count);
+
+				for (int ii = 0; ii < input.length; ii++) {
+					input[ii] = JO.getString(inputReceive[ii]);
+				}
 
 				if (objectType.equalsIgnoreCase("postSupply")) {
-					// dapatkan field khusus untuk post supply (harga)
-					String dataHarga = postInstance.getString("Harga");
-					dataHarga = "Rp" + dataHarga;
 
-					// buat instance PostSupply baru
-					PostSupply postSupply = new PostSupply(
-						dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataHarga, dataAccountName);
-
-					// publish perubahan ke main UI thread
-					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
+					String formatTanggal = UtilityDate.formatPostTimestamp(input[2]);
+					PostSupply postSupply =
+						new PostSupply(input[1], formatTanggal, input[3], input[4], "Rp" + input[5], input[6]);
 					publishProgress(postSupply);
+
 				}
 				else if (objectType.equalsIgnoreCase("postDemand")) {
-					// dapatkan field khusus untuk post demand (lastNeed)
-					String dataLastNeed = postInstance.getString("LastNeed");
-					dataLastNeed = "Terakhir dibutuhkan " + dataLastNeed;
-
-					// buat instance PostSupply baru
-					PostDemand postDemand = new PostDemand(
-						dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataLastNeed, dataAccountName);
-
-					// publish perubahan ke main UI thread
-					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
+					String formatTanggal = UtilityDate.formatPostTimestamp(input[2]);
+					PostDemand postDemand =
+						new PostDemand(input[1], formatTanggal, input[3], input[4], "Terakhir dibutuhkan " + input[5], input[6]);
 					publishProgress(postDemand);
 				}
+				count++;
 			}
+			*/
+		}
+		catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
 		}
 		catch (JSONException e) {
 			e.printStackTrace();
@@ -179,21 +199,16 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 		return null;
 	}
 
+	@Override
 	/** ==============================================================================
 	 * Hal yang perlu dilakukan SELAMA subclass AsyncTask ini di-execute
-	 * @param object - normalnya berisi instance yang baru saja di-parse dari server
 	 * ============================================================================== */
-	@Override
 	protected void onProgressUpdate(Object... object) {
 		if (objectType.equalsIgnoreCase("postSupply")) {
-			// tambahkan instance PostSupply ke arraySupply
-			// notify adapter bahwa datanya sudah berubah (supaya di-relayout)
 			arraySupply.add((PostSupply) object[0]);
 			adapter.notifyDataSetChanged();
 		}
 		else if (objectType.equalsIgnoreCase("postDemand")) {
-			// tambahkan instance PostSupply ke arraySupply
-			// notify adapter bahwa datanya sudah berubah (supaya di-relayout)
 			arrayDemand.add((PostDemand) object[0]);
 			adapter.notifyDataSetChanged();
 		}
@@ -205,61 +220,47 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 
 	// --- inner class declaration ---
 
-	/** ==============================================================================
-	 * Custom implementation kelas TimelineDemandFragment.ClickListener, digunakan
-	 * untuk mengatur behavior saat item di TimelineDemandFragment ditekan
-	 * ============================================================================== */
 	private class TimelineDemandFragmentListener implements TimelineDemandFragment.ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
-			Intent intent = new Intent(context, DetailPostDemand.class);
-
-			// dapatkan instance post yang dipilih
 			PostDemand postDemand = arrayDemand.get(position);
 
-			// passing data post yang akan ditampilkan ke intent
+			Intent intent = new Intent(context, DetailPostDemand.class);
 			intent.putExtra("uid", postDemand.getUid());
 			intent.putExtra("timestamp", postDemand.getTimestamp());
 			intent.putExtra("namaBarang", postDemand.getNamaBarang());
 			intent.putExtra("deskripsi", postDemand.getDeskripsi());
 			intent.putExtra("lastNeed", postDemand.getBatasAkhir());
 			intent.putExtra("accountName", postDemand.getAccountName());
-
-			// start activity DetailPostDemand
 			context.startActivity(intent);
 		}
 
 		@Override
-		public void onLongClick(View view, int position) {}
+		public void onLongClick(View view, int position) {
+
+		}
 	}
 
-	/** ==============================================================================
-	 * Custom implementation kelas TimelineSupplyFragment.ClickListener, digunakan
-	 * untuk mengatur behavior saat item di TimelineSupplyFragment ditekan
-	 * ============================================================================== */
 	private class TimelineSupplyFragmentListener implements TimelineSupplyFragment.ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
-			Intent intent = new Intent(context, DetailPostSupply.class);
-
-			// dapatkan instance post yang
 			PostSupply postSupply = arraySupply.get(position);
 
-			// sisipkan data post yang akan ditampilkan ke intent
+			Intent intent = new Intent(context, DetailPostSupply.class);
 			intent.putExtra("uid", postSupply.getUid());
 			intent.putExtra("timestamp", postSupply.getTimestamp());
 			intent.putExtra("namaBarang", postSupply.getNamaBarang());
 			intent.putExtra("deskripsi", postSupply.getDeskripsi());
 			intent.putExtra("harga", postSupply.getHarga());
 			intent.putExtra("accountName", postSupply.getAccountName());
-
-			// start activity DetailPostSupply
 			context.startActivity(intent);
 		}
 
 		@Override
-		public void onLongClick(View view, int position) {}
+		public void onLongClick(View view, int position) {
+
+		}
 	}
 }

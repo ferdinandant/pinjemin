@@ -34,9 +34,7 @@ public class TimelineSupplyFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
-            String[] inputReceive = {"PID", "UID", "Timestamp", "NamaBarang", "Deskripsi", "Harga", "AccountName"};
-
-            PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(getActivity(), "getpenawarantimeline.php", "postSupply", inputReceive);
+            PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(getActivity(), "postSupply");
             populateTimelineTask.execute();
 
             //BackgroundTaskDatabase backgroundTaskDatabase = new BackgroundTaskDatabase(getActivity(), "getpenawarantimeline.php", "receive", "postSupply", inputReceive);
