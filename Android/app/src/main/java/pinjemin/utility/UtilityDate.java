@@ -2,7 +2,7 @@
  * [UTILITY DATE]
  * Helper class untuk melakukan formatting tanggal, etc.
  * ------------------------------------------------------------------------------------
- * @author: Ferdinand Antonius
+ * Author: Ferdinand Antonius
  * =================================================================================== */
 
 package pinjemin.utility;
@@ -40,47 +40,6 @@ public class UtilityDate
 	}
 
 	/** ==============================================================================
-	 * Mengembalikkan bentuk timestamp yang dicetak untuk post
-	 * @param timestamp - bentuk timestamp sql, e.g. "2017-01-20 14:12:56"
-	 * @return bentuk timestamp yang sudah di-format, e.g. "1 menit"
-	 * ============================================================================== */
-	public static String formatPostTimestamp(String timestamp) {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		try {
-			Calendar currentTime = Calendar.getInstance();
-			Calendar parsedTime = new GregorianCalendar();
-			parsedTime.setTime(format.parse(timestamp));
-
-			// sudah ganti tahun
-			long yearDiff = currentTime.get(Calendar.YEAR) - parsedTime.get(Calendar.YEAR);
-			if (yearDiff >= 1) {
-				return "" + parsedTime.get(Calendar.YEAR);
-			}
-
-			// lebih dari sehari
-			long msDiff = currentTime.getTime().getTime() - parsedTime.getTime().getTime();
-			if (msDiff >= 1000 * 60 * 60 * 24) {
-				return "" + parsedTime.get(Calendar.DATE) + " "
-							 + monthNameAbbr(parsedTime.get(Calendar.MONTH));
-			}
-
-			// lebih dari sejam
-			if (msDiff >= 1000 * 60 * 60) {
-				return "" + (msDiff / (1000 * 60 * 60)) + " jam";
-			}
-
-			// sisanya, kembalikan dalam menit
-			long minDiff = msDiff / (1000 * 60);
-			minDiff = Math.max(minDiff, 1);
-			return "" + minDiff + " menit";
-		}
-		catch (ParseException e) {
-			return "n/a";
-		}
-	}
-
-	/** ==============================================================================
 	 * Menentukan apakah timelime perlu di-refresh kembali (mencegah terjadinya
 	 * permintaan request berulang kali dalam jeda waktu yang singkat). Default
 	 * refresh time: 5 menit.
@@ -102,5 +61,64 @@ public class UtilityDate
 		else {
 			return false;
 		}
+	}
+
+	/** ==============================================================================
+	 * Memformat timestamp SQL menjadi bentuk: 1 menit / 2 jam / tanggal
+	 * @param timestamp - bentuk timestamp sql, e.g. "2017-01-20 14:12:56"
+	 * @return bentuk timestamp yang sudah di-format, e.g. "1 menit"
+	 * ============================================================================== */
+	public static String formatTimestampElapsedTime(String timestamp) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		try {
+			Calendar currentTime = Calendar.getInstance();
+			Calendar parsedTime = new GregorianCalendar();
+			parsedTime.setTime(format.parse(timestamp));
+
+			// sudah ganti tahun
+			long yearDiff = currentTime.get(Calendar.YEAR) - parsedTime.get(Calendar.YEAR);
+			if (yearDiff >= 1) {
+				return "" + parsedTime.get(Calendar.YEAR);
+			}
+
+			// lebih dari sehari
+			long msDiff = currentTime.getTime().getTime() - parsedTime.getTime().getTime();
+			if (msDiff >= 1000 * 60 * 60 * 24) {
+				return "" + parsedTime.get(Calendar.DATE) + " "
+					+ monthNameAbbr(parsedTime.get(Calendar.MONTH));
+			}
+
+			// lebih dari sejam
+			if (msDiff >= 1000 * 60 * 60) {
+				return "" + (msDiff / (1000 * 60 * 60)) + " jam";
+			}
+
+			// sisanya, kembalikan dalam menit
+			long minDiff = msDiff / (1000 * 60);
+			minDiff = Math.max(minDiff, 1);
+			return "" + minDiff + " menit";
+		}
+		catch (ParseException e) {
+			return "n/a";
+		}
+	}
+
+	/** ==============================================================================
+	 * Memformat timestamp SQL menjadi bentuk: 27 Des 2015
+	 * @param timestamp - bentuk timestamp sql, e.g. "2017-01-20 14:12:56"
+	 * @return bentuk timestamp yang sudah di-format, e.g. "27 Des 2015"
+	 * ============================================================================== */
+	public static String formatTimestampDateOnly(String timestamp) {
+		String formattedDate = "";
+		int year = Integer.parseInt(timestamp.substring(0, 4));
+		int month = Integer.parseInt(timestamp.substring(5, 7));
+		int date = Integer.parseInt(timestamp.substring(8, 10));
+
+		// Dari database: indeks Januari = 1
+		// Yang diterima monthNameAbbr: indeks Januari = 0
+		// (jadi perlu di-decrement 1)
+		formattedDate = date + " " + monthNameAbbr(month - 1) + " " + year;
+		return formattedDate;
 	}
 }

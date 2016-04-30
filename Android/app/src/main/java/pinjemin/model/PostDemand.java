@@ -10,6 +10,7 @@ package pinjemin.model;
 
 public class PostDemand
 {
+	private String pid;
 	private String uid;
 	private String timestamp;
 	private String namaBarang;
@@ -17,13 +18,31 @@ public class PostDemand
 	private String batasAkhir;
 	private String accountName;
 
-	public PostDemand(String uid, String timestamp, String namaBarang, String deskripsi, String batasAkhir, String accountName) {
+
+	/** ==============================================================================
+	 * Constructor kelas PostDemand
+	 * ============================================================================== */
+	public PostDemand(String pid, String uid, String timestamp, String namaBarang,
+		String deskripsi, String batasAkhir, String accountName
+	) {
+		this.pid = pid;
 		this.uid = uid;
 		this.timestamp = timestamp;
 		this.namaBarang = namaBarang;
 		this.deskripsi = deskripsi;
 		this.batasAkhir = batasAkhir;
 		this.accountName = accountName;
+	}
+
+
+	// --- setter & getter methods ---
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
 	}
 
 	public String getUid() {

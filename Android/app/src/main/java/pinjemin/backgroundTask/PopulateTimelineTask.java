@@ -1,7 +1,7 @@
 /** ===================================================================================
- * [TIMELINE TASK]
+ * [POPULATE TIMELINE TASK]
  * Helper class untuk mengirim data ke web sercive di server (asynchronously)
- * Dipakai untuk kelas CreatePostDemand, CreatePostSupply
+ * Dipakai untuk kelas CreatePostDemandActivity, CreatePostSupplyActivity
  * ------------------------------------------------------------------------------------
  * Author: Ferdinand Antonius, Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius
@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONArray;
@@ -22,18 +23,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import pinjemin.adapter.TimelineDemandAdapter;
 import pinjemin.adapter.TimelineSupplyAdapter;
+import pinjemin.behavior.ClickListener;
+import pinjemin.menu_timeline.DetailPostDemandActivity;
 import pinjemin.model.PostDemand;
 import pinjemin.model.PostSupply;
-import pinjemin.R;
-import pinjemin.timeline.DetailPostDemand;
-import pinjemin.timeline.DetailPostSupply;
-import pinjemin.timeline.TimelineDemandFragment;
-import pinjemin.timeline.TimelineSupplyFragment;
 import pinjemin.utility.UtilityConnection;
 import pinjemin.utility.UtilityDate;
 
@@ -42,11 +39,13 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 {
 	public static final String PHP_PATH_SUPPLY_TIMELINE = "getpenawarantimeline.php";
 	public static final String PHP_PATH_DEMAND_TIMELINE = "getpermintaantimeline.php";
+	public static final int DEMAND_POST = 1;
+	public static final int SUPPLY_POST = 2;
 
 	private Activity activity;
 	private Context context;
-	private String path;
-	private String objectType;
+	private String phpFilePath;
+	private int timelineType;
 
 	// bagian RecyclerView:
 	private RecyclerView recyclerView;
@@ -59,17 +58,26 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	private ArrayList<PostDemand> arrayDemand;
 
 
-	public PopulateTimelineTask(Context context, String objectType) {
+	/** ==============================================================================
+	 * Constructor kelas PopulateTimelineTask
+	 * @param context - context dari mana PopulateTimelineTask dipanggil
+	 * @param timelineType - DEMAND_POST atau SUPPLY_POST, tergantung jenis
+	 * 	timeline yang akan dimintakan ke server.
+	 * ============================================================================== */
+	public PopulateTimelineTask(Context context, int timelineType, RecyclerView.Adapter adapter) {
 		this.context = context;
-		this.activity = (Activity) context;
-		this.objectType = objectType;
+		this.context = (Activity) context;
+		this.timelineType = timelineType;
+		this.adapter = adapter;
 
-		// configure file path yang benar
-		if (objectType.equals("postSupply")) {
-			this.path = PHP_PATH_SUPPLY_TIMELINE;
+		// configure file phpFilePath dan array yang benar
+		if (timelineType == SUPPLY_POST) {
+			this.phpFilePath = PHP_PATH_SUPPLY_TIMELINE;
+			this.arraySupply = ((TimelineSupplyAdapter) adapter).getarrayList();
 		}
-		else if (objectType.equals("postDemand")) {
-			this.path = PHP_PATH_DEMAND_TIMELINE;
+		else if (timelineType == DEMAND_POST) {
+			this.phpFilePath = PHP_PATH_DEMAND_TIMELINE;
+			this.arrayDemand = ((TimelineDemandAdapter) adapter).getarrayList();
 		}
 	}
 
@@ -81,38 +89,10 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 		// configure layoutManager
 		layoutManager = new LinearLayoutManager(context);
 
-		if (objectType.equalsIgnoreCase("postSupply")) {
-			// create array, configure adapter
-			arraySupply = new ArrayList<>();
-			adapter = new TimelineSupplyAdapter(arraySupply);
-
-			// configure RecyclerView
-			recyclerView = (RecyclerView) activity.findViewById(R.id.recylerViewSupply);
-			recyclerView.setLayoutManager(layoutManager);
-			recyclerView.setHasFixedSize(true);
-			recyclerView.setAdapter(adapter);
-
-			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new TimelineSupplyFragment.RecyclerTouchListener
-					(context, recyclerView, new TimelineSupplyFragmentListener()));
+		if (timelineType == SUPPLY_POST) {
 		}
 
-		else if (objectType.equalsIgnoreCase("postDemand")) {
-			// create array, configure adapter
-			arrayDemand = new ArrayList<>();
-			adapter = new TimelineDemandAdapter(arrayDemand);
-
-			// configure recycler view
-			recyclerView = (RecyclerView) activity.findViewById(R.id.recylerViewDemand);
-			recyclerView.setLayoutManager(layoutManager);
-			recyclerView.setHasFixedSize(true);
-			recyclerView.setAdapter(adapter);
-
-			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new TimelineDemandFragment.RecyclerTouchListener
-					(context, recyclerView, new TimelineDemandFragmentListener()));
+		else if (timelineType == DEMAND_POST) {
 		}
 	}
 
@@ -123,7 +103,8 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	protected Void doInBackground(Void... params) {
 		try {
 			// kirim permintaan ke server, tanpa mengirimkan parameter apa pun
-			String serverResponse = UtilityConnection.runPhp(path, null);
+			String serverResponse = UtilityConnection.runPhp(phpFilePath, null);
+			Log.d("DEBUG", serverResponse);
 
 			// parse data JSON yang diterima dari server (berisi daftar post)
 			JSONObject jsonResponseObject = new JSONObject(serverResponse);
@@ -140,30 +121,31 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 				String dataNamaBarang = postInstance.getString("NamaBarang");
 				String dataDeskripsi = postInstance.getString("Deskripsi");
 				String dataAccountName = postInstance.getString("AccountName");
-				String dataFormattedDate = UtilityDate.formatPostTimestamp(dataTimestamp);
+				String dataFormattedDate = UtilityDate.formatTimestampElapsedTime(dataTimestamp);
 
-				if (objectType.equalsIgnoreCase("postSupply")) {
+				if (timelineType == SUPPLY_POST) {
 					// dapatkan field khusus untuk post supply (harga)
 					String dataHarga = postInstance.getString("Harga");
 					dataHarga = "Rp" + dataHarga;
 
 					// buat instance PostSupply baru
 					PostSupply postSupply = new PostSupply(
-						dataUID, dataFormattedDate, dataNamaBarang,
+						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
 						dataDeskripsi, dataHarga, dataAccountName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
 					publishProgress(postSupply);
 				}
-				else if (objectType.equalsIgnoreCase("postDemand")) {
+				else if (timelineType == DEMAND_POST) {
 					// dapatkan field khusus untuk post demand (lastNeed)
 					String dataLastNeed = postInstance.getString("LastNeed");
-					dataLastNeed = "Terakhir dibutuhkan " + dataLastNeed;
+					dataLastNeed = "Terakhir dibutuhkan "
+						+ UtilityDate.formatTimestampDateOnly(dataLastNeed);
 
 					// buat instance PostSupply baru
 					PostDemand postDemand = new PostDemand(
-						dataUID, dataFormattedDate, dataNamaBarang,
+						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
 						dataDeskripsi, dataLastNeed, dataAccountName);
 
 					// publish perubahan ke main UI thread
@@ -173,6 +155,10 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 			}
 		}
 		catch (JSONException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			Log.e("PopulateTimelineTask", "Tried accessing host: " + phpFilePath);
 			e.printStackTrace();
 		}
 
@@ -185,13 +171,13 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	 * ============================================================================== */
 	@Override
 	protected void onProgressUpdate(Object... object) {
-		if (objectType.equalsIgnoreCase("postSupply")) {
+		if (timelineType == SUPPLY_POST) {
 			// tambahkan instance PostSupply ke arraySupply
 			// notify adapter bahwa datanya sudah berubah (supaya di-relayout)
 			arraySupply.add((PostSupply) object[0]);
 			adapter.notifyDataSetChanged();
 		}
-		else if (objectType.equalsIgnoreCase("postDemand")) {
+		else if (timelineType == DEMAND_POST) {
 			// tambahkan instance PostSupply ke arraySupply
 			// notify adapter bahwa datanya sudah berubah (supaya di-relayout)
 			arrayDemand.add((PostDemand) object[0]);
@@ -209,16 +195,17 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineDemandFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineDemandFragment ditekan
 	 * ============================================================================== */
-	private class TimelineDemandFragmentListener implements TimelineDemandFragment.ClickListener
+	private class TimelineDemandFragmentListener implements ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
-			Intent intent = new Intent(context, DetailPostDemand.class);
+			Intent intent = new Intent(context, DetailPostDemandActivity.class);
 
 			// dapatkan instance post yang dipilih
 			PostDemand postDemand = arrayDemand.get(position);
 
 			// passing data post yang akan ditampilkan ke intent
+			intent.putExtra("pid", postDemand.getPid());
 			intent.putExtra("uid", postDemand.getUid());
 			intent.putExtra("timestamp", postDemand.getTimestamp());
 			intent.putExtra("namaBarang", postDemand.getNamaBarang());
@@ -226,36 +213,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 			intent.putExtra("lastNeed", postDemand.getBatasAkhir());
 			intent.putExtra("accountName", postDemand.getAccountName());
 
-			// start activity DetailPostDemand
-			context.startActivity(intent);
-		}
-
-		@Override
-		public void onLongClick(View view, int position) {}
-	}
-
-	/** ==============================================================================
-	 * Custom implementation kelas TimelineSupplyFragment.ClickListener, digunakan
-	 * untuk mengatur behavior saat item di TimelineSupplyFragment ditekan
-	 * ============================================================================== */
-	private class TimelineSupplyFragmentListener implements TimelineSupplyFragment.ClickListener
-	{
-		@Override
-		public void onClick(View view, int position) {
-			Intent intent = new Intent(context, DetailPostSupply.class);
-
-			// dapatkan instance post yang
-			PostSupply postSupply = arraySupply.get(position);
-
-			// sisipkan data post yang akan ditampilkan ke intent
-			intent.putExtra("uid", postSupply.getUid());
-			intent.putExtra("timestamp", postSupply.getTimestamp());
-			intent.putExtra("namaBarang", postSupply.getNamaBarang());
-			intent.putExtra("deskripsi", postSupply.getDeskripsi());
-			intent.putExtra("harga", postSupply.getHarga());
-			intent.putExtra("accountName", postSupply.getAccountName());
-
-			// start activity DetailPostSupply
+			// start activity DetailPostDemandActivity
 			context.startActivity(intent);
 		}
 

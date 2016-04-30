@@ -3,7 +3,7 @@
  * Kelas yang menampilkan halaman utama program
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
- * Refactor & Documentation: Ferdinand Antonius
+ * Refactoring & Documentation: Ferdinand Antonius
  * =================================================================================== */
 
 package pinjemin.activity;
@@ -11,25 +11,20 @@ package pinjemin.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import pinjemin.friend.FriendFragment;
-import pinjemin.notification.NotificationFragment;
-import pinjemin.peminjaman.ListPeminjamanFragment;
+import pinjemin.behavior.CustomViewPagerAdapter;
+import pinjemin.menu_friend.FriendFragment;
+import pinjemin.menu_notification.NotificationFragment;
+import pinjemin.menu_peminjaman.ListPeminjamanFragment;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.R;
 import pinjemin.session.SessionManager;
-import pinjemin.timeline.TimelineFragment;
+import pinjemin.menu_timeline.TimelineFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -37,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 	private SessionManager sessionManager;
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
-	private CustomViewPager viewPager;
+	private CustomViewPager MenuTabViewPager;
 
 	private int[] tabIcons = {
 		R.drawable.ic_tab_home,
@@ -65,40 +60,41 @@ public class MainActivity extends AppCompatActivity
 		toolbar.setTitle("Timeline");
 		setSupportActionBar(toolbar);
 
-		// configure viewPager:
-		// CustomViewPager memungkinkan paginasi data (user bisa navigate halamannya)
-		// Implementasikan PagerAdapter untuk menentukan halaman yang ditampilkan pada view
-		viewPager = (CustomViewPager) findViewById(R.id.viewpager);
+		// configure MenuTabViewPager:
+		// ViewPager memungkinkan paginasi data (user bisa navigate halamannya).
+		// Implementasikan PagerAdapter (direlasisasikan dalam CustomViewPagerAdapter)
+		// untuk menentukan halaman yang ditampilkan pada view.
+		MenuTabViewPager = (CustomViewPager) findViewById(R.id.viewpager);
 		configureViewPager();
 
 		// configure tabLayout:
 		// TabLayout mangatur horizontal layout untuk menampilkan tabs.
 		tabLayout = (TabLayout) findViewById(R.id.tabs);
-		tabLayout.setupWithViewPager(viewPager);
+		tabLayout.setupWithViewPager(MenuTabViewPager);
 		configureTabLayout();
 	}
 
 	/** ==============================================================================
-	 * Mengatur viewPager: mengatur adapter (penampung fragment) dan action listener-nya
+	 * Mengatur MenuTabViewPager: mengatur adapter (penampung fragment) dan action listener-nya
 	 * ============================================================================== */
 	private void configureViewPager() {
-		// NOTE: inner class ViewPagerAdapter didekarasikan di bawah
+		// NOTE: kelas CustomViewPagerAdapter didekarasikan di kelas terpisah
 		// NOTE: inner class ViewPagerListener dideklarasikan di bawah
 
-		// mengonfigurasi adapter untuk viewPager
+		// mengonfigurasi adapter untuk MenuTabViewPager
 		// syntax: addFragment(fragment, fragmentTitle)
 		// fragmentTitle sengaja kosong agar tidak ada teks di sebelah icon
-		ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+		CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new TimelineFragment(), "");
 		adapter.addFragment(new ListPeminjamanFragment(), "");
 		adapter.addFragment(new FriendFragment(), "");
 		adapter.addFragment(new NotificationFragment(), "");
 
-		// menambahkan adapter untuk viewPager
-		viewPager.setAdapter(adapter);
+		// menambahkan adapter untuk MenuTabViewPager
+		MenuTabViewPager.setAdapter(adapter);
 
-		// menambahkan action listener untuk viewPager
-		viewPager.addOnPageChangeListener(new ViewPagerListener());
+		// menambahkan action listener untuk MenuTabViewPager
+		MenuTabViewPager.addOnPageChangeListener(new ViewPagerListener());
 	}
 
 	/** ==============================================================================
@@ -157,10 +153,8 @@ public class MainActivity extends AppCompatActivity
 		startActivity(intent);
 
 		// tutup activity sebelumnya
+		// dan keluar dari aplikasi ini
 		finish();
-
-		// memastikan bahwa aplikasi di-terminate
-		// (jadi tidak hanya back ke home screen/dipindah ke background)
 		System.exit(0);
 	}
 
@@ -168,47 +162,13 @@ public class MainActivity extends AppCompatActivity
 	// --- inner class declaration ---
 
 	/** ==============================================================================
-	 * Custom implementation kelas FragmentPagerAdapter, digunakan untuk mengatur
-	 * behavior objek viewPager.
-	 * ============================================================================== */
-	class ViewPagerAdapter extends FragmentPagerAdapter
-	{
-		private final List<Fragment> fragmentList = new ArrayList<>();
-		private final List<String> fragmentTitleList = new ArrayList<>();
-
-		public ViewPagerAdapter(FragmentManager manager) {
-			super(manager);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			return fragmentList.get(position);
-		}
-
-		@Override
-		public int getCount() {
-			return fragmentList.size();
-		}
-
-		public void addFragment(Fragment fragment, String title) {
-			fragmentList.add(fragment);
-			fragmentTitleList.add(title);
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return fragmentTitleList.get(position);
-		}
-	}
-
-	/** ==============================================================================
 	 * Custom implementation kelas ViewPager.OnPageChangeListener, digunakan
-	 * sebagai action listener untuk objek viewPager (saat suatu menu tab icon ditekan)
+	 * sebagai action listener untuk objek MenuTabViewPager (saat suatu menu tab icon ditekan)
 	 * ============================================================================== */
 	private class ViewPagerListener implements ViewPager.OnPageChangeListener
 	{
 		public final String[] FRAGMENT_TITLE = {
-			"Timeline", "List Peminjaman", "Friend", "Notification"
+			"Timeline", "Log Peminjaman", "User", "Notification"
 		};
 
 		@Override

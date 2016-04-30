@@ -1,5 +1,5 @@
 /** ===================================================================================
- * [SCROLLING FAB BEHAVIOR]
+ * [FLOATING BUTTON BEHAVIOR]
  * Kelas untuk mengatur floating action button (jadi kalau list-nya di-scroll ke atas,
  * tombolnya hilang) -> MASIH BELUM BERHASIL.
  * ----------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ import android.util.AttributeSet;
 
 import android.view.View;
 
-import pinjemin.utility.UtilityMetric;
+import pinjemin.utility.UtilityGUI;
 
 
 public class FloatingButtonBehavior extends CoordinatorLayout.Behavior<FloatingActionButton>
@@ -26,11 +26,13 @@ public class FloatingButtonBehavior extends CoordinatorLayout.Behavior<FloatingA
 
 	public FloatingButtonBehavior(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		this.toolbarHeight = UtilityMetric.getToolbarHeight(context);
+		this.toolbarHeight = UtilityGUI.getToolbarHeight(context);
 	}
 
 	@Override
-	public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton fab, View dependency) {
+	public boolean layoutDependsOn(CoordinatorLayout parent,
+		FloatingActionButton fab, View dependency
+	) {
 		return dependency instanceof AppBarLayout;
 	}
 

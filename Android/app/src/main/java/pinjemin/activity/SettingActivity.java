@@ -1,9 +1,9 @@
 /** ===================================================================================
  * [SETTING ACTIVITY]
- * BAHKAN SAYA PUN TAK MENGERTI (?)
+ * Ferdinand: BAHKAN SAYA PUN TAK MENGERTI (?)
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
- * Refactor & Documentation: Ferdinand Antonius
+ * Refactoring & Documentation: Ferdinand Antonius
  * =================================================================================== */
 
 package pinjemin.activity;
