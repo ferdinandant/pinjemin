@@ -197,26 +197,6 @@ create table if not exists `konfirmasi` (
     on update cascade)
 engine = innodb;
 
--- -----------------------------------------------------
--- table `lastseen`
--- -----------------------------------------------------
-create table if not exists `lastseen` (
-  `UID` int not null,
-  `PID` int not null,
-  `Lastseen` datetime not null,
-  primary key (`uid`, `pid`),
-  constraint `fk_pid_lastseen`
-    foreign key (`pid`)
-    references `post` (`pid`)
-    on delete cascade
-    on update cascade,
-  constraint `fk_uid_lastseen`
-    foreign key (`uid`)
-    references `user` (`uid`)
-    on delete cascade
-    on update cascade)
-engine = innodb;
-
 set sql_mode=@old_sql_mode;
 set foreign_key_checks=@old_foreign_key_checks;
 set unique_checks=@old_unique_checks;
