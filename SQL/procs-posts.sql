@@ -87,7 +87,7 @@ create procedure getPermintaanTimeline(in varStart int, in varCount int)
    reads sql data
 begin
    select pos.PID, pos.UID, pos.Timestamp, pos.NamaBarang, pos.Deskripsi, 
-      per.LastNeed, usr.AccountName
+      per.LastNeed, usr.RealName
    from permintaan per natural join post pos natural join user usr
    where per.pid not in (select pid from peminjaman pem)
       and per.LastNeed >= now()
@@ -107,7 +107,7 @@ create procedure getPenawaranTimeline(in varStart int, in varCount int)
    reads sql data
 begin
    select pos.PID, pos.UID, pos.Timestamp, pos.NamaBarang, pos.Deskripsi, 
-      pen.Harga, usr.AccountName
+      pen.Harga, usr.RealName
    from penawaran pen natural join post pos natural join user usr
    where pen.PID not in (select PID from peminjaman pem)
    limit varCount offset varStart;
@@ -791,7 +791,6 @@ begin
     where pos.NamaBarang regexp varQuery
     order by pos.Timestamp desc;
 end;;
-
 
 -- ==============================================================================
 -- Mencari post permintaan berdasarkan nama barang
