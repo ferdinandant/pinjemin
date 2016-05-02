@@ -86,6 +86,8 @@ public class RegisterActivity extends AppCompatActivity
 			this, inputProdi, inputLayoutProdi, "Masukkan jurusan Anda"));
 		inputTelepon.addTextChangedListener(new EditTextTextWatcher(
 			this, inputTelepon, inputLayoutTelepon, "Masukkan nomor telepon Anda"));
+		inputTelepon.addTextChangedListener(new EditTextTextWatcher(
+			this, inputTelepon, inputLayoutTelepon, "Masukkan angka saja untuk telepon"));
 
 		// set action listener (submit form)
 		buttonSubmit.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +112,8 @@ public class RegisterActivity extends AppCompatActivity
 			"Masukkan jurusan Anda")) return;
 		if (!UtilityGUI.assureNotEmpty(this, inputTelepon, inputLayoutTelepon,
 			"Masukkan nomor telepon Anda")) return;
+		if (!UtilityGUI.assureNotEmpty(this, inputTelepon, inputLayoutTelepon,
+			"Masukkan angka saja untuk telepon")) return;
 
 		// ambil data yang dimasukkan user
 		String realname = inputName.getText().toString();

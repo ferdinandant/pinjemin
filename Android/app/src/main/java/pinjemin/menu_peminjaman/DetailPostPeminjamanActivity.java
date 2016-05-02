@@ -11,7 +11,7 @@ import android.widget.TextView;
 import pinjemin.R;
 import pinjemin.session.SessionManager;
 
-public class DetailPostPeminjaman extends AppCompatActivity {
+public class DetailPostPeminjamanActivity extends AppCompatActivity {
 
     private TextView pembuatPost, tanggal, namaBarang, deskripsi, harga, deadline;
     private LinearLayout btnUbahStatus, btnLihatProfil;

@@ -15,84 +15,89 @@ import pinjemin.R;
 import pinjemin.backgroundTask.PopulateFriendTask;
 import pinjemin.session.SessionManager;
 
-public class FriendRequest extends Fragment {
 
-    private SessionManager session;
+public class FriendRequest extends Fragment
+{
 
-    public FriendRequest() {
-        // Required empty public constructor
-    }
+	private SessionManager session;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	public FriendRequest() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-        session = new SessionManager(getActivity());
-        String currentUid = session.getUserDetails().get(SessionManager.KEY_UID);
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
-        PopulateFriendTask populateFriendTask = new PopulateFriendTask(getActivity(), PopulateFriendTask.FRIEND_REQUEST, currentUid);
-        populateFriendTask.execute();
-    }
+		session = new SessionManager(getActivity());
+		String currentUid = session.getUserDetails().get(SessionManager.KEY_UID);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_friend_request, container, false);
-        return  view;
-    }
+		PopulateFriendTask populateFriendTask = new PopulateFriendTask(getActivity(), PopulateFriendTask.FRIEND_REQUEST, currentUid);
+		populateFriendTask.execute();
+	}
 
-    public interface ClickListener {
-        void onClick(View view, int position);
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View view = inflater.inflate(R.layout.fragment_friend_request, container, false);
+		return view;
+	}
 
-        void onLongClick(View view, int position);
-    }
+	public interface ClickListener
+	{
+		void onClick(View view, int position);
 
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+		void onLongClick(View view, int position);
+	}
 
-        private GestureDetector gestureDetector;
-        private FriendRequest.ClickListener clickListener;
+	public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
+	{
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final FriendRequest.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
+		private GestureDetector gestureDetector;
+		private FriendRequest.ClickListener clickListener;
 
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
+		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final FriendRequest.ClickListener clickListener) {
+			this.clickListener = clickListener;
+			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
+			{
+				@Override
+				public boolean onSingleTapUp(MotionEvent e) {
+					return true;
+				}
 
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+				@Override
+				public void onLongPress(MotionEvent e) {
+					View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+					if (child != null && clickListener != null) {
+						clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+					}
+				}
+			});
+		}
 
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
+		@Override
+		public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
 
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
+			View child = rv.findChildViewUnder(e.getX(), e.getY());
+			if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+				clickListener.onClick(child, rv.getChildPosition(child));
+			}
+			return false;
+		}
 
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+		@Override
+		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+		}
 
-        }
-    }
+		@Override
+		public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+		}
+	}
 }

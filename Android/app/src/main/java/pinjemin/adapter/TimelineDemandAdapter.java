@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import pinjemin.model.PostDemand;
 import pinjemin.R;
+import pinjemin.model.PostSupply;
 
 
 public class TimelineDemandAdapter
@@ -87,6 +88,7 @@ public class TimelineDemandAdapter
 	public int getItemCount() {
 		return arrayDemand.size();
 	}
+
 
 	// -- inner class declaration ---
 

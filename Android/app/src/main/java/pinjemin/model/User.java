@@ -1,106 +1,101 @@
-/** ===================================================================================
- * [USER]
- * Kelas yang merepresentasikan instance sebuah user
- * ------------------------------------------------------------------------------------
- * Author: Kemal Amru Ramadhand
- * Refactoring & Documentation: Ferdinand Antonius
- * =================================================================================== */
-
 package pinjemin.model;
 
-public class User
-{
-	private String uid;
-	private String accountName;
-	private String realName;
-	private String bio;
-	private String fakultas;
-	private String prodi;
-	private String telepon;
-	private String rating;
-	private String numRating;
+/**
+ * Created by K-A-R on 29/04/2016.
+ */
+public class User {
 
-	public User(String uid, String accountName, String realName, String bio, String fakultas, String prodi, String telepon, String rating, String numRating) {
-		this.uid = uid;
-		this.accountName = accountName;
-		this.realName = realName;
-		this.bio = bio;
-		this.fakultas = fakultas;
-		this.prodi = prodi;
-		this.telepon = telepon;
-		this.rating = rating;
-		this.numRating = numRating;
-	}
+    private String uid;
+    private String accountName;
+    private String realName;
+    private String bio;
+    private String fakultas;
+    private String prodi;
+    private String telepon;
+    private String rating;
+    private String numRating;
 
-	public String getUid() {
-		return uid;
-	}
+    public User(String uid, String accountName, String realName, String bio, String fakultas, String prodi, String telepon, String rating, String numRating) {
+        this.uid = uid;
+        this.accountName = accountName;
+        this.realName = realName;
+        this.bio = bio;
+        this.fakultas = fakultas;
+        this.prodi = prodi;
+        this.telepon = telepon;
+        this.rating = rating;
+        this.numRating = numRating;
+    }
 
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
+    public String getUid() {
+        return uid;
+    }
 
-	public String getAccountName() {
-		return accountName;
-	}
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
+    public String getAccountName() {
+        return accountName;
+    }
 
-	public String getRealName() {
-		return realName;
-	}
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
 
-	public void setRealName(String realName) {
-		this.realName = realName;
-	}
+    public String getRealName() {
+        return realName;
+    }
 
-	public String getBio() {
-		return bio;
-	}
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
 
-	public void setBio(String bio) {
-		this.bio = bio;
-	}
+    public String getBio() {
+        return bio;
+    }
 
-	public String getFakultas() {
-		return fakultas;
-	}
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
 
-	public void setFakultas(String fakultas) {
-		this.fakultas = fakultas;
-	}
+    public String getFakultas() {
+        return fakultas;
+    }
 
-	public String getProdi() {
-		return prodi;
-	}
+    public void setFakultas(String fakultas) {
+        this.fakultas = fakultas;
+    }
 
-	public void setProdi(String prodi) {
-		this.prodi = prodi;
-	}
+    public String getProdi() {
+        return prodi;
+    }
 
-	public String getTelepon() {
-		return telepon;
-	}
+    public void setProdi(String prodi) {
+        this.prodi = prodi;
+    }
 
-	public void setTelepon(String telepon) {
-		this.telepon = telepon;
-	}
+    public String getTelepon() {
+        return telepon;
+    }
 
-	public String getRating() {
-		return rating;
-	}
+    public void setTelepon(String telepon) {
+        this.telepon = telepon;
+    }
 
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+    public String getRating() {
+        return rating;
+    }
 
-	public String getNumRating() {
-		return numRating;
-	}
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
 
-	public void setNumRating(String numRating) {
-		this.numRating = numRating;
-	}
+    public String getNumRating() {
+        return numRating;
+    }
+
+    public void setNumRating(String numRating) {
+        this.numRating = numRating;
+    }
 }

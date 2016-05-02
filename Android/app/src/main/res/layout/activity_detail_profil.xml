@@ -64,12 +64,6 @@
                     android:text="Rating" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="berdasarkan " />
-
-                <TextView
                     android:id="@+id/output_numrating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

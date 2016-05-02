@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 
 import pinjemin.R;
 
-public class OngoingPeminjamanFragment extends Fragment {
+public class WaitingFragment extends Fragment {
 
-    public OngoingPeminjamanFragment() {
+    public WaitingFragment() {
         // Required empty public constructor
     }
 
@@ -23,6 +23,6 @@ public class OngoingPeminjamanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ongoing, container, false);
+        return inflater.inflate(R.layout.fragment_log_waiting, container, false);
     }
 }

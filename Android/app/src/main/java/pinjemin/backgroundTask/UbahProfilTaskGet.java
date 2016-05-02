@@ -15,12 +15,13 @@ import java.util.TreeMap;
 
 import pinjemin.model.User;
 import pinjemin.user.DetailProfilActivity;
+import pinjemin.user.UbahProfilActivity;
 import pinjemin.utility.UtilityConnection;
 
 /**
  * Created by K-A-R on 30/04/2016.
  */
-public class GetProfilTask extends AsyncTask<Void, Object, Void> {
+public class UbahProfilTaskGet extends AsyncTask<Void, Object, Void> {
 
     private Context context;
     private Activity activity;
@@ -32,7 +33,7 @@ public class GetProfilTask extends AsyncTask<Void, Object, Void> {
 
     private String status;
 
-    public GetProfilTask(Context context, TreeMap<String, String> input) {
+    public UbahProfilTaskGet(Context context, TreeMap<String, String> input) {
         this.context = context;
         this.activity = (Activity) context;
         this.input = input;
@@ -108,7 +109,7 @@ public class GetProfilTask extends AsyncTask<Void, Object, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        Intent intent = new Intent(context, DetailProfilActivity.class);
+        Intent intent = new Intent(context, UbahProfilActivity.class);
 
         // dapatkan instance post yang dipilih
         User user = targetUser;
@@ -122,9 +123,6 @@ public class GetProfilTask extends AsyncTask<Void, Object, Void> {
         intent.putExtra("fakultas", user.getFakultas());
         intent.putExtra("prodi", user.getProdi());
         intent.putExtra("telepon", user.getTelepon());
-        intent.putExtra("rating", user.getRating());
-        intent.putExtra("numRating", user.getNumRating());
-        intent.putExtra("status", status);
 
         // start activity DetailPostDemandActivity
         context.startActivity(intent);

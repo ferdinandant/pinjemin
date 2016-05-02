@@ -28,6 +28,7 @@ public class RegisterTask extends AsyncTask<Void,Object,Void>
 
 	private Context context;
 	private TreeMap<String,String> dataToSend;
+	private String ubah;
 
 	/** ==============================================================================
 	 * Constructor kelas PopulateTimelineTask
@@ -47,7 +48,8 @@ public class RegisterTask extends AsyncTask<Void,Object,Void>
 	protected Void doInBackground(Void... params) {
 		// kirim data yang dimasukkan saat registrasi ke database
 		try {
-			UtilityConnection.runPhp(PHP_PATH, dataToSend);
+			String hasil = UtilityConnection.runPhp(PHP_PATH, dataToSend);
+			Log.d("Server response", hasil);
 		}
 		catch (IOException e) {
 			Log.e("RegisterTask", "Tried accessing host: " + PHP_PATH);
@@ -67,9 +69,16 @@ public class RegisterTask extends AsyncTask<Void,Object,Void>
 		// dapatkan nama asli user dari data
 		String realname = dataToSend.get("realname");
 
-		// masukkan data username ke SessionManager
 		SessionManager session = new SessionManager(context);
-		session.createRegisterSession(realname);
+
+		if (dataToSend.get("ubah") == null) {
+			// masukkan data username ke SessionManager
+
+			session.createRegisterSession(realname);
+
+		} else {
+			session.ubahProfilSession(realname);
+		}
 
 		// tampilkan MainActivity
 		context.startActivity(new Intent(context, MainActivity.class));

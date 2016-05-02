@@ -12,7 +12,6 @@ package pinjemin.backgroundTask;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,17 +31,14 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 
 	private Context context;
 	private TreeMap<String,String> dataToSend;
+	private boolean isLoginSuccessful;
 	private JSONObject jsonResponseObject;
 	private JSONArray jsonResponseArray;
-
-	private boolean isLoginSuccessful;
-	private boolean isServerReachable;
 
 	public LoginTask(Context context, TreeMap<String,String> dataToSend) {
 		this.dataToSend = dataToSend;
 		this.context = context;
 		this.isLoginSuccessful = false;
-		this.isServerReachable = false;
 	}
 
 	/** ==============================================================================
@@ -52,12 +48,9 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 	protected Void doInBackground(Void... voids) {
 		try {
 			// koneksi ke server, kirimkan data login
-			// (isServerReachable == true) berarti server bisa dihubungi
 			// login berhasil: server mengembalikan data user
 			// login gagal: server mengembalikan empty set
-			this.isServerReachable = false;
 			String serverResponse = UtilityConnection.runPhp(PHP_PATH, dataToSend);
-			this.isServerReachable = true;
 
 			// parse data JSON yang diterima dari server
 			jsonResponseObject = new JSONObject(serverResponse);
@@ -119,10 +112,6 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 				// seharusnya tidak akan masuk ke sini.
 				e.printStackTrace();
 			}
-		}
-		else if (!isServerReachable) {
-			// jika server tidak bisa dihubungi
-			Toast.makeText(context, "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
 		}
 		else {
 			// jika login gagal, tampilkan pesan "login failed."

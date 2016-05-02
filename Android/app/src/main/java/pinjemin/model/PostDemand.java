@@ -17,13 +17,14 @@ public class PostDemand
 	private String deskripsi;
 	private String batasAkhir;
 	private String accountName;
+	private String realName;
 
 
 	/** ==============================================================================
 	 * Constructor kelas PostDemand
 	 * ============================================================================== */
 	public PostDemand(String pid, String uid, String timestamp, String namaBarang,
-		String deskripsi, String batasAkhir, String accountName
+		String deskripsi, String batasAkhir, String accountName, String realName
 	) {
 		this.pid = pid;
 		this.uid = uid;
@@ -32,6 +33,7 @@ public class PostDemand
 		this.deskripsi = deskripsi;
 		this.batasAkhir = batasAkhir;
 		this.accountName = accountName;
+		this.realName = realName;
 	}
 
 

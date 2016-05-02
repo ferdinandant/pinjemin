@@ -14,47 +14,49 @@ import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 
 
-public class FriendFragment extends Fragment {
+public class FriendFragment extends Fragment
+{
 
-    private TabLayout tabLayout;
-    private CustomViewPager viewPager;
+	private TabLayout tabLayout;
+	private CustomViewPager viewPager;
 
-    public FriendFragment() {
-    }
+	public FriendFragment() {
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState
-    ) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_friend, container, false);
+	@Override
+	public View onCreateView(LayoutInflater inflater,
+		ViewGroup container, Bundle savedInstanceState
+	) {
+		// Inflate the layout for this fragment
+		View view = inflater.inflate(R.layout.fragment_friend, container, false);
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+		tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+		viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
+		setupViewPager(viewPager);
+		tabLayout.post(new Runnable()
+		{
+			@Override
+			public void run() {
+				tabLayout.setupWithViewPager(viewPager);
+			}
+		});
 
-        return view;
-    }
+		return view;
+	}
 
-    private void setupViewPager(ViewPager viewPager) {
-        CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
-                getChildFragmentManager());
+	private void setupViewPager(ViewPager viewPager) {
+		CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
+			getChildFragmentManager());
 
-        adapter.addFragment(new FriendTemanAnda(), "Teman Anda");
-        adapter.addFragment(new FriendRequest(), "Request Add");
+		adapter.addFragment(new FriendTemanAnda(), "Teman Anda");
+		adapter.addFragment(new FriendRequest(), "Request Add");
 
-        Log.d("debug", "bikin tab");
-        viewPager.setAdapter(adapter);
-    }
+		Log.d("debug", "bikin tab");
+		viewPager.setAdapter(adapter);
+	}
 }

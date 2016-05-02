@@ -1,196 +1,196 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-	<android.support.design.widget.AppBarLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-		<android.support.v7.widget.Toolbar
-			android:id="@+id/toolbar"
-			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:background="?attr/colorPrimary"
-			app:layout_scrollFlags="scroll|enterAlways"
-			app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-	</android.support.design.widget.AppBarLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="65dp"
-		android:background="#ffffff"
-		android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:background="#ffffff"
+        android:orientation="vertical">
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:background="@android:color/darker_gray" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
 
-		<TextView
-			android:id="@+id/pembuatPost"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="10dp"
-			android:text="Kemal Amru"
-			android:textSize="15sp" />
+        <TextView
+            android:id="@+id/pembuatPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Kemal Amru"
+            android:textSize="15sp" />
 
-		<TextView
-			android:id="@+id/tanggal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="5dp"
-			android:text="Dipostkan pada"
-			android:textSize="15sp" />
+        <TextView
+            android:id="@+id/tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Dipostkan pada"
+            android:textSize="15sp" />
 
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingLeft="10dp"
-			android:paddingRight="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-			<View
-				android:layout_width="match_parent"
-				android:layout_height="2dp"
-				android:layout_marginTop="10dp"
-				android:background="@android:color/darker_gray" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/darker_gray" />
 
-		</LinearLayout>
+        </LinearLayout>
 
-		<TextView
-			android:id="@+id/namaBarang"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="5dp"
-			android:text="Nama Barang"
-			android:textColor="#000"
-			android:textSize="25sp"
-			android:textStyle="bold" />
+        <TextView
+            android:id="@+id/namaBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="Nama Barang"
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-		<TextView
-			android:id="@+id/deskripsi"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="5dp"
-			android:text="afjdhjashdjfhajkdfkjjdafhjkasdkjfkjasdfkjhadkfhka"
-			android:textColor="#000"
-			android:textSize="20sp" />
+        <TextView
+            android:id="@+id/deskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="afjdhjashdjfhajkdfkjjdafhjkasdkjfkjasdfkjhadkfhka"
+            android:textColor="#000"
+            android:textSize="20sp" />
 
-		<TextView
-			android:id="@+id/harga"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="10dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="5dp"
-			android:text="dibutuhkan paling lambat"
-			android:textColor="#000"
-			android:textSize="15sp" />
+        <TextView
+            android:id="@+id/harga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:text="dibutuhkan paling lambat"
+            android:textColor="#000"
+            android:textSize="15sp" />
 
-		<RelativeLayout
-			android:id="@+id/calon_peminjam"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="15dp"
-			android:paddingRight="15dp">
+        <RelativeLayout
+            android:id="@+id/calon_peminjam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingRight="15dp">
 
-			<LinearLayout
-				android:id="@+id/btn_lihatProfil"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/btn_lihatProfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="LIHAT PROFIL"
-					android:textColor="@color/colorPrimary"
-					android:textSize="15sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIHAT PROFIL"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:id="@+id/btn_mintaPinjem"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="15dp"
-				android:layout_toLeftOf="@id/btn_lihatProfil"
-				android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/btn_mintaPinjem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toLeftOf="@id/btn_lihatProfil"
+                android:layout_marginRight="15dp">
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="MINTA PINJEM"
-					android:textColor="@color/colorPrimary"
-					android:textSize="15sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MINTA PINJEM"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-		</RelativeLayout>
+        </RelativeLayout>
 
-		<RelativeLayout
-			android:id="@+id/pemberi_pinjam"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="15dp"
-			android:paddingRight="15dp">
+        <RelativeLayout
+            android:id="@+id/pemberi_pinjam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingRight="15dp">
 
-			<LinearLayout
-				android:id="@+id/btn_hapus"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_alignParentRight="true"
-				android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/btn_hapus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="HAPUS"
-					android:textColor="@color/colorPrimary"
-					android:textSize="15sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HAPUS"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-			<LinearLayout
-				android:id="@+id/btn_ubah"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginRight="15dp"
-				android:layout_toLeftOf="@id/btn_hapus"
-				android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/btn_ubah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_toLeftOf="@id/btn_hapus"
+                android:layout_marginRight="15dp">
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="UBAH"
-					android:textColor="@color/colorPrimary"
-					android:textSize="15sp"
-					android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UBAH"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-			</LinearLayout>
+            </LinearLayout>
 
-		</RelativeLayout>
+        </RelativeLayout>
 
-		<View
-			android:layout_width="match_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="15dp"
-			android:background="@android:color/darker_gray" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/darker_gray" />
 
-	</LinearLayout>
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

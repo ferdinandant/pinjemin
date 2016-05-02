@@ -36,7 +36,7 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 	/** ==============================================================================
 	 * Constructor kelas CreatePostTask
 	 * @param context - context dari mana CreatePostTask dipanggil
-	 * @param postType - DEMAND_POST atau SUPPLY_POST, tergantung jenis post
+	 * @param postType - DEMAND_SEARCH atau SUPPLY_SEARCH, tergantung jenis post
 	 * 	yang dibuat.
 	 * ============================================================================== */
 	public CreatePostTask(Context context, int postType, TreeMap<String,String> dataToSend) {
@@ -60,13 +60,13 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 	protected Void doInBackground(Void... params) {
 		try {
 			serverResponse = UtilityConnection.runPhp(phpFilePath, dataToSend);
-			Log.d("DEBUG", "--- CreatePostTask ---");
-			Log.d("DEBUG", "phpFilePath:" + phpFilePath);
-			Log.d("DEBUG", "dataToSend:" + dataToSend.toString());
-			Log.d("DEBUG", "serverResponse:" + serverResponse);
+			Log.d("FERDEBUG", "--- CreatePostTask ---");
+			Log.d("FERDEBUG", "phpFilePath:" + phpFilePath);
+			Log.d("FERDEBUG", "dataToSend:" + dataToSend.toString());
+			Log.d("FERDEBUG", "serverResponse:" + serverResponse);
 		}
 		catch (IOException e) {
-			Log.d("DEBUG", "ERROR! Tried accessing host: " + phpFilePath);
+			Log.d("FERDEBUG", "ERROR! Tried accessing host: " + phpFilePath);
 			e.printStackTrace();
 		}
 		return null;
@@ -90,6 +90,7 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 	protected void onPostExecute(Void aVoid) {
 		// buang karakter penanda encoding Unicode
 		serverResponse = UtilityConnection.removeUnicodeBOM(serverResponse);
+		Log.d("FERDEBUG", "serverResponse:" + serverResponse);
 
 		// cek apakah pengiriman berhasil
 		if (serverResponse.equals("true")) {

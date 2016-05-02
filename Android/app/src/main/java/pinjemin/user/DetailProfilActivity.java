@@ -1,4 +1,4 @@
-package pinjemin.menu_friend;
+package pinjemin.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,11 +76,11 @@ public class DetailProfilActivity extends AppCompatActivity {
         outputBio.setText(bio);
         outputFakultas.setText(fakultas);
         outputProdi.setText(prodi);
-        outputTelepon.setText(telepon);
+        outputTelepon.setText("Tambahkan sebagai teman untuk melihat");
         outputRating.setText(rating);
-        outputNumRating.setText(numRating);
+        outputNumRating.setText(" Berdasarkan " + numRating + " review");
 
-        if (status.equalsIgnoreCase("ownProfile")) {
+        if (status.equalsIgnoreCase("OwnProfile")) {
             btnUbahProfil.setVisibility(View.VISIBLE);
 
             btnUbahProfil.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +89,79 @@ public class DetailProfilActivity extends AppCompatActivity {
                     ubahProfil();
                 }
             });
+
+        } else if (status.equalsIgnoreCase("NotFriends")) {
+            btnTambahTeman.setVisibility(View.VISIBLE);
+
+            btnTambahTeman.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tambahTeman();
+                }
+            });
+
+        } else if (status.equalsIgnoreCase("Friends")) {
+            btnHapusTeman.setVisibility(View.VISIBLE);
+
+            outputTelepon.setText(telepon);
+
+            btnHapusTeman.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    hapusTeman();
+                }
+            });
+
+        } else if (status.equalsIgnoreCase("Requesting")) {
+            btnBatalRequest.setVisibility(View.VISIBLE);
+
+            btnBatalRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    batalRequest();
+                }
+            });
+
+        } else if (status.equalsIgnoreCase("Requested")) {
+            setujuTolak.setVisibility(View.VISIBLE);
+
+            btnSetujuRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setujuRequest();
+                }
+            });
+
+            btnTolakRequest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    tolakRequest();
+                }
+            });
         }
     }
 
     public void ubahProfil() {
+
+    }
+
+    public void tambahTeman() {
+
+    }
+
+    public void hapusTeman() {
+
+    }
+
+    public void batalRequest() {
+
+    }
+
+    public void tolakRequest() {
+
+    }
+
+    public void setujuRequest() {
 
     }
 }

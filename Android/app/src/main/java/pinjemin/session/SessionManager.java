@@ -90,6 +90,15 @@ public class SessionManager
 		editor.commit();
 	}
 
+	public void ubahProfilSession(String realname) {
+		editor.remove(KEY_REALNAME);
+
+		editor.putString(KEY_REALNAME, realname);
+
+		// commit changes
+		editor.commit();
+	}
+
 	/** ==============================================================================
 	 * Mengecek status login user. Jika user tidak dalam keadaan login, user akan
 	 * dialihkan ke halaman login.

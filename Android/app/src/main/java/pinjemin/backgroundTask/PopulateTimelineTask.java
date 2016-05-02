@@ -48,12 +48,10 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	private int timelineType;
 
 	// bagian RecyclerView:
-	private RecyclerView recyclerView;
 	private RecyclerView.Adapter adapter;
 	private RecyclerView.LayoutManager layoutManager;
 
 	// penampung object RecyclerView:
-	private String[] inputReceive;
 	private ArrayList<PostSupply> arraySupply;
 	private ArrayList<PostDemand> arrayDemand;
 
@@ -88,12 +86,6 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	protected void onPreExecute() {
 		// configure layoutManager
 		layoutManager = new LinearLayoutManager(context);
-
-		if (timelineType == SUPPLY_POST) {
-		}
-
-		else if (timelineType == DEMAND_POST) {
-		}
 	}
 
 	/** ==============================================================================
@@ -120,6 +112,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 				String dataTimestamp = postInstance.getString("Timestamp");
 				String dataNamaBarang = postInstance.getString("NamaBarang");
 				String dataDeskripsi = postInstance.getString("Deskripsi");
+				String dataRealName = postInstance.getString("RealName");
 				String dataAccountName = postInstance.getString("AccountName");
 				String dataFormattedDate = UtilityDate.formatTimestampElapsedTime(dataTimestamp);
 
@@ -131,7 +124,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostSupply postSupply = new PostSupply(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataHarga, dataAccountName);
+						dataDeskripsi, dataHarga, dataAccountName, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
@@ -146,7 +139,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostDemand postDemand = new PostDemand(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataLastNeed, dataAccountName);
+						dataDeskripsi, dataLastNeed, dataAccountName, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah

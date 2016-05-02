@@ -419,10 +419,10 @@ end;;
 -- ==============================================================================
 drop procedure if exists editProfileDetail;;
 create procedure editProfileDetail(
-   varUID int,
-   varPassword varchar(32),
-   varBio varchar(240),
-   varTelepon varchar(15)
+   in varUID int,
+   in varPassword varchar(32),
+   in varBio varchar(240),
+   in varTelepon varchar(15)
 )
    modifies sql data
 begin
@@ -444,12 +444,12 @@ end;;
 -- @return: daftar nama-nama yang dicari sesuai input
 -- ==============================================================================
 drop procedure if exists searchUser;;
-create procedure searchUser (varQuery varchar(80))
+create procedure searchUser(in varQuery varchar(80))
    reads sql data
 begin
-   select RealName, Fakultas, Prodi
-   from user
-   where RealName regexp varQuery
+   select usr.UID, usr.AccountName, usr.RealName, usr.Fakultas, usr.Prodi
+   from user usr
+   where RealName regexp varQuery or AccountName regexp varQuery
    order by RealName;
 end;;
 

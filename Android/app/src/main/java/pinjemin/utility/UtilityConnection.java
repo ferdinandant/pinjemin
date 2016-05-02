@@ -42,14 +42,14 @@ public class UtilityConnection
 	public static String runPhp(String phpFile, Map<String,String> dataToSend) throws IOException {
 		URL url = new URL(HOST_ADDRESS + phpFile);
 
-		Log.d("DEBUG", "Menghubungi: " + HOST_ADDRESS + phpFile);
-
 		// jika tidak ada data yang di-send, inisialisasikan TreeMap kosong
 		// (untuk mencegah NullPointerException di bawah)
 		if (dataToSend == null) {
 			dataToSend = new TreeMap<String,String>();
 		}
 
+		Log.d("DEBUG", "Sending to: " + phpFile);
+		Log.d("DEBUG", "Data: " + dataToSend.toString());
 		// buka koneksi ke server
 		// setting timeout 10 secs biar nggak deadlock
 		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

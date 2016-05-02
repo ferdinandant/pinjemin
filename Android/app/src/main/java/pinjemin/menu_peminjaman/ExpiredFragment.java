@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import pinjemin.R;
 
-public class ExpiredPeminjamanFragment extends Fragment {
-    public ExpiredPeminjamanFragment() {
+public class ExpiredFragment extends Fragment {
+    public ExpiredFragment() {
         // Required empty public constructor
     }
 
@@ -22,6 +22,6 @@ public class ExpiredPeminjamanFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_expired, container, false);
+        return inflater.inflate(R.layout.fragment_log_expired, container, false);
     }
 }

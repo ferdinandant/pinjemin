@@ -60,7 +60,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
     /** ==============================================================================
      * Constructor kelas PopulateTimelineTask
      * @param context - context dari mana PopulateTimelineTask dipanggil
-     * @param friendType - DEMAND_POST atau SUPPLY_POST, tergantung jenis
+     * @param friendType - DEMAND_SEARCH atau SUPPLY_SEARCH, tergantung jenis
      * 	timeline yang akan dimintakan ke server.
      * ============================================================================== */
     public PopulateFriendTask(Context context, int friendType, String currentUid) {

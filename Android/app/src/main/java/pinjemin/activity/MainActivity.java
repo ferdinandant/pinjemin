@@ -1,10 +1,12 @@
-/** ===================================================================================
+/**
+ * ===================================================================================
  * [MAIN ACTIVITY]
  * Kelas yang menampilkan halaman utama program
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius
- * =================================================================================== */
+ * ===================================================================================
+ */
 
 package pinjemin.activity;
 
@@ -17,12 +19,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.TreeMap;
+
+import pinjemin.R;
+import pinjemin.backgroundTask.UbahProfilTaskGet;
+import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 import pinjemin.menu_friend.FriendFragment;
 import pinjemin.menu_notification.NotificationFragment;
-import pinjemin.menu_peminjaman.ListPeminjamanFragment;
-import pinjemin.behavior.CustomViewPager;
-import pinjemin.R;
+import pinjemin.menu_peminjaman.LogPeminjamanFragment;
+import pinjemin.menu_search.SearchActivity;
 import pinjemin.session.SessionManager;
 import pinjemin.menu_timeline.TimelineFragment;
 
@@ -32,7 +38,8 @@ public class MainActivity extends AppCompatActivity
 	private SessionManager sessionManager;
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
-	private CustomViewPager MenuTabViewPager;
+	private CustomViewPager menuTabViewPager;
+	private String currentUid;
 
 	private int[] tabIcons = {
 		R.drawable.ic_tab_home,
@@ -40,7 +47,6 @@ public class MainActivity extends AppCompatActivity
 		R.drawable.ic_tab_friend,
 		R.drawable.ic_tab_notification
 	};
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity
 		// cek sudah login atau belum
 		sessionManager.checkLogin();
 
+		currentUid = sessionManager.getUserDetails().get(SessionManager.KEY_UID);
+
 		// initialize toolbar:
 		// initially langsung set title pada toolbar "Timeline"
 		// jadikan toolbar ini Action Bar (main toolbar) di activity ini
@@ -60,41 +68,41 @@ public class MainActivity extends AppCompatActivity
 		toolbar.setTitle("Timeline");
 		setSupportActionBar(toolbar);
 
-		// configure MenuTabViewPager:
+		// configure menuTabViewPager:
 		// ViewPager memungkinkan paginasi data (user bisa navigate halamannya).
 		// Implementasikan PagerAdapter (direlasisasikan dalam CustomViewPagerAdapter)
 		// untuk menentukan halaman yang ditampilkan pada view.
-		MenuTabViewPager = (CustomViewPager) findViewById(R.id.viewpager);
+		menuTabViewPager = (CustomViewPager) findViewById(R.id.viewpager);
 		configureViewPager();
 
 		// configure tabLayout:
 		// TabLayout mangatur horizontal layout untuk menampilkan tabs.
 		tabLayout = (TabLayout) findViewById(R.id.tabs);
-		tabLayout.setupWithViewPager(MenuTabViewPager);
+		tabLayout.setupWithViewPager(menuTabViewPager);
 		configureTabLayout();
 	}
 
 	/** ==============================================================================
-	 * Mengatur MenuTabViewPager: mengatur adapter (penampung fragment) dan action listener-nya
+	 * Mengatur menuTabViewPager: mengatur adapter (penampung fragment) dan action listener-nya
 	 * ============================================================================== */
 	private void configureViewPager() {
 		// NOTE: kelas CustomViewPagerAdapter didekarasikan di kelas terpisah
 		// NOTE: inner class ViewPagerListener dideklarasikan di bawah
 
-		// mengonfigurasi adapter untuk MenuTabViewPager
+		// mengonfigurasi adapter untuk menuTabViewPager
 		// syntax: addFragment(fragment, fragmentTitle)
 		// fragmentTitle sengaja kosong agar tidak ada teks di sebelah icon
 		CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(getSupportFragmentManager());
 		adapter.addFragment(new TimelineFragment(), "");
-		adapter.addFragment(new ListPeminjamanFragment(), "");
+		adapter.addFragment(new LogPeminjamanFragment(), "");
 		adapter.addFragment(new FriendFragment(), "");
 		adapter.addFragment(new NotificationFragment(), "");
 
-		// menambahkan adapter untuk MenuTabViewPager
-		MenuTabViewPager.setAdapter(adapter);
+		// menambahkan adapter untuk menuTabViewPager
+		menuTabViewPager.setAdapter(adapter);
 
-		// menambahkan action listener untuk MenuTabViewPager
-		MenuTabViewPager.addOnPageChangeListener(new ViewPagerListener());
+		// menambahkan action listener untuk menuTabViewPager
+		menuTabViewPager.addOnPageChangeListener(new ViewPagerListener());
 	}
 
 	/** ==============================================================================
@@ -117,6 +125,19 @@ public class MainActivity extends AppCompatActivity
 
 		if (id == R.id.action_logout) {
 			sessionManager.logoutUser();
+
+		}
+		else if (id == R.id.action_ubah_profil) {
+			TreeMap<String,String> input = new TreeMap<>();
+			input.put("ownUID", currentUid);
+			input.put("targetUID", currentUid);
+
+			UbahProfilTaskGet ubahProfil = new UbahProfilTaskGet(this, input);
+			ubahProfil.execute();
+
+		}
+		else if (id == R.id.action_search) {
+			startActivity(new Intent(this, SearchActivity.class));
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -153,9 +174,7 @@ public class MainActivity extends AppCompatActivity
 		startActivity(intent);
 
 		// tutup activity sebelumnya
-		// dan keluar dari aplikasi ini
 		finish();
-		System.exit(0);
 	}
 
 
@@ -163,12 +182,12 @@ public class MainActivity extends AppCompatActivity
 
 	/** ==============================================================================
 	 * Custom implementation kelas ViewPager.OnPageChangeListener, digunakan
-	 * sebagai action listener untuk objek MenuTabViewPager (saat suatu menu tab icon ditekan)
+	 * sebagai action listener untuk objek menuTabViewPager (saat suatu menu tab icon ditekan)
 	 * ============================================================================== */
 	private class ViewPagerListener implements ViewPager.OnPageChangeListener
 	{
 		public final String[] FRAGMENT_TITLE = {
-			"Timeline", "Log Peminjaman", "User", "Notification"
+			"Timeline", "Log Peminjaman", "Friend", "Notification"
 		};
 
 		@Override
@@ -181,9 +200,11 @@ public class MainActivity extends AppCompatActivity
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		}
 
 		@Override
-		public void onPageScrollStateChanged(int state) {}
+		public void onPageScrollStateChanged(int state) {
+		}
 	}
 }

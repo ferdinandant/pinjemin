@@ -1,6 +1,6 @@
 /** ===================================================================================
  * [SETTING ACTIVITY]
- * Ferdinand: BAHKAN SAYA PUN TAK MENGERTI (?)
+ * BAHKAN SAYA PUN TAK MENGERTI (?)
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius

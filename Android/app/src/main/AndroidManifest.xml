@@ -27,7 +27,7 @@
         <activity android:name=".menu_timeline.CreatePostDemandActivity" />
         <activity android:name=".menu_timeline.DetailPostSupplyActivity" />
         <activity android:name=".menu_timeline.DetailPostDemandActivity" />
-        <activity android:name=".menu_peminjaman.DetailPostPeminjaman" />
+        <activity android:name=".menu_peminjaman.DetailPostPeminjamanActivity" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -36,8 +36,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".menu_friend.DetailProfilActivity" />
-        <activity android:name=".menu_friend.UbahProfilActivity"></activity>
+        <activity android:name=".user.DetailProfilActivity" />
+        <activity android:name=".user.UbahProfilActivity" />
+        <activity android:name=".menu_search.SearchActivity"></activity>
     </application>
 
 </manifest>

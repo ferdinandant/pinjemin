@@ -39,7 +39,6 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 		toolbar.setTitle("Detail Post Supply");
 		setSupportActionBar(toolbar);
 
-
 		pembuatPost = (TextView) findViewById(R.id.pembuatPost);
 		tanggal = (TextView) findViewById(R.id.tanggal);
 		namaBarang = (TextView) findViewById(R.id.namaBarang);

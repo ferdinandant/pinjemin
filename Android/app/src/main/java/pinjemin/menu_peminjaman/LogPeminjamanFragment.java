@@ -13,12 +13,12 @@ import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 
 
-public class ListPeminjamanFragment extends Fragment {
+public class LogPeminjamanFragment extends Fragment {
 
     private TabLayout tabLayout;
     private CustomViewPager viewPager;
 
-    public ListPeminjamanFragment() {
+    public LogPeminjamanFragment() {
         // Required empty public constructor
     }
 
@@ -50,9 +50,9 @@ public class ListPeminjamanFragment extends Fragment {
         CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
                 getChildFragmentManager());
 
-        adapter.addFragment(new WaitingPeminjamanFragment(), "Waiting");
-        adapter.addFragment(new OngoingPeminjamanFragment(), "Ongoing");
-        adapter.addFragment(new ExpiredPeminjamanFragment(), "Expired");
+        adapter.addFragment(new WaitingFragment(), "Waiting");
+        adapter.addFragment(new OngoingFragment(), "Ongoing");
+        adapter.addFragment(new ExpiredFragment(), "Expired");
 
         viewPager.setAdapter(adapter);
     }

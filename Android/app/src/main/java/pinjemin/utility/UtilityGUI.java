@@ -65,6 +65,41 @@ public class UtilityGUI
 	}
 
 	/** ==============================================================================
+	 * Mengecek apakah suatu EditText field berisi data numerik (long). Jika kosong,
+	 * pesan error akan ditampilkan, dan focus akan diberikan pada objek EditText tersebut.
+	 * @param activity - activity dari mana method ini dipanggil
+	 * @param input - EditText objek yang akan dicek apakah datanya numerik
+	 * @param inputLayout - layout yang digunakan oleh EditText
+	 * @param errorMessage - pesan error yang ditampilkan jika field datanya tidak numerik
+	 * @return true jika OK (tidak kosong), false jika error (kosong).
+	 * ============================================================================== */
+	public static boolean assureNumeric(Activity activity, EditText input,
+		TextInputLayout inputLayout, String errorMessage
+	) {
+		String dataString = input.getText().toString().trim();
+
+		// kalau kosong, maka salah
+		if (dataString.isEmpty()) {
+			input.setError(errorMessage);
+			requestFocus(activity, input);
+			return false;
+		}
+
+		// kalau tidak bisa di-parse ke angka, maka salah
+		try {
+			long inputLongParse = Long.parseLong(dataString);
+		}
+		catch (Exception e) {
+			input.setError(errorMessage);
+			requestFocus(activity, input);
+			return false;
+		}
+
+		inputLayout.setErrorEnabled(false);
+		return true;
+	}
+
+	/** ==============================================================================
 	 * Menaruh focus pada suatu objek view
 	 * @param activity - activity dari mana method ini dipanggil
 	 * @param view - view yang akan diberikan focus.
