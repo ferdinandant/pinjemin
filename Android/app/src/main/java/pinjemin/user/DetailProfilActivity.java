@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pinjemin.R;
+import pinjemin.activity.MainActivity;
 import pinjemin.session.SessionManager;
 
 public class DetailProfilActivity extends AppCompatActivity {
@@ -163,5 +164,11 @@ public class DetailProfilActivity extends AppCompatActivity {
 
     public void setujuRequest() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
