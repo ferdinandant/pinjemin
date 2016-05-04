@@ -16,12 +16,10 @@ import java.util.TreeMap;
 import pinjemin.R;
 import pinjemin.backgroundTask.SearchTask;
 
-
-public class SearchUserFragment extends Fragment
-{
+public class SearchUserFragment extends Fragment {
 
 	private String query;
-	private TreeMap<String,String> searchQuery = new TreeMap<>();
+	private TreeMap<String, String> searchQuery = new TreeMap<>();
 
 	public SearchUserFragment() {
 		// Required empty public constructor
@@ -31,9 +29,8 @@ public class SearchUserFragment extends Fragment
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// TODO
-		//SearchTask searchTask = new SearchTask(getActivity(), SearchTask.USER_SEARCH, searchQuery);
-		//searchTask.execute();
+		SearchTask searchTask = new SearchTask(getActivity(), SearchTask.USER_POST, searchQuery);
+		searchTask.execute();
 	}
 
 	@Override
@@ -43,19 +40,66 @@ public class SearchUserFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_search_user, container, false);
 
 		if (getArguments().getString("query") != null) {
 			query = getArguments().getString("query");
 			searchQuery.put("query", query);
-		}
-		else {
+		} else {
 			searchQuery.put("query", null);
 		}
 
 		return view;
 	}
 
+	public interface ClickListener {
+		void onClick(View view, int position);
+
+		void onLongClick(View view, int position);
+	}
+
+	public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+		private GestureDetector gestureDetector;
+		private SearchUserFragment.ClickListener clickListener;
+
+		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final SearchUserFragment.ClickListener clickListener) {
+			this.clickListener = clickListener;
+			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+				@Override
+				public boolean onSingleTapUp(MotionEvent e) {
+					return true;
+				}
+
+				@Override
+				public void onLongPress(MotionEvent e) {
+					View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+					if (child != null && clickListener != null) {
+						clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+					}
+				}
+			});
+		}
+
+		@Override
+		public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+			View child = rv.findChildViewUnder(e.getX(), e.getY());
+			if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+				clickListener.onClick(child, rv.getChildPosition(child));
+			}
+			return false;
+		}
+
+		@Override
+		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+		}
+
+		@Override
+		public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+		}
+	}
 }

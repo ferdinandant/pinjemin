@@ -124,7 +124,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostSupply postSupply = new PostSupply(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataHarga, dataAccountName, dataRealName);
+						dataDeskripsi, dataHarga, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
@@ -139,7 +139,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostDemand postDemand = new PostDemand(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataLastNeed, dataAccountName, dataRealName);
+						dataDeskripsi, dataLastNeed, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
