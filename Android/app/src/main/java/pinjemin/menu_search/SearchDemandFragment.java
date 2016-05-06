@@ -46,6 +46,8 @@ public class SearchDemandFragment extends Fragment
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_search_demand, container, false);
 
+		// mendapatkan argument yang di-supply saat fragment di-instantiate (dalam bentuk Bundle)
+		// jika Bundle tersebut berisi keyword pencarian, masukkan keyword tsb ke TreeMap searchQuery.
 		if (getArguments().getString("query") != null) {
 			query = getArguments().getString("query");
 			searchQuery.put("query", query);
