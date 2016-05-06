@@ -23,7 +23,7 @@ public class FriendTemanAndaAdapter extends
 	 * @param arryUserTemanAnda - array yang digunakan untuk menampung post permintaan
 	 * ==============================================================================*/
 	public FriendTemanAndaAdapter(ArrayList<User> arryUserTemanAnda) {
-		this.arrayUserTemanAnda = arrayUserTemanAnda;
+		this.arrayUserTemanAnda = arryUserTemanAnda;
 	}
 
 	/** ==============================================================================
@@ -42,7 +42,7 @@ public class FriendTemanAndaAdapter extends
 		// buat view baru, inflate dari file xml
 		View view = LayoutInflater
 			.from(parent.getContext())
-			.inflate(R.layout.row_friend_request, parent, false);
+			.inflate(R.layout.row_friend_teman_anda, parent, false);
 
 		// NOTE: inner class RecyclerViewHolder dideklarasikan di bawah
 		RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);

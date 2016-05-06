@@ -9,159 +9,178 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pinjemin.R;
+import pinjemin.activity.MainActivity;
 import pinjemin.session.SessionManager;
 
-public class DetailProfilActivity extends AppCompatActivity {
 
-    private TextView outputRealname, outputAccountname, outputRating, outputNumRating,
-            outputBio, outputFakultas, outputProdi, outputTelepon;
+public class DetailProfilActivity extends AppCompatActivity
+{
 
-    private TextView btnUbahProfil, btnSetujuRequest, btnTolakRequest,
-            btnBatalRequest, btnTambahTeman, btnHapusTeman;
+	private TextView outputRealname, outputAccountname, outputRating, outputNumRating,
+		outputBio, outputFakultas, outputProdi, outputTelepon;
 
-    private LinearLayout setujuTolak;
+	private TextView btnUbahProfil, btnSetujuRequest, btnTolakRequest,
+		btnBatalRequest, btnTambahTeman, btnHapusTeman;
 
-    private String uid, realName, accountName, bio, fakultas, prodi, telepon, rating, numRating, status;
+	private LinearLayout setujuTolak;
 
-    private Toolbar toolbar;
+	private String uid, realName, accountName, bio, fakultas, prodi, telepon, rating, numRating, status;
 
-    private SessionManager sessionManager;
+	private Toolbar toolbar;
 
-    private String currentUid;
+	private SessionManager sessionManager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_profil);
+	private String currentUid;
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Detail Profil");
-        setSupportActionBar(toolbar);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_detail_profil);
 
-        sessionManager = new SessionManager(this);
-        currentUid = sessionManager.getUserDetails().get(SessionManager.KEY_UID);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.setTitle("Detail Profil");
+		setSupportActionBar(toolbar);
 
-        outputRealname = (TextView) findViewById(R.id.output_realname);
-        outputAccountname = (TextView) findViewById(R.id.output_accountname);
-        outputBio = (TextView) findViewById(R.id.output_bio);
-        outputFakultas = (TextView) findViewById(R.id.output_fakultas);
-        outputProdi = (TextView) findViewById(R.id.output_prodi);
-        outputTelepon = (TextView) findViewById(R.id.output_telepon);
-        outputRating = (TextView) findViewById(R.id.output_rating);
-        outputNumRating = (TextView) findViewById(R.id.output_numrating);
+		sessionManager = new SessionManager(this);
+		currentUid = sessionManager.getUserDetails().get(SessionManager.KEY_UID);
 
-        btnUbahProfil = (TextView) findViewById(R.id.btn_ubah_profil);
-        btnSetujuRequest = (TextView) findViewById(R.id.btn_setuju_request);
-        btnTolakRequest = (TextView) findViewById(R.id.btn_tolak_request);
-        btnBatalRequest = (TextView) findViewById(R.id.btn_batal_request);
-        btnTambahTeman = (TextView) findViewById(R.id.btn_tambah_teman);
-        btnHapusTeman = (TextView) findViewById(R.id.btn_hapus_teman);
+		outputRealname = (TextView) findViewById(R.id.output_realname);
+		outputAccountname = (TextView) findViewById(R.id.output_accountname);
+		outputBio = (TextView) findViewById(R.id.output_bio);
+		outputFakultas = (TextView) findViewById(R.id.output_fakultas);
+		outputProdi = (TextView) findViewById(R.id.output_prodi);
+		outputTelepon = (TextView) findViewById(R.id.output_telepon);
+		outputRating = (TextView) findViewById(R.id.output_rating);
+		outputNumRating = (TextView) findViewById(R.id.output_numrating);
 
-        setujuTolak = (LinearLayout) findViewById(R.id.setuju_tolak);
+		btnUbahProfil = (TextView) findViewById(R.id.btn_ubah_profil);
+		btnSetujuRequest = (TextView) findViewById(R.id.btn_setuju_request);
+		btnTolakRequest = (TextView) findViewById(R.id.btn_tolak_request);
+		btnBatalRequest = (TextView) findViewById(R.id.btn_batal_request);
+		btnTambahTeman = (TextView) findViewById(R.id.btn_tambah_teman);
+		btnHapusTeman = (TextView) findViewById(R.id.btn_hapus_teman);
 
-        Intent intent = getIntent();
-        uid = intent.getStringExtra("uid");
-        realName = intent.getStringExtra("realName");
-        accountName = intent.getStringExtra("accountName");
-        bio = intent.getStringExtra("bio");
-        fakultas = intent.getStringExtra("fakultas");
-        prodi = intent.getStringExtra("prodi");
-        telepon = intent.getStringExtra("telepon");
-        rating = intent.getStringExtra("rating");
-        numRating = intent.getStringExtra("numRating");
-        status = intent.getStringExtra("status");
+		setujuTolak = (LinearLayout) findViewById(R.id.setuju_tolak);
 
-        outputRealname.setText(realName);
-        outputAccountname.setText(accountName);
-        outputBio.setText(bio);
-        outputFakultas.setText(fakultas);
-        outputProdi.setText(prodi);
-        outputTelepon.setText("Tambahkan sebagai teman untuk melihat");
-        outputRating.setText(rating);
-        outputNumRating.setText(" Berdasarkan " + numRating + " review");
+		Intent intent = getIntent();
+		uid = intent.getStringExtra("uid");
+		realName = intent.getStringExtra("realName");
+		accountName = intent.getStringExtra("accountName");
+		bio = intent.getStringExtra("bio");
+		fakultas = intent.getStringExtra("fakultas");
+		prodi = intent.getStringExtra("prodi");
+		telepon = intent.getStringExtra("telepon");
+		rating = intent.getStringExtra("rating");
+		numRating = intent.getStringExtra("numRating");
+		status = intent.getStringExtra("status");
 
-        if (status.equalsIgnoreCase("OwnProfile")) {
-            btnUbahProfil.setVisibility(View.VISIBLE);
+		outputRealname.setText(realName);
+		outputAccountname.setText(accountName);
+		outputBio.setText(bio);
+		outputFakultas.setText(fakultas);
+		outputProdi.setText(prodi);
+		outputTelepon.setText("Tambahkan sebagai teman untuk melihat");
+		outputRating.setText(rating);
+		outputNumRating.setText(" Berdasarkan " + numRating + " review");
 
-            btnUbahProfil.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ubahProfil();
-                }
-            });
+		if (status.equalsIgnoreCase("OwnProfile")) {
+			btnUbahProfil.setVisibility(View.VISIBLE);
 
-        } else if (status.equalsIgnoreCase("NotFriends")) {
-            btnTambahTeman.setVisibility(View.VISIBLE);
+			btnUbahProfil.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					ubahProfil();
+				}
+			});
 
-            btnTambahTeman.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tambahTeman();
-                }
-            });
+		}
+		else if (status.equalsIgnoreCase("NotFriends")) {
+			btnTambahTeman.setVisibility(View.VISIBLE);
 
-        } else if (status.equalsIgnoreCase("Friends")) {
-            btnHapusTeman.setVisibility(View.VISIBLE);
+			btnTambahTeman.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					tambahTeman();
+				}
+			});
 
-            outputTelepon.setText(telepon);
+		}
+		else if (status.equalsIgnoreCase("Friends")) {
+			btnHapusTeman.setVisibility(View.VISIBLE);
 
-            btnHapusTeman.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    hapusTeman();
-                }
-            });
+			outputTelepon.setText(telepon);
 
-        } else if (status.equalsIgnoreCase("Requesting")) {
-            btnBatalRequest.setVisibility(View.VISIBLE);
+			btnHapusTeman.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					hapusTeman();
+				}
+			});
 
-            btnBatalRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    batalRequest();
-                }
-            });
+		}
+		else if (status.equalsIgnoreCase("Requesting")) {
+			btnBatalRequest.setVisibility(View.VISIBLE);
 
-        } else if (status.equalsIgnoreCase("Requested")) {
-            setujuTolak.setVisibility(View.VISIBLE);
+			btnBatalRequest.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					batalRequest();
+				}
+			});
 
-            btnSetujuRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setujuRequest();
-                }
-            });
+		}
+		else if (status.equalsIgnoreCase("Requested")) {
+			setujuTolak.setVisibility(View.VISIBLE);
 
-            btnTolakRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    tolakRequest();
-                }
-            });
-        }
-    }
+			btnSetujuRequest.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					setujuRequest();
+				}
+			});
 
-    public void ubahProfil() {
+			btnTolakRequest.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v) {
+					tolakRequest();
+				}
+			});
+		}
+	}
 
-    }
+	public void ubahProfil() {
 
-    public void tambahTeman() {
+	}
 
-    }
+	public void tambahTeman() {
 
-    public void hapusTeman() {
+	}
 
-    }
+	public void hapusTeman() {
 
-    public void batalRequest() {
+	}
 
-    }
+	public void batalRequest() {
 
-    public void tolakRequest() {
+	}
 
-    }
+	public void tolakRequest() {
 
-    public void setujuRequest() {
+	}
 
-    }
+	public void setujuRequest() {
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
+	}
 }

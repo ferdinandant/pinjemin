@@ -112,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity
 			"Masukkan jurusan Anda")) return;
 		if (!UtilityGUI.assureNotEmpty(this, inputTelepon, inputLayoutTelepon,
 			"Masukkan nomor telepon Anda")) return;
-		if (!UtilityGUI.assureNotEmpty(this, inputTelepon, inputLayoutTelepon,
+		if (!UtilityGUI.assureNumeric(this, inputTelepon, inputLayoutTelepon,
 			"Masukkan angka saja untuk telepon")) return;
 
 		// ambil data yang dimasukkan user

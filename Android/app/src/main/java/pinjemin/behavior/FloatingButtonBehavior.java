@@ -3,7 +3,7 @@
  * Kelas untuk mengatur floating action button (jadi kalau list-nya di-scroll ke atas,
  * tombolnya hilang) -> MASIH BELUM BERHASIL.
  * ----------------------------------------------------------------------------------
- * Author: Ksemal Amru Ramadhan
+ * Author: Kemal Amru Ramadhan
  * Refactor & Documentation: Ferdinand Antonius
  * =================================================================================== */
 

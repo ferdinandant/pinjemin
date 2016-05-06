@@ -73,10 +73,9 @@ public class RegisterTask extends AsyncTask<Void,Object,Void>
 
 		if (dataToSend.get("ubah") == null) {
 			// masukkan data username ke SessionManager
-
 			session.createRegisterSession(realname);
-
-		} else {
+		}
+		else {
 			session.ubahProfilSession(realname);
 		}
 

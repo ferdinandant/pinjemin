@@ -31,9 +31,8 @@ public class SearchUserFragment extends Fragment
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		// TODO
-		//SearchTask searchTask = new SearchTask(getActivity(), SearchTask.USER_SEARCH, searchQuery);
-		//searchTask.execute();
+		SearchTask searchTask = new SearchTask(getActivity(), SearchTask.USER_POST, searchQuery);
+		searchTask.execute();
 	}
 
 	@Override
@@ -57,5 +56,4 @@ public class SearchUserFragment extends Fragment
 
 		return view;
 	}
-
 }

@@ -17,6 +17,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +47,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	private Context context;
 	private String phpFilePath;
 	private int timelineType;
+	private boolean isConnectedToServer;
 
 	// bagian RecyclerView:
 	private RecyclerView.Adapter adapter;
@@ -95,7 +97,9 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	protected Void doInBackground(Void... params) {
 		try {
 			// kirim permintaan ke server, tanpa mengirimkan parameter apa pun
+			this.isConnectedToServer = false;
 			String serverResponse = UtilityConnection.runPhp(phpFilePath, null);
+			this.isConnectedToServer = true;
 			Log.d("DEBUG", serverResponse);
 
 			// parse data JSON yang diterima dari server (berisi daftar post)
@@ -124,7 +128,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostSupply postSupply = new PostSupply(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataHarga, dataAccountName, dataRealName);
+						dataDeskripsi, dataHarga, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
@@ -139,7 +143,7 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 					// buat instance PostSupply baru
 					PostDemand postDemand = new PostDemand(
 						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
-						dataDeskripsi, dataLastNeed, dataAccountName, dataRealName);
+						dataDeskripsi, dataLastNeed, dataRealName);
 
 					// publish perubahan ke main UI thread
 					// pemanggilan ini akan memanggil onProgressUpdate() di bawah
@@ -151,7 +155,23 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 			e.printStackTrace();
 		}
 		catch (IOException e) {
-			Log.e("PopulateTimelineTask", "Tried accessing host: " + phpFilePath);
+			Log.d("DEBUG", "Tried accessing host: " + phpFilePath);
+			try {
+				// BackgroundTask bukan main thread. pemanggilan methods yang berkaitan dengan UI
+				// (e.g. Toast.makeText) harus dipanggil dari main thread, atau akan menghasilkian
+				// RuntimeException. Ini cuma akal-akalan saja supaya dijalankan di main thread.
+				Log.d("DEBUG", "Pichika!!");
+				activity.runOnUiThread(new Runnable()
+				{
+					public void run() {
+						Log.d("DEBUG", "Pichaku!");
+						Toast.makeText(context, "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
+					}
+				});
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 
@@ -179,38 +199,12 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 	}
 
 	@Override
-	protected void onPostExecute(Void aVoid) {}
-
-
-	// --- inner class declaration ---
-
-	/** ==============================================================================
-	 * Custom implementation kelas TimelineDemandFragment.ClickListener, digunakan
-	 * untuk mengatur behavior saat item di TimelineDemandFragment ditekan
-	 * ============================================================================== */
-	private class TimelineDemandFragmentListener implements ClickListener
-	{
-		@Override
-		public void onClick(View view, int position) {
-			Intent intent = new Intent(context, DetailPostDemandActivity.class);
-
-			// dapatkan instance post yang dipilih
-			PostDemand postDemand = arrayDemand.get(position);
-
-			// passing data post yang akan ditampilkan ke intent
-			intent.putExtra("pid", postDemand.getPid());
-			intent.putExtra("uid", postDemand.getUid());
-			intent.putExtra("timestamp", postDemand.getTimestamp());
-			intent.putExtra("namaBarang", postDemand.getNamaBarang());
-			intent.putExtra("deskripsi", postDemand.getDeskripsi());
-			intent.putExtra("lastNeed", postDemand.getBatasAkhir());
-			intent.putExtra("accountName", postDemand.getAccountName());
-
-			// start activity DetailPostDemandActivity
-			context.startActivity(intent);
+	protected void onPostExecute(Void aVoid) {
+		if (!isConnectedToServer) {
+			// methods yang mengakses UI harus dijalankan di thread utama.
+			// doInBackground() untuk kelas AsyncTask berjalan di thread sendiri.
+			// kalau ditaruh di sana, akan RuntimeException saat mengakses Toast.makeText()
+			Toast.makeText(context, "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
 		}
-
-		@Override
-		public void onLongClick(View view, int position) {}
 	}
 }

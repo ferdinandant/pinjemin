@@ -60,7 +60,8 @@ public class LoginActivity extends AppCompatActivity
 			this, inputPassword, inputLayoutPassword, "Masukkan password Anda"));
 
 		// set action listener (submit form)
-		buttonSignIn.setOnClickListener(new View.OnClickListener() {
+		buttonSignIn.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View view) {
 				submitForm();

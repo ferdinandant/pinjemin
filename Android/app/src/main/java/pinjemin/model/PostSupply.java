@@ -17,15 +17,8 @@ public class PostSupply
 	private String deskripsi;
 	private String harga;
 	private String accountName;
-	private String realName;
 
-
-	/** ==============================================================================
-	 * Constructor kelas PostSupply
-	 * ============================================================================== */
-	public PostSupply(String pid, String uid, String timestamp, String namaBarang,
-		String deskripsi, String harga, String accountName, String realName
-	) {
+	public PostSupply(String pid, String uid, String timestamp, String namaBarang, String deskripsi, String harga, String accountName) {
 		this.pid = pid;
 		this.uid = uid;
 		this.timestamp = timestamp;
@@ -33,11 +26,7 @@ public class PostSupply
 		this.deskripsi = deskripsi;
 		this.harga = harga;
 		this.accountName = accountName;
-		this.realName = realName;
 	}
-
-
-	// --- setter & getter methods ---
 
 	public String getPid() {
 		return pid;

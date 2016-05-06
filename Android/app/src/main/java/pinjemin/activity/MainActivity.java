@@ -1,12 +1,10 @@
-/**
- * ===================================================================================
+/** ===================================================================================
  * [MAIN ACTIVITY]
  * Kelas yang menampilkan halaman utama program
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius
- * ===================================================================================
- */
+ * =================================================================================== */
 
 package pinjemin.activity;
 
@@ -16,19 +14,22 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.TreeMap;
 
 import pinjemin.R;
-import pinjemin.backgroundTask.UbahProfilTaskGet;
+import pinjemin.backgroundTask.UbahProfilFetchTask;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 import pinjemin.menu_friend.FriendFragment;
 import pinjemin.menu_notification.NotificationFragment;
 import pinjemin.menu_peminjaman.LogPeminjamanFragment;
 import pinjemin.menu_search.SearchActivity;
+import pinjemin.menu_timeline.TimelineDemandFragment;
+import pinjemin.menu_timeline.TimelineSupplyFragment;
 import pinjemin.session.SessionManager;
 import pinjemin.menu_timeline.TimelineFragment;
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 			input.put("ownUID", currentUid);
 			input.put("targetUID", currentUid);
 
-			UbahProfilTaskGet ubahProfil = new UbahProfilTaskGet(this, input);
+			UbahProfilFetchTask ubahProfil = new UbahProfilFetchTask(this, input);
 			ubahProfil.execute();
 
 		}
@@ -154,12 +155,27 @@ public class MainActivity extends AppCompatActivity
 		return true;
 	}
 
+	/** ==============================================================================
+	 * dipanggil saat activity ini di-resume (i.e. saat aplikasi berpindah dari
+	 * background ke foreground, mis. saal context-switching dari aplikasi lain)
+	 * ============================================================================== */
 	@Override
+	public void onResume() {
+		super.onResume();
+		// reset last request pada demand dan supply timeline
+		TimelineDemandFragment.resetLastRequest();
+		TimelineSupplyFragment.resetLastRequest();
+		Log.d("DEBUG", "Minta refresh ulang dari context-switching");
+	}
+
 	/** ==============================================================================
 	 * Handler ketika tombol back ditekan
 	 * ============================================================================== */
+	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+		Log.d("DEBUG", "Back press dari main");
+		/*
 		Intent intent = new Intent(Intent.ACTION_MAIN);
 
 		// CATEGORY_HOME menandakan bahwa ini home activity
@@ -173,8 +189,9 @@ public class MainActivity extends AppCompatActivity
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 
-		// tutup activity sebelumnya
+		// tutup activity ini
 		finish();
+		*/
 	}
 
 

@@ -29,6 +29,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_toRightOf="@id/search_icon"
                 android:hint="Search"
+                android:imeOptions="actionSearch"
                 android:inputType="text"/>
 
         </RelativeLayout>

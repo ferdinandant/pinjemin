@@ -10,6 +10,7 @@
 
 package pinjemin.user;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -17,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -27,243 +29,159 @@ import java.util.TreeMap;
 
 import pinjemin.R;
 import pinjemin.backgroundTask.RegisterTask;
+import pinjemin.backgroundTask.UbahProfilSubmitTask;
+import pinjemin.behavior.EditTextTextWatcher;
 import pinjemin.session.SessionManager;
+import pinjemin.utility.UtilityGUI;
 
 
-public class UbahProfilActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private SessionManager sessionManager;
+public class UbahProfilActivity extends AppCompatActivity
+{
+	private Toolbar toolbar;
+	private SessionManager sessionManager;
 
-    private TextInputLayout inputLayoutName;
-    private TextInputLayout inputLayoutFakultas;
-    private TextInputLayout inputLayoutProdi;
-    private TextInputLayout inputLayoutTelepon;
-    private TextInputLayout inputLayoutBio;
+	private TextInputLayout inputLayoutName;
+	private TextInputLayout inputLayoutFakultas;
+	private TextInputLayout inputLayoutProdi;
+	private TextInputLayout inputLayoutTelepon;
+	private TextInputLayout inputLayoutBio;
 
-    private EditText inputName;
-    private EditText inputFakultas;
-    private EditText inputProdi;
-    private EditText inputTelepon;
-    private EditText inputBio;
-    private Button buttonSubmit;
+	private EditText inputName;
+	private EditText inputFakultas;
+	private EditText inputProdi;
+	private EditText inputTelepon;
+	private EditText inputBio;
+	private Button buttonSubmit;
 
-    private String intentName, intentFakultas, intentProdi, intentTelepon, intentBio;
+	private String intentName, intentFakultas, intentProdi, intentTelepon, intentBio;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_register);
 
-        // initialize toolbar:
-        // set toolbar sebagai action bar (main toolbar) untuk activity ini
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Ubah Profil");
-        setSupportActionBar(toolbar);
+		// initialize toolbar:
+		// set toolbar sebagai action bar (main toolbar) untuk activity ini
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar.setTitle("Ubah Profil");
+		setSupportActionBar(toolbar);
 
-        // initialize sessionManager:
-        sessionManager = new SessionManager(this);
+		// initialize sessionManager:
+		sessionManager = new SessionManager(this);
 
-        // initialize layout:
-        inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
-        inputLayoutFakultas = (TextInputLayout) findViewById(R.id.input_layout_fakultas);
-        inputLayoutProdi = (TextInputLayout) findViewById(R.id.input_layout_prodi);
-        inputLayoutTelepon = (TextInputLayout) findViewById(R.id.input_layout_telepon);
-        inputLayoutBio = (TextInputLayout) findViewById(R.id.input_layout_bio);
+		// initialize layout:
+		inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
+		inputLayoutFakultas = (TextInputLayout) findViewById(R.id.input_layout_fakultas);
+		inputLayoutProdi = (TextInputLayout) findViewById(R.id.input_layout_prodi);
+		inputLayoutTelepon = (TextInputLayout) findViewById(R.id.input_layout_telepon);
+		inputLayoutBio = (TextInputLayout) findViewById(R.id.input_layout_bio);
 
-        // initialize components:
-        inputName = (EditText) findViewById(R.id.input_name);
-        inputFakultas = (EditText) findViewById(R.id.input_fakultas);
-        inputProdi = (EditText) findViewById(R.id.input_prodi);
-        inputTelepon = (EditText) findViewById(R.id.input_telepon);
-        inputBio = (EditText) findViewById(R.id.input_bio);
-        buttonSubmit = (Button) findViewById(R.id.btn_submit);
+		// initialize components:
+		inputName = (EditText) findViewById(R.id.input_name);
+		inputFakultas = (EditText) findViewById(R.id.input_fakultas);
+		inputProdi = (EditText) findViewById(R.id.input_prodi);
+		inputTelepon = (EditText) findViewById(R.id.input_telepon);
+		inputBio = (EditText) findViewById(R.id.input_bio);
+		buttonSubmit = (Button) findViewById(R.id.btn_submit);
 
+		// ambil intent yang diberikan ke sini
+		Intent intent = getIntent();
+		intentName = intent.getStringExtra("realName");
+		intentFakultas = intent.getStringExtra("fakultas");
+		intentProdi = intent.getStringExtra("prodi");
+		intentTelepon = intent.getStringExtra("telepon");
+		intentBio = intent.getStringExtra("bio");
 
-        Intent intent = getIntent();
-        intentName = intent.getStringExtra("realName");
-        intentFakultas = intent.getStringExtra("fakultas");
-        intentProdi = intent.getStringExtra("prodi");
-        intentTelepon = intent.getStringExtra("telepon");
-        intentBio = intent.getStringExtra("bio");
+		inputName.setText(intentName);
+		inputFakultas.setText(intentFakultas);
+		inputProdi.setText(intentProdi);
+		inputTelepon.setText(intentTelepon);
+		inputBio.setText(intentBio);
 
-        inputName.setText(intentName);
-        inputFakultas.setText(intentFakultas);
-        inputProdi.setText(intentProdi);
-        inputTelepon.setText(intentTelepon);
-        inputBio.setText(intentBio);
+		// set action listener (text watchers)
+		// (Field bio tidak perlu di-validate)
+		inputName.addTextChangedListener(new EditTextTextWatcher(
+			this, inputName, inputLayoutName, "Masukkan nama lengkap Anda"));
+		inputFakultas.addTextChangedListener(new EditTextTextWatcher(
+			this, inputFakultas, inputLayoutFakultas, "Masukkan fakultas Anda"));
+		inputProdi.addTextChangedListener(new EditTextTextWatcher(
+			this, inputProdi, inputLayoutProdi, "Masukkan jurusan Anda"));
+		inputTelepon.addTextChangedListener(new EditTextTextWatcher(
+			this, inputTelepon, inputLayoutTelepon, "Masukkan nomor telepon Anda"));
+		inputTelepon.addTextChangedListener(new EditTextTextWatcher(
+			this, inputTelepon, inputLayoutTelepon, "Masukkan angka saja untuk telepon"));
 
-        // set textWatcher ke semua component Text:
-        // (Field bio tidak perlu di-validate)
-        inputName.addTextChangedListener(new MyTextWatcher(inputName));
-        inputFakultas.addTextChangedListener(new MyTextWatcher(inputFakultas));
-        inputProdi.addTextChangedListener(new MyTextWatcher(inputProdi));
-        inputTelepon.addTextChangedListener(new MyTextWatcher(inputTelepon));
+		// NOTE: inner class ButtonSubmitListener diimplementasikan di bawah
+		buttonSubmit.setOnClickListener(new ButtonSubmitListener(this));
+	}
 
-        // NOTE: inner class ButtonSubmitListener diimplementasikan di bawah
-        buttonSubmit.setOnClickListener(new ButtonSubmitListener());
-    }
-
-    /** ==============================================================================
-     * Memvalidasi field name
-     * @return true jika valid (tidak kosong), false jika tidak
-     * ============================================================================== */
-    private boolean validateName() {
-        if (inputName.getText().toString().trim().isEmpty()) {
-            inputLayoutName.setError("Masukkan nama lengkap Anda");
-            requestFocus(inputName);
-            return false;
-        } else {
-            inputLayoutName.setErrorEnabled(false);
-            return true;
-        }
-    }
-
-    /** ==============================================================================
-     * Memvalidasi field fakiltas
-     * @return true jika valid (tidak kosong), false jika tidak
-     * ============================================================================== */
-    private boolean validateFakultas() {
-        if (inputFakultas.getText().toString().trim().isEmpty()) {
-            inputLayoutFakultas.setError("Masukkan fakultas Anda");
-            requestFocus(inputFakultas);
-            return false;
-        } else {
-            inputLayoutFakultas.setErrorEnabled(false);
-            return true;
-        }
-    }
-
-    /** ==============================================================================
-     * Memvalidasi field prodi
-     * @return true jika valid (tidak kosong), false jika tidak
-     * ============================================================================== */
-    private boolean validateProdi() {
-        if (inputProdi.getText().toString().trim().isEmpty()) {
-            inputLayoutProdi.setError("Masukkan jurusan Anda");
-            requestFocus(inputProdi);
-            return false;
-        } else {
-            inputLayoutProdi.setErrorEnabled(false);
-            return true;
-        }
-    }
-
-    /** ==============================================================================
-     * Memvalidasi field telepon
-     * @return true jika valid (tidak kosong dan hanya mengandung angka), false jika tidak
-     * ============================================================================== */
-    private boolean validateTelepon() {
-        String inputTeleponContent = inputTelepon.getText().toString().trim();
-
-        // kalau kosong, maka salah
-        if (inputTeleponContent.isEmpty()) {
-            inputLayoutTelepon.setError("Masukkan nomor telepon Anda");
-            requestFocus(inputTelepon);
-            return false;
-        }
-
-        // kalau tidak bisa di-parse ke angka, maka salah
-        try {
-            long inputTeleponParse = Long.parseLong(inputTeleponContent);
-        } catch (Exception e) {
-            inputLayoutTelepon.setError("Masukkan angka aja untuk nomor telepon");
-            requestFocus(inputTelepon);
-            return false;
-        }
-
-        inputLayoutTelepon.setErrorEnabled(false);
-        return true;
-    }
-
-    /** ==============================================================================
-     * Memasang focus pada suatu View component
-     * ============================================================================== */
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
+	/** ==============================================================================
+	 * Handler ketika tombol back ditekan
+	 * ============================================================================== */
+	@Override
+	public void onBackPressed() {
+		// tutup activity ini
+		Log.d("DEBUG", "Keluar dari ubah profil...");
+		finish();
+	}
 
 
-    // --- inner class declaration ---
+	// --- inner class declaration ---
 
-    /** ==============================================================================
-     * Custom implementation kelas TextWatcher, untuk memantau perubahan state
-     * pada setiap EditText fields
-     * ============================================================================== */
-    private class MyTextWatcher implements TextWatcher {
-        private View view;
+	/** ==============================================================================
+	 * Custom implementation kelas View.OnClickListener, digunakan
+	 * sebagai action listener untuk buttonSubmit (saat tombol tersebut ditekan)
+	 * ============================================================================== */
+	private class ButtonSubmitListener implements View.OnClickListener
+	{
+		Activity activity;
 
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
+		public ButtonSubmitListener(Activity activity) {
+			this.activity = activity;
+		}
 
-        @Override
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.input_name:
-                    validateName();
-                    break;
-                case R.id.input_fakultas:
-                    validateFakultas();
-                    break;
-                case R.id.input_prodi:
-                    validateProdi();
-                    break;
-                case R.id.input_telepon:
-                    validateTelepon();
-                    break;
-            }
-        }
+		@Override
+		public void onClick(View view) {
+			// cek apakah setiap field sudah diisi dengan benar
+			if (!UtilityGUI.assureNotEmpty(activity, inputName, inputLayoutName,
+				"Masukkan nama lengkap Anda")) return;
+			if (!UtilityGUI.assureNotEmpty(activity, inputFakultas, inputLayoutFakultas,
+				"Masukkan fakultas Anda")) return;
+			if (!UtilityGUI.assureNotEmpty(activity, inputProdi, inputLayoutProdi,
+				"Masukkan jurusan Anda")) return;
+			if (!UtilityGUI.assureNotEmpty(activity, inputTelepon, inputLayoutTelepon,
+				"Masukkan nomor telepon Anda")) return;
+			if (!UtilityGUI.assureNumeric(activity, inputTelepon, inputLayoutTelepon,
+				"Masukkan angka saja untuk telepon")) return;
 
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
+			// ambil data yang dimasukkan user
+			String realname = inputName.getText().toString();
+			String fakultas = inputFakultas.getText().toString();
+			String prodi = inputProdi.getText().toString();
+			String telepon = inputTelepon.getText().toString();
+			String bio = inputBio.getText().toString();
 
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-    }
+			// ambil data UID dari sessionManager
+			HashMap<String,String> sessionData = sessionManager.getUserDetails();
+			String uid = sessionData.get(SessionManager.KEY_UID);
 
-    /** ==============================================================================
-     * Custom implementation kelas View.OnClickListener, digunakan
-     * sebagai action listener untuk buttonSubmit (saat tombol tersebut ditekan)
-     * ============================================================================== */
-    private class ButtonSubmitListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            // jika ada field yang tidak valid, jangan lakukan apa pun
-            if (!validateName()) return;
-            if (!validateFakultas()) return;
-            if (!validateProdi()) return;
-            if (!validateTelepon()) return;
+			// susun data untuk dikirim ke server
+			TreeMap<String,String> dataToSend = new TreeMap<>();
+			dataToSend.put("uid", uid);
+			dataToSend.put("realname", realname);
+			dataToSend.put("fakultas", fakultas);
+			dataToSend.put("prodi", prodi);
+			dataToSend.put("telepon", telepon);
+			dataToSend.put("bio", bio);
+			dataToSend.put("ubah", "iya");
 
-            // ambil data yang dimasukkan user
-            String realname = inputName.getText().toString();
-            String fakultas = inputFakultas.getText().toString();
-            String prodi = inputProdi.getText().toString();
-            String telepon = inputTelepon.getText().toString();
-            String bio = inputBio.getText().toString();
+			// bisa reuse dari background task saat register
+			UbahProfilSubmitTask registerTask = new UbahProfilSubmitTask(
+				UbahProfilActivity.this, dataToSend);
+			registerTask.execute();
 
-            // ambil data UID dari sessionManager
-            HashMap<String, String> sessionData = sessionManager.getUserDetails();
-            String uid = sessionData.get(SessionManager.KEY_UID);
-
-            // susun data untuk dikirim ke server
-            TreeMap<String, String> dataToSend = new TreeMap<>();
-            dataToSend.put("uid", uid);
-            dataToSend.put("realname", realname);
-            dataToSend.put("fakultas", fakultas);
-            dataToSend.put("prodi", prodi);
-            dataToSend.put("telepon", telepon);
-            dataToSend.put("bio", bio);
-            dataToSend.put("ubah", "iya");
-
-            RegisterTask registerTask = new RegisterTask(UbahProfilActivity.this, dataToSend);
-            registerTask.execute();
-
-            // tutup activity ini
-            finish();
-        }
-    }
+			// tutup activity ini
+			finish();
+		}
+	}
 }
