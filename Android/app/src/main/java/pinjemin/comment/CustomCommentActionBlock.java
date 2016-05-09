@@ -8,6 +8,8 @@
 
 package pinjemin.comment;
 
+// pochika
+
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.util.Log;
