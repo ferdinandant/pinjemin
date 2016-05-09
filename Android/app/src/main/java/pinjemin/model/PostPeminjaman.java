@@ -23,7 +23,7 @@ public class PostPeminjaman
 
 
 	/** ==============================================================================
-	 * Constructor kelas PostDemand
+	 * Constructor kelas PostPeminjaman
 	 * ============================================================================== */
 	public PostPeminjaman(String uidPeminjam, String uidPemberi,
 		String timestamp, String namaBarang, String deskripsi,

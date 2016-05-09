@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.TreeMap;
 
+import pinjemin.menu_timeline.TimelineDemandFragment;
+import pinjemin.menu_timeline.TimelineSupplyFragment;
 import pinjemin.utility.UtilityConnection;
 
 
@@ -93,6 +95,8 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 		// cek apakah pengiriman berhasil
 		if (serverResponse.equals("true")) {
 			Toast.makeText(context, "Post telah terkirim.", Toast.LENGTH_LONG).show();
+			TimelineDemandFragment.resetLastRequest();
+			TimelineSupplyFragment.resetLastRequest();
 		}
 		else {
 			Toast.makeText(context, "Post gagal dikirim.", Toast.LENGTH_LONG).show();

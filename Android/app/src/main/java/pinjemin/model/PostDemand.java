@@ -8,7 +8,8 @@
 
 package pinjemin.model;
 
-public class PostDemand {
+public class PostDemand
+{
 	private String pid;
 	private String uid;
 	private String timestamp;

@@ -11,6 +11,8 @@ package pinjemin.menu_timeline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +37,7 @@ public class TimelineDemandFragment extends Fragment
 {
 	private static Calendar lastRequest = null;
 	private RecyclerView recyclerView;
+	private RecyclerView.Adapter adapter;
 	private ArrayList<PostDemand> arrayDemand;
 
 
@@ -52,6 +55,7 @@ public class TimelineDemandFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_timeline_demand, container, false);
+		Log.d("DEBUG", "recreate view ...");
 
 		return view;
 	}
@@ -68,10 +72,9 @@ public class TimelineDemandFragment extends Fragment
 		// configure recycler view:
 		recyclerView = (RecyclerView) getActivity().findViewById(R.id.recylerViewDemand);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		recyclerView.setHasFixedSize(true);
 
 		// set recycler view adapter
-		RecyclerView.Adapter adapter = new TimelineDemandAdapter(arrayDemand);
+		adapter = new TimelineDemandAdapter(arrayDemand);
 		recyclerView.setAdapter(adapter);
 
 		// tambahkan listener ke RecyclerView
@@ -82,21 +85,8 @@ public class TimelineDemandFragment extends Fragment
 			new RecyclerOnItemTouchListener(getActivity(),
 				recyclerView, new RecyclerClickListener()));
 
-		// cek apakah perlu refresh timeline data:
-		if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
-			Log.d("DEBUG", "Refreshing demand timeline");
-
-			// jalankan background thread untuk fetch data dari server
-			PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(
-				getActivity(), PopulateTimelineTask.DEMAND_POST, adapter);
-			populateTimelineTask.execute();
-
-			// update timestamp terakhir kali refresh
-			lastRequest = Calendar.getInstance();
-		}
-		else {
-			Log.d("DEBUG", "Not refreshing demand timeline");
-		}
+		// jalankan thread untuk handle refresh berkala
+		refreshRoutine();
 	}
 
 	/** ==============================================================================
@@ -111,7 +101,55 @@ public class TimelineDemandFragment extends Fragment
 	 * Memaksa agar data pada timeline di-refresh lagi
 	 * ============================================================================== */
 	public static void resetLastRequest() {
+		Log.d("DEBUG", "reset LastRequest!!");
 		lastRequest = null;
+	}
+
+	/** ==============================================================================
+	 * Me-refresh timeline
+	 * ============================================================================== */
+	public void performRefresh() {
+		// cek apakah perlu refresh timeline data:
+		Log.d("DEBUG", "Refreshing demand timeline");
+
+		// jalankan background thread untuk fetch data dari server
+		PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(
+			getActivity(), PopulateTimelineTask.DEMAND_POST, adapter);
+		populateTimelineTask.execute();
+
+		// update timestamp terakhir kali refresh
+		lastRequest = Calendar.getInstance();
+	}
+
+	/** ==============================================================================
+	 * Untuk me-refresh timeline setiap beberapa detik sekali (thread terpisah!)
+	 * ============================================================================== */
+	public void refreshRoutine() {
+		final Handler handler = new Handler();
+		Runnable runnable = new Runnable()
+		{
+			public void run() {
+				while (true) {
+					// tes apakah perlu di-refresh
+					if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
+						Log.d("DEBUG", "lastRequest null? " + (lastRequest == null));
+						Log.d("DEBUG", "isToRefreshAgain? " + UtilityDate.isToRefreshAgain(lastRequest));
+						// handler.post untuk melakukan sesuatu di UI thread
+						handler.post(new Runnable()
+						{
+							public void run() {
+								performRefresh();
+							}
+						});
+					}
+
+					// coba lagi 1 detik kemudian
+					SystemClock.sleep(1000);
+				}
+			}
+		};
+
+		new Thread(runnable).start();
 	}
 
 

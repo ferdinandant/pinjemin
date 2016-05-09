@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="year">#999999</color>
-    <color name="title">#222222</color>
+	<color name="colorPrimary">#3F51B5</color> -->
+	<color name="colorPrimaryDark">#303F9F</color>
+	<color name="colorAccent">#FF4081</color>
+	<color name="year">#999999</color>
+	<color name="title">#222222</color>
+
+	<!-- Ferdi style -->
+	<color name="white">#ffffff</color>
+
+	<!-- <color name="colorPrimary">#028062</color> -->
+	<!-- <color name="colorPrimaryLight">#039f7a</color> -->
+	<!-- <color name="colorPrimaryDark">#028062</color> -->
+	<!-- <color name="colorAccent">#039f7a</color> -->
+
+	<color name="backshade">#e7e7e7</color>
+	<color name="separator_light">#c2c2c2</color>
+	<color name="separator_dark">#e7e7e7</color>
+
+	<color name="text_gray">#7f7f7f</color>
 </resources>

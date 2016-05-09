@@ -74,10 +74,12 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 		if (timelineType == SUPPLY_POST) {
 			this.phpFilePath = PHP_PATH_SUPPLY_TIMELINE;
 			this.arraySupply = ((TimelineSupplyAdapter) adapter).getarrayList();
+			this.arraySupply.clear();
 		}
 		else if (timelineType == DEMAND_POST) {
 			this.phpFilePath = PHP_PATH_DEMAND_TIMELINE;
 			this.arrayDemand = ((TimelineDemandAdapter) adapter).getarrayList();
+			this.arrayDemand.clear();
 		}
 	}
 
@@ -117,17 +119,15 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 				String dataNamaBarang = postInstance.getString("NamaBarang");
 				String dataDeskripsi = postInstance.getString("Deskripsi");
 				String dataRealName = postInstance.getString("RealName");
-				String dataAccountName = postInstance.getString("AccountName");
 				String dataFormattedDate = UtilityDate.formatTimestampElapsedTime(dataTimestamp);
 
 				if (timelineType == SUPPLY_POST) {
 					// dapatkan field khusus untuk post supply (harga)
 					String dataHarga = postInstance.getString("Harga");
-					dataHarga = "Rp" + dataHarga;
 
 					// buat instance PostSupply baru
 					PostSupply postSupply = new PostSupply(
-						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
+						dataPID, dataUID, dataTimestamp, dataNamaBarang,
 						dataDeskripsi, dataHarga, dataRealName);
 
 					// publish perubahan ke main UI thread
@@ -137,12 +137,10 @@ public class PopulateTimelineTask extends AsyncTask<Void,Object,Void>
 				else if (timelineType == DEMAND_POST) {
 					// dapatkan field khusus untuk post demand (lastNeed)
 					String dataLastNeed = postInstance.getString("LastNeed");
-					dataLastNeed = "Terakhir dibutuhkan "
-						+ UtilityDate.formatTimestampDateOnly(dataLastNeed);
 
 					// buat instance PostSupply baru
 					PostDemand postDemand = new PostDemand(
-						dataPID, dataUID, dataFormattedDate, dataNamaBarang,
+						dataPID, dataUID, dataTimestamp, dataNamaBarang,
 						dataDeskripsi, dataLastNeed, dataRealName);
 
 					// publish perubahan ke main UI thread

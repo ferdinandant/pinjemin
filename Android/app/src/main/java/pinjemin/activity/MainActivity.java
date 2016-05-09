@@ -11,12 +11,14 @@ package pinjemin.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.TreeMap;
 
@@ -126,7 +128,6 @@ public class MainActivity extends AppCompatActivity
 
 		if (id == R.id.action_logout) {
 			sessionManager.logoutUser();
-
 		}
 		else if (id == R.id.action_ubah_profil) {
 			TreeMap<String,String> input = new TreeMap<>();
@@ -135,10 +136,15 @@ public class MainActivity extends AppCompatActivity
 
 			UbahProfilFetchTask ubahProfil = new UbahProfilFetchTask(this, input);
 			ubahProfil.execute();
-
 		}
 		else if (id == R.id.action_search) {
 			startActivity(new Intent(this, SearchActivity.class));
+		}
+		else if (id == R.id.action_refresh) {
+			Log.d("DEBUG", "Meminta refresh manual");
+			Toast.makeText(this, "Memperbarui timeline ...", Toast.LENGTH_LONG).show();
+			TimelineSupplyFragment.resetLastRequest();
+			TimelineDemandFragment.resetLastRequest();
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -151,6 +157,7 @@ public class MainActivity extends AppCompatActivity
 	 * ============================================================================== */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// menu yang di-inflate: search, ubah profil, logout, etc.
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		return true;
 	}
@@ -163,9 +170,9 @@ public class MainActivity extends AppCompatActivity
 	public void onResume() {
 		super.onResume();
 		// reset last request pada demand dan supply timeline
-		TimelineDemandFragment.resetLastRequest();
-		TimelineSupplyFragment.resetLastRequest();
-		Log.d("DEBUG", "Minta refresh ulang dari context-switching");
+		//TimelineDemandFragment.resetLastRequest();
+		//TimelineSupplyFragment.resetLastRequest();
+		//Log.d("DEBUG", "Minta refresh ulang dari context-switching");
 	}
 
 	/** ==============================================================================
@@ -175,25 +182,7 @@ public class MainActivity extends AppCompatActivity
 	public void onBackPressed() {
 		super.onBackPressed();
 		Log.d("DEBUG", "Back press dari main");
-		/*
-		Intent intent = new Intent(Intent.ACTION_MAIN);
-
-		// CATEGORY_HOME menandakan bahwa ini home activity
-		// (yang biasanya dijalankan saat app/device dinyalakan?)
-		intent.addCategory(Intent.CATEGORY_HOME);
-
-		// NOTE: FLAG_ACTIVITY_CLEAR_TOP: Tutup semua activity di atas activity ini
-		// (e.g. jika history activity-nya A->B->C->D, dan D memanggil activity B dengan
-		// FLAG_ACTIVITY_CLEAR_TOP di-set, hasil akhir history-nya: A->B)
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-
-		// tutup activity ini
-		finish();
-		*/
 	}
-
 
 	// --- inner class declaration ---
 

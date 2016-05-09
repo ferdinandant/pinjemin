@@ -110,4 +110,16 @@ public class UtilityGUI
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 		}
 	}
+
+	/** ==============================================================================
+	 * Mengubah satuan dp menjadi px
+	 * @param activity - activity dari mana method ini dipanggil
+	 * @param dp - satuan dalam dp yang indin dikonversi menjadi pixel
+	 *	@return hasil konversi satuan dari dp menjadi px
+	 * ============================================================================== */
+	public static int dpIntoPixel(Activity activity, int dp) {
+		// ambil rasio density yang digunakan pada activity
+		float scale = activity.getResources().getDisplayMetrics().density;
+		return ((int) (dp * scale + 0.5f));
+	}
 }

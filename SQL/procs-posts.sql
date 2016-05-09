@@ -153,7 +153,7 @@ begin
    if postType = 'Permintaan' then
       select
          pos.PID, pos.UID, pos.Timestamp, pos.NamaBarang, pos.Deskripsi, 
-         per.LastNeed, usr.AccountName, postType as Type
+         per.LastNeed, usr.AccountName, usr.RealName, postType as Type
       from permintaan per natural join post pos natural join user usr
       where per.pid = varPID
          and varPID not in (select pid from peminjaman pem)
@@ -161,7 +161,7 @@ begin
    elseif postType = 'Penawaran' then
       select
          pos.PID, pos.UID, pos.Timestamp, pos.NamaBarang, pos.Deskripsi, 
-         pen.Harga, usr.AccountName, postType as Type
+         pen.Harga, usr.AccountName, usr.RealName, postType as Type
       from penawaran pen natural join post pos natural join user usr
       where pen.PID = varPID
          and varPID not in (select PID from peminjaman pem);

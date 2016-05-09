@@ -54,8 +54,8 @@ public class UtilityDate
 		// selisih waktu dalam ms
 		long msDiff = currentTime.getTime().getTime() - lastRequest.getTime().getTime();
 
-		// kalau sudah lebih dari 5 menit, return true
-		if (msDiff >= 1000 * 300) {
+		// kalau sudah lebih dari 1 menit, return true
+		if (msDiff >= 1000 * 60) {
 			return true;
 		}
 		else {
@@ -120,5 +120,14 @@ public class UtilityDate
 		// (jadi perlu di-decrement 1)
 		formattedDate = date + " " + monthNameAbbr(month - 1) + " " + year;
 		return formattedDate;
+	}
+
+	/** ==============================================================================
+	 * Memformat timestamp SQL menjadi bentuk: 14:12
+	 * @param timestamp - bentuk timestamp sql, e.g. "2017-01-20 14:12:56"
+	 * @return bentuk timestamp yang sudah di-format, e.g. "14:12"
+	 * ============================================================================== */
+	public static String formatTimestampTimeOnly(String timestamp) {
+		return timestamp.substring(11, 16);
 	}
 }

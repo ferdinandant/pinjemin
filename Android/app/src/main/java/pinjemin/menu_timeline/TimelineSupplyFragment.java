@@ -10,6 +10,8 @@ package pinjemin.menu_timeline;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +19,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import pinjemin.adapter.TimelineDemandAdapter;
 import pinjemin.adapter.TimelineSupplyAdapter;
 import pinjemin.backgroundTask.PopulateTimelineTask;
 import pinjemin.R;
@@ -34,6 +38,7 @@ public class TimelineSupplyFragment extends Fragment
 {
 	private static Calendar lastRequest = null;
 	private RecyclerView recyclerView;
+	private RecyclerView.Adapter adapter;
 	private ArrayList<PostSupply> arraySupply;
 
 
@@ -67,10 +72,9 @@ public class TimelineSupplyFragment extends Fragment
 		// configure recycler view:
 		recyclerView = (RecyclerView) getActivity().findViewById(R.id.recylerViewSupply);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		recyclerView.setHasFixedSize(true);
 
 		// set recycler view adapter
-		RecyclerView.Adapter adapter = new TimelineSupplyAdapter(arraySupply);
+		adapter = new TimelineSupplyAdapter(arraySupply);
 		recyclerView.setAdapter(adapter);
 
 		// tambahkan listener ke RecyclerView
@@ -81,21 +85,8 @@ public class TimelineSupplyFragment extends Fragment
 			new RecyclerOnItemTouchListener(getActivity(),
 				recyclerView, new RecyclerClickListener()));
 
-		// cek apakah perlu refresh timeline data:
-		if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
-			Log.d("DEBUG", "Refreshing supply timeline");
-
-			// jalankan background thread untuk fetch data dari server
-			PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(
-				getActivity(), PopulateTimelineTask.SUPPLY_POST, adapter);
-			populateTimelineTask.execute();
-
-			// update timestamp terakhir kali refresh
-			lastRequest = Calendar.getInstance();
-		}
-		else {
-			Log.d("DEBUG", "Not refreshing demand timeline");
-		}
+		// jalankan thread untuk handle refresh berkala
+		refreshRoutine();
 	}
 
 	/** ==============================================================================
@@ -110,9 +101,54 @@ public class TimelineSupplyFragment extends Fragment
 	 * Memaksa agar data pada timeline di-refresh lagi
 	 * ============================================================================== */
 	public static void resetLastRequest() {
+		Log.d("DEBUG", "reset LastRequest!!");
 		lastRequest = null;
 	}
 
+	/** ==============================================================================
+	 * Me-refresh timeline
+	 * ============================================================================== */
+	public void performRefresh() {
+		// cek apakah perlu refresh timeline data:
+		Log.d("DEBUG", "Refreshing supply timeline");
+
+		// jalankan background thread untuk fetch data dari server
+		PopulateTimelineTask populateTimelineTask = new PopulateTimelineTask(
+			getActivity(), PopulateTimelineTask.SUPPLY_POST, adapter);
+		populateTimelineTask.execute();
+
+		// update timestamp terakhir kali refresh
+		lastRequest = Calendar.getInstance();
+	}
+
+	/** ==============================================================================
+	 * Untuk me-refresh timeline setiap beberapa detik sekali (thread terpisah!)
+	 * ============================================================================== */
+	public void refreshRoutine() {
+		final Handler handler = new Handler();
+		Runnable runnable = new Runnable()
+		{
+			public void run() {
+				while (true) {
+					// tes apakah perlu di-refresh
+					if (lastRequest == null || UtilityDate.isToRefreshAgain(lastRequest)) {
+						// handler.post untuk melakukan sesuatu di UI thread
+						handler.post(new Runnable()
+						{
+							public void run() {
+								performRefresh();
+							}
+						});
+					}
+
+					// coba lagi 1 detik kemudian
+					SystemClock.sleep(1000);
+				}
+			}
+		};
+
+		new Thread(runnable).start();
+	}
 
 	// --- inner class declaration ---
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import pinjemin.model.PostDemand;
 import pinjemin.R;
 import pinjemin.model.PostSupply;
+import pinjemin.utility.UtilityDate;
 
 
 public class TimelineDemandAdapter
@@ -70,10 +71,11 @@ public class TimelineDemandAdapter
 
 		// updateViewHolder (setText)
 		holder.namaBarang.setText(postDemand.getNamaBarang());
-		holder.accountName.setText(postDemand.getAccountName());
+		holder.accountName.setText("Diminta oleh " + postDemand.getAccountName() + ":");
 		holder.deskripsi.setText(postDemand.getDeskripsi());
-		holder.timestamp.setText(postDemand.getTimestamp());
-		holder.batasAkhir.setText(postDemand.getBatasAkhir());
+		holder.timestamp.setText(UtilityDate.formatTimestampElapsedTime(postDemand.getTimestamp()));
+		holder.batasAkhir.setText("Terakhir dibutuhkan "
+			+ UtilityDate.formatTimestampDateOnly(postDemand.getBatasAkhir()));
 	}
 
 	/** ==============================================================================

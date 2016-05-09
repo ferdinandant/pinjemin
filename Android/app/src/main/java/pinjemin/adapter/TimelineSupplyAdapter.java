@@ -9,6 +9,7 @@
 package pinjemin.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import pinjemin.model.PostDemand;
 import pinjemin.model.PostSupply;
 import pinjemin.R;
+import pinjemin.utility.UtilityDate;
 
 
 public class TimelineSupplyAdapter extends RecyclerView.Adapter<TimelineSupplyAdapter.RecyclerViewHolder>
@@ -65,12 +67,21 @@ public class TimelineSupplyAdapter extends RecyclerView.Adapter<TimelineSupplyAd
 		// ambil instance postSupply pada indeks position
 		PostSupply postSupply = arraySupply.get(position);
 
-		// updateViewHolder (setText)
+		// updateViewHolder (setText):
 		holder.namaBarang.setText(postSupply.getNamaBarang());
-		holder.accountName.setText(postSupply.getAccountName());
+		holder.accountName.setText("Ditawarkan oleh " + postSupply.getAccountName() + ":");
 		holder.deskripsi.setText(postSupply.getDeskripsi());
-		holder.timestamp.setText(postSupply.getTimestamp());
-		holder.harga.setText(postSupply.getHarga());
+		holder.timestamp.setText(UtilityDate.formatTimestampElapsedTime(postSupply.getTimestamp()));
+
+		// Untuk harga: cek apakah gratis, dan format dengan 1000-separator
+		int hargaParsedInt = Integer.parseInt(postSupply.getHarga());
+		if (hargaParsedInt == 0) {
+			holder.harga.setText("GRATIS");
+		}
+		else {
+			holder.harga.setText("Rp" + String.format("%,d", hargaParsedInt));
+		}
+
 	}
 
 	/** ==============================================================================

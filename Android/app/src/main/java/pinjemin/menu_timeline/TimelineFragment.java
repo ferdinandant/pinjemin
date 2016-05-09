@@ -10,12 +10,16 @@
 package pinjemin.menu_timeline;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,6 +44,11 @@ public class TimelineFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState
 	) {
+		// beritahu bahwa fragment ini ingin mem-populate menu sendiri
+		// (akan memanggil onCreateOptionsMenu() dan method-method terkait)
+		setHasOptionsMenu(true);
+		Log.d("DEBUG", "setHasOptionsMenu(true)");
+
 		// Inflate (render) layout pada fragment ini:
 		// Syntax: inflate(xmlLayoutFile, parentViewGroup, attachToRoot)
 		// (attachToRoot == false, berarti dia stand-alone view (tidak jadi child))
@@ -84,13 +93,23 @@ public class TimelineFragment extends Fragment
 
 	/** ==============================================================================
 	 * Dipanggil saat Fragment dibentuk, sebelum pemanggilan onCreateView()
+	 * NOTE: Hanya dipanggil kalau ada setHasOptionsMenu(true) di onCreateView
 	 * ============================================================================== */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
-	public TimelineFragment() {}
+	/** ==============================================================================
+	 * Mengonfigurasi menu (yang di pojok kanan atas: e.g. search, logout)
+	 * ============================================================================== */
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+
+		// pada timeline fragment, tampilkan tombol refresh
+		menu.findItem(R.id.action_refresh).setVisible(true).setEnabled(true);
+	}
 
 
 	// --- inner class declaration ---
