@@ -9,9 +9,11 @@
 
 package pinjemin.backgroundTask;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -27,18 +29,27 @@ import pinjemin.utility.UtilityConnection;
 
 public class LoginTask extends AsyncTask<Void,Void,Void>
 {
-	public static final String PHP_PATH = "login.php";
+	public static final String PHP_PATH = "logingoogle.php";
 
 	private Context context;
+	private Activity activity;
 	private TreeMap<String,String> dataToSend;
-	private boolean isLoginSuccessful;
 	private JSONObject jsonResponseObject;
 	private JSONArray jsonResponseArray;
 
-	public LoginTask(Context context, TreeMap<String,String> dataToSend) {
+	private boolean isLoginSuccessful;
+	private boolean isServerReachable;
+
+	String userUID;
+	String userAccountName;
+	String userRealName;
+
+	public LoginTask(Activity activity, TreeMap<String,String> dataToSend) {
 		this.dataToSend = dataToSend;
-		this.context = context;
+		this.activity = activity;
+		this.context = activity.getApplicationContext();
 		this.isLoginSuccessful = false;
+		this.isServerReachable = false;
 	}
 
 	/** ==============================================================================
@@ -48,9 +59,13 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 	protected Void doInBackground(Void... voids) {
 		try {
 			// koneksi ke server, kirimkan data login
+			// (isServerReachable == true) berarti server bisa dihubungi
 			// login berhasil: server mengembalikan data user
 			// login gagal: server mengembalikan empty set
+			this.isServerReachable = false;
 			String serverResponse = UtilityConnection.runPhp(PHP_PATH, dataToSend);
+			Log.d("response: ", serverResponse);
+			this.isServerReachable = true;
 
 			// parse data JSON yang diterima dari server
 			jsonResponseObject = new JSONObject(serverResponse);
@@ -59,6 +74,13 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 			// jika ada data user yang dikembalikan, login berhasil
 			if (jsonResponseArray.length() > 0) {
 				isLoginSuccessful = true;
+
+				JSONObject userData = jsonResponseArray.getJSONObject(0);
+				userUID = userData.getString("UID");
+				userAccountName = userData.getString("AccountName");
+				userRealName = userData.getString("RealName");
+
+				Log.d("realname", userRealName);
 			}
 		}
 		catch (Exception e) {
@@ -82,10 +104,6 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 				SessionManager sessionManager = new SessionManager(context);
 
 				// ambil data user
-				JSONObject userData = jsonResponseArray.getJSONObject(0);
-				String userUID = userData.getString("UID");
-				String userAccountName = userData.getString("AccountName");
-				String userRealName = userData.getString("RealName");
 
 				// cek apakah user perlu melakukan registrasi awal
 				// (perlu jika nilai "RealName" belum dimasukkan di database server)
@@ -96,7 +114,7 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 					sessionManager.createRegisterSession(userRealName);
 
 					// bawa user ke Main Activity
-					context.startActivity(new Intent(context, MainActivity.class));
+					activity.startActivity(new Intent(context, MainActivity.class));
 				}
 				else {
 					// user belum pernah registrasi
@@ -104,7 +122,7 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 					sessionManager.createLoginSession(userUID, userAccountName);
 
 					// bawa user ke RegisterActivity
-					context.startActivity(new Intent(context, RegisterActivity.class));
+					activity.startActivity(new Intent(context, RegisterActivity.class));
 				}
 			}
 			catch (Exception e) {
@@ -112,6 +130,10 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 				// seharusnya tidak akan masuk ke sini.
 				e.printStackTrace();
 			}
+		}
+		else if (!isServerReachable) {
+			// jika server tidak bisa dihubungi
+			Toast.makeText(context, "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
 		}
 		else {
 			// jika login gagal, tampilkan pesan "login failed."

@@ -1,12 +1,19 @@
 <resources>
-	<!-- Default screen margins, per the Android Design guidelines. -->
-	<dimen name="activity_horizontal_margin">16dp</dimen>
-	<dimen name="activity_vertical_margin">16dp</dimen>
-	<dimen name="tab_max_width">264dp</dimen>
-	<dimen name="tab_padding_bottom">16dp</dimen>
-	<dimen name="tab_label">14sp</dimen>
-	<dimen name="custom_tab_layout_height">72dp</dimen>
-	<dimen name="fab_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="tab_padding_bottom">16dp</dimen>
+    <dimen name="tab_label">14sp</dimen>
+    <dimen name="custom_tab_layout_height">72dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
-	<!-- ferdi style -->
+    <!-- april's work -->
+    <dimen name="menuElevation">14dp</dimen>
+    <dimen name="smallText">13sp</dimen>
+    <item name="primaryTextDark" format="float" type="dimen">0.87</item>
+    <item name="secondaryTextDark" format="float" type="dimen">0.54</item>
+    <item name="disabledTextDark" format="float" type="dimen">0.38</item>
+    <item name="dividers" format="float" type="dimen">0.12</item>
+
 </resources>

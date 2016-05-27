@@ -115,7 +115,6 @@ begin
    limit varCount offset varStart;
 end;;
 
-
 -- ==============================================================================
 -- Menghapus semua post permintaan yang sudah expired
 -- ------------------------------------------------------------------------------
@@ -168,210 +167,9 @@ begin
    end if;
 end;;
 
--- ==============================================================================
--- Melakukan inisiasi penyerahan barang untuk post PEMINJAMAN
--- di-invoke oleh pembaca (non-pembuat) post peminjaman
--- ------------------------------------------------------------------------------
--- @param: varPID - PID post
--- @param: varUID - UID yang ingin memberikan pinjaman
--- @param: deadline - deadline peminjaman barang
--- @return: true jika berhasil, false jika gagal
--- ==============================================================================
-drop procedure if exists initiateTransferPeminjaman;;
-create procedure initiateTransferPeminjaman(
-   in varPID int,
-   in varUID int,
-   in varDeadline datetime
-)
-   modifies sql data
-begin
-   declare realName varchar(80) default '';
-   -- error handler
-   declare exit handler for sqlexception
-   select false;
-   -- tidak boleh sudah jadi peminjaman
-   if getPostType(varPID) <> 'Peminjaman' then
-      call raise_error;
-   end if;
-   
-   -- masukkan ke tabel konfirmasi
-   insert into konfirmasi (PID, UID, Deadline)
-   values (varPID, varUID, varDeadline);
-   
-   -- cari tahu nama yang meng-initiate peminjaman
-   select usr.RealName into realName
-   from user usr
-   where UID = varUID;
-   
-   -- buat notifikasi sistem
-   -- return true/false ditentukan replyThread
-   call replyThread(varPID, null, varUID, concat(realName, ' melaporkan penyerahan barang. ',
-      'Deadline penyerahan barang ', date_format(now(), '%e %b %Y, jam %H:%i'),
-      '. Menunggu konfirmasi penerima barang . . .'));
-end;;
-
--- ==============================================================================
--- Melakukan inisiasi penyerahan barang untuk post PENAWARAN
--- di-invoke oleh pembuat post penawaran
--- ------------------------------------------------------------------------------
--- @param: varPID - PID post
--- @param: varUID - UID target user yang ingin diberikan pinjaman
--- @param: deadline - deadline peminjaman barang
--- @return: true jika berhasil, false jika gagal
--- ==============================================================================
-drop procedure if exists initiateTransferPenawaran;;
-create procedure initiateTransferPenawaran(
-   in varPID int,
-   in varUID int,
-   in varDeadline datetime
-)
-   modifies sql data
-begin
-   declare realName varchar(80) default '';
-   declare initiateCount int default 0;
-   -- error handler
-   declare exit handler for sqlexception
-   select false;
-   -- tidak boleh sudah jadi peminjaman
-   if getPostType(varPID) <> 'Penawaran' then
-      call raise_error;
-   end if;
-   
-   -- hanya bisa mengirim initiate ke 1 user
-   -- untuk PID yang sama
-   select count(*) into initiateCount
-   from konfirmasi kon
-   where kon.PID = varPID and kon.UID = varUID;
-   
-   -- cari tahu nama yang meng-initiate penyerahan barang
-   select usr.RealName into realName
-   from user usr natural join post pos
-   where pos.PID = varPID;
-   
-   if initiateCount = 0 then
-      -- masukkan ke tabel konfirmasi 
-      insert into konfirmasi (PID, UID, Deadline)
-      values (varPID, varUID, varDeadline);
-      -- buat notifikasi sistem
-      -- return true/false ditentukan replyThread
-      call replyThread(varPID, null, varUID, concat(realName, ' melaporkan penyerahan barang. ',
-         'Deadline penyerahan barang ', date_format(now(), '%e %b %Y, jam %H:%i'),
-         '. Menunggu konfirmasi penerima barang . . .'));
-   else
-      call raise_error;
-   end if;
-end;;
-
-
--- ==============================================================================
--- Mengonfirmasi penyerahan barang untuk post PEMINJAMAN
--- di-invoke oleh pembuat post peminjaman
--- ------------------------------------------------------------------------------
--- @param: varPID - PID post
--- @param: varUID - UID user yang initiate penyerahannya diterima
--- @return: true jika berhasil, false jika gagal
--- ==============================================================================
-drop procedure if exists confirmTransferPeminjaman;;
-create procedure confirmTransferPeminjaman(
-   in varPID int,
-   in varUID int
-)
-   modifies sql data
-begin
-   declare realName varchar(80) default '';
-   declare deadline datetime;
-   
-   -- error handler
-   declare exit handler for sqlexception
-   select false;
-   -- tidak boleh sudah jadi peminjaman
-   if getPostType(varPID) <> 'Permintaan' then
-      call raise_error;
-   end if;
-   
-   -- Ambil tanggal deadline
-   select kon.Deadline into deadline
-   from konfirmasi kon
-   where kon.PID = varPID and kon.UID = varUID;
-   
-   -- cari tahu nama yang meng-confirm peminjaman
-   select usr.RealName into realName
-   from user usr natural join post pos
-   where pos.PID = varPID;
-   
-   -- hapus komentar lain
-   delete from komentar
-   where parentUID <> varUID;
-   -- hapus dari tabel konfirmasi
-   delete from konfirmasi
-   where PID = varPID;
-   
-   -- masukkan ke tabel peminjaman
-   insert into peminjaman (PID, PartnerUID, Deadline, TimestampMulai, Status)
-   values (varPID, varUID, deadline, now(), 'MASIH DIPINJAM');
-   
-   -- buat notifikasi sistem
-   -- return true/false ditentukan replyThread
-   call replyThread(varPID, null, varUID, concat(realName,
-      ' mengonfirmasi penyerahan barang. Jangan lupa mengembalikan barang yang dipinjam, ya!'));
-end;;
-
--- ==============================================================================
--- Mengonfirmasi penyerahan barang untuk post PENAWARAN
--- di-invoke oleh pembaca (non-pembuat) post penawaran
--- ------------------------------------------------------------------------------
--- @param: varPID - PID post
--- @return: true jika berhasil, false jika gagal
--- ==============================================================================
-drop procedure if exists confirmTransferPenawaran;;
-create procedure confirmTransferPenawaran(
-   in varPID int
-)
-   modifies sql data
-begin
-   declare varUID int default 0;
-   declare realName varchar(80) default '';
-   declare deadline datetime;
-   
-   -- error handler
-   declare exit handler for sqlexception
-   select false;
-   -- tidak boleh sudah jadi peminjaman
-   if isPostPeminjaman(varPID) then
-      call raise_error;
-   end if;
-   
-   -- Ambil tanggal deadline dan UID
-   select kon.Deadline, kon.UID into deadline, varUID
-   from konfirmasi kon
-   where kon.PID = varPID;
-   
-   -- cari tahu nama yang meng-confirm peminjaman
-   select usr.RealName into realName
-   from user usr
-   where usr.UID = varUID;
-   
-   -- hapus komentar lain
-   delete from komentar
-   where parentUID <> varUID;
-   -- hapus dari tabel konfirmasi
-   delete from konfirmasi
-   where PID = varPID;
-   
-   -- masukkan ke tabel peminjaman
-   insert into peminjaman (PID, PartnerUID, Deadline, TimestampMulai, Status)
-   values (varPID, varUID, deadline, now(), 'MASIH DIPINJAM');
-   
-   -- buat notifikasi sistem
-   -- return true/false ditentukan replyThread
-   call replyThread(varPID, null, varUID, concat(realName,
-      ' mengonfirmasi penyerahan barang. Jangan lupa mengembalikan barang yang dipinjam, ya!'));
-end;;
-
 
 -- ===============<<< SPRINT 2 >>>===============
 
--- handle kalo resultnya 0
 -- ==============================================================================
 -- Mencari post penawaran berdasarkan nama barang
 -- ------------------------------------------------------------------------------
@@ -402,6 +200,109 @@ begin
    from post pos natural join permintaan per natural join user usr
    where pos.NamaBarang regexp varQuery or pos.Deskripsi regexp varQuery
    order by pos.Timestamp desc;
+end;;
+
+
+-- ===============<<< SPRINT 3 >>>===============
+
+-- ==============================================================================
+-- Mengubah post permintaan dengan PID tertentu
+-- ------------------------------------------------------------------------------
+-- @param: varPID - PID post yang ingin diubah
+-- @param: varNamaBarang - nama barang
+-- @param: varDeskripsi - deskripsi peminjaman
+-- @param: varLastNeed - kapan terakhir dibutuhkan (e.g. 2017-01-01 00:00:00)
+-- @return: true jika berhasil, false jika gagal
+-- ==============================================================================
+drop procedure if exists editPermintaan;;
+create procedure editPermintaan(
+   in varPID int,
+   in varNamaBarang varchar(60),
+   in varDeskripsi varchar(240),
+   in varLastNeed datetime
+)
+   modifies sql data
+begin
+   -- error handler
+   declare exit handler for sqlexception
+   select false;
+   -- update di post
+   update post
+   set NamaBarang = varNamaBarang, deskripsi = varDeskripsi
+   where pid = varPID;
+   -- update di permintaan
+   update permintaan
+   set LastNeed = varLastNeed
+   where PID = varPID;
+   -- return value
+   select true;
+end;;
+
+-- ==============================================================================
+-- Mengubah post penawaran dengan PID tertentu
+-- ------------------------------------------------------------------------------
+-- @param: varPID - PID post yang ingin diubah
+-- @param: varNamaBarang - nama barang
+-- @param: varDeskripsi - deskripsi peminjaman
+-- @param: varLastNeed - kapan terakhir dibutuhkan (e.g. 2017-01-01 00:00:00)
+-- @return: true jika berhasil, false jika gagal
+-- ==============================================================================
+drop procedure if exists editPenawaran;;
+create procedure editPenawaran(
+   in varPID int,
+   in varNamaBarang varchar(60),
+   in varDeskripsi varchar(240),
+   in varHarga int
+)
+   modifies sql data
+begin
+   -- error handler
+   declare exit handler for sqlexception
+   select false;
+   -- update di post
+   update post
+   set NamaBarang = varNamaBarang, deskripsi = varDeskripsi
+   where pid = varPID;
+   -- update di permintaan
+   update penawaran
+   set Harga = varHarga
+   where PID = varPID;
+   -- return value
+   select true;
+end;;
+
+-- ==============================================================================
+-- Menghapus post tertentu
+-- ------------------------------------------------------------------------------
+-- @param: varPID - PID post yang ingin diubah
+-- @return true jika ada post yang dihapus (operasi berhasil), false jika tidak
+--   (e.g. saat post-nya sudah tidak ada).
+-- ==============================================================================
+drop procedure if exists deletePost;;
+create procedure deletePost(
+   in varPID int
+)
+   modifies sql data
+begin
+   declare isPostExist int default 0;
+   -- error handler
+   declare exit handler for sqlexception
+   select false;
+   
+   -- cek apakah ada di tabel post
+   select count(*) from post pos where PID = varPID
+   into isPostExist;
+   
+   if isPostExist > 0 then
+      -- hapus di tabel post
+      -- sudah di-set pada structure: on delete cascade
+      delete from post where PID = varPID;
+      -- return value
+      select true;
+   else
+      -- return value
+      select false;
+   end if;
 end;;
 
 delimiter ;

@@ -74,15 +74,6 @@ public class CreatePostTask extends AsyncTask<Void,Object,Void>
 		return null;
 	}
 
-	private static String asciiToHex(String asciiValue) {
-		char[] chars = asciiValue.toCharArray();
-		StringBuffer hex = new StringBuffer();
-		for (int i = 0; i < chars.length; i++) {
-			hex.append(Integer.toHexString((int) chars[i]));
-		}
-		return hex.toString();
-	}
-
 	/** ==============================================================================
 	 * Hal yang perlu dilakukan SETELAH doInBackground selesai dijalankan
 	 * ============================================================================== */

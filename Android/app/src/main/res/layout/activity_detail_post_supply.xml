@@ -51,24 +51,46 @@ android:layout_height="match_parent">
 				android:layout_marginBottom="10dp"
 				android:background="@android:color/darker_gray" />
 
-				<TextView
-				android:id="@+id/pembuatPost"
+				<LinearLayout
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:text="Kemal Amru"
-				android:textSize="15sp"
-				android:textStyle="bold" />
+				android:layout_height="match_parent"
+				android:paddingLeft="10dp"
+				android:orientation="horizontal">
 
-				<TextView
-				android:id="@+id/tanggal"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="10dp"
-				android:layout_marginRight="10dp"
-				android:text="Dipostkan pada"
-				android:textSize="15sp" />
+					<ImageView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:id="@+id/imageView"
+					android:src="@drawable/ic_smiley"/>
+
+					<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+						<TextView
+						android:id="@+id/pembuatPost"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="10dp"
+						android:layout_marginRight="10dp"
+						android:text="Kemal Amru"
+						android:textSize="15sp"
+						android:textStyle="bold" />
+
+						<TextView
+						android:id="@+id/tanggal"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="10dp"
+						android:layout_marginRight="10dp"
+						android:text="Dipostkan pada"
+						android:textSize="15sp" />
+						/>
+
+					</LinearLayout>
+
+				</LinearLayout>
 
 				<View
 				android:layout_width="match_parent"
@@ -221,7 +243,7 @@ android:layout_height="match_parent">
 				android:layout_marginBottom="10dp"
 				android:paddingLeft="10dp"
 				android:text="PERMINTAAN PINJAMAN"
-				android:textColor="@color/text_gray"
+				android:textColor="@color/postDetailCommentHeader"
 				android:textSize="15sp"
 				android:textStyle="bold" />
 

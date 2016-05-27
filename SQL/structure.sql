@@ -33,17 +33,17 @@ engine = innodb;
 -- table `adds`
 -- -----------------------------------------------------
 create table if not exists `adds` (
-  `UIAdder` int not null,
-  `UIAdded` int not null,
-  primary key (`uiadded`, `uiadder`),
-  index `uidadder_idx` (`uiadder` asc),
+  `UIDAdder` int not null,
+  `UIDAdded` int not null,
+  primary key (`uidadded`, `uidadder`),
+  index `uidadder_idx` (`uidadder` asc),
   constraint `fk_uidadder`
-    foreign key (`uiadder`)
+    foreign key (`uidadder`)
     references `user` (`uid`)
     on delete cascade
     on update cascade,
   constraint `fk_uidadded`
-    foreign key (`uiadded`)
+    foreign key (`uidadded`)
     references `user` (`uid`)
     on delete cascade
     on update cascade)
@@ -156,7 +156,8 @@ engine = innodb;
 -- -----------------------------------------------------
 create table if not exists `peminjaman` (
   `PID` int not null,
-  `PartnerUID` int not null,
+  `UIDPemberi` int not null,
+  `UIDPenerima` int not null,
   `Deadline` datetime not null,
   `TimestampMulai` timestamp null,
   `TimestampKembali` timestamp null,
@@ -169,8 +170,13 @@ create table if not exists `peminjaman` (
     references `post` (`pid`)
     on delete cascade
     on update cascade,
-  constraint `fk_partneruid_peminjaman`
-    foreign key (`partneruid`)
+  constraint `fk_uidpemberi_peminjaman`
+    foreign key (`UIDPemberi`)
+    references `user` (`uid`)
+    on delete cascade
+    on update cascade,
+  constraint `fk_uidpenerima_peminjaman`
+    foreign key (`UIDPenerima`)
     references `user` (`uid`)
     on delete cascade
     on update cascade)
@@ -203,7 +209,7 @@ engine = innodb;
 create table if not exists `lastseen` (
   `UID` int not null,
   `PID` int not null,
-  `Lastseen` datetime not null,
+  `LastSeen` datetime not null,
   primary key (`uid`, `pid`),
   constraint `fk_pid_lastseen`
     foreign key (`pid`)

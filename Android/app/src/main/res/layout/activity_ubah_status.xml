@@ -1,0 +1,84 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih Status"
+            android:textColor="#000"
+            android:textSize="15sp"/>
+
+        <Spinner
+            android:id="@+id/spinner_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Pilih Rating"
+            android:textColor="#000"
+            android:textSize="15sp"/>
+
+        <Spinner
+            android:id="@+id/spinner_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+        </Spinner>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/input_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Review"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@color/colorPrimary"
+            android:text="Submit"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

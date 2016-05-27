@@ -210,11 +210,10 @@ public class SearchTask extends AsyncTask<Void,Object,Void>
 					if (searchType == SUPPLY_POST) {
 						// dapatkan field khusus untuk post supply (harga)
 						String dataHarga = postInstance.getString("Harga");
-						dataHarga = "Rp" + dataHarga;
 
 						// buat instance PostSupply baru
 						PostSupply postSupply = new PostSupply(
-							dataPID, dataUID, dataFormattedDate, dataNamaBarang,
+							dataPID, dataUID, dataTimestamp, dataNamaBarang,
 							dataDeskripsi, dataHarga, dataRealName);
 
 						// publish perubahan ke main UI thread
@@ -224,11 +223,10 @@ public class SearchTask extends AsyncTask<Void,Object,Void>
 					else if (searchType == DEMAND_POST) {
 						// dapatkan field khusus untuk post demand (lastNeed)
 						String dataLastNeed = postInstance.getString("LastNeed");
-						dataLastNeed = "Terakhir dibutuhkan " + dataLastNeed;
 
 						// buat instance PostSupply baru
 						PostDemand postDemand = new PostDemand(
-							dataPID, dataUID, dataFormattedDate, dataNamaBarang,
+							dataPID, dataUID, dataTimestamp, dataNamaBarang,
 							dataDeskripsi, dataLastNeed, dataRealName);
 
 						// publish perubahan ke main UI thread
@@ -294,12 +292,7 @@ public class SearchTask extends AsyncTask<Void,Object,Void>
 			PostDemand postDemand = arrayDemand.get(position);
 
 			// passing data post yang akan ditampilkan ke intent
-			intent.putExtra("uid", postDemand.getUid());
-			intent.putExtra("timestamp", postDemand.getTimestamp());
-			intent.putExtra("namaBarang", postDemand.getNamaBarang());
-			intent.putExtra("deskripsi", postDemand.getDeskripsi());
-			intent.putExtra("lastNeed", postDemand.getBatasAkhir());
-			intent.putExtra("accountName", postDemand.getAccountName());
+			intent.putExtra("pid", postDemand.getPid());
 
 			// start activity DetailPostDemand
 			context.startActivity(intent);
@@ -324,12 +317,7 @@ public class SearchTask extends AsyncTask<Void,Object,Void>
 			PostSupply postSupply = arraySupply.get(position);
 
 			// sisipkan data post yang akan ditampilkan ke intent
-			intent.putExtra("uid", postSupply.getUid());
-			intent.putExtra("timestamp", postSupply.getTimestamp());
-			intent.putExtra("namaBarang", postSupply.getNamaBarang());
-			intent.putExtra("deskripsi", postSupply.getDeskripsi());
-			intent.putExtra("harga", postSupply.getHarga());
-			intent.putExtra("accountName", postSupply.getAccountName());
+			intent.putExtra("pid", postSupply.getPid());
 
 			// start activity DetailPostSupply
 			context.startActivity(intent);

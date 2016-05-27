@@ -1,21 +1,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -26,39 +13,69 @@
         android:paddingRight="20dp"
         android:paddingTop="60dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_name"
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pinjemin"
+        android:id="@+id/textView"
+        android:textColor="#FFF"
+        android:textAlignment="center"
+        android:textSize="60dp"
+        android:alpha="0.88"
+        android:paddingBottom="20dp"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:background="#FFF"
+            android:alpha="0.6">
 
-            <EditText
-                android:id="@+id/input_name"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="@string/hint_name"/>
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/hint_name"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_password"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/hint_password" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content">
 
+                <EditText
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="@string/hint_password" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
         <Button android:id="@+id/btn_signup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_signin"
             android:background="@color/colorPrimary"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:textColor="@android:color/white"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 

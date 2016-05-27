@@ -25,7 +25,7 @@
                 android:text="Nama Barang"
                 android:textColor="#000"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:alpha="@dimen/primaryTextDark"/>
 
             <TextView
                 android:id="@+id/output_deskripsi"
@@ -34,14 +34,16 @@
                 android:layout_below="@id/output_nama_barang"
                 android:layout_marginTop="5dp"
                 android:text="Deskripsi"
-                android:textColor="#000" />
+                android:textColor="#000"
+                android:alpha="@dimen/primaryTextDark" />
 
             <TextView
                 android:id="@+id/output_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="12 Des" />
+                android:text="12 Des"
+                android:alpha="@dimen/disabledTextDark"/>
 
             <TextView
                 android:id="@+id/output_batas_akhir"

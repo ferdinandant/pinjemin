@@ -1,8 +1,11 @@
 package pinjemin.menu_timeline;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,9 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import pinjemin.activity.MainActivity;
+import pinjemin.backgroundTask.DeletePostTask;
 import pinjemin.backgroundTask.GetProfilTask;
-import pinjemin.comment.CustomCommentBlock;
+import pinjemin.comment.CommentActivity;
 import pinjemin.comment.CustomThreadBlock;
 import pinjemin.model.Comment;
 import pinjemin.model.PostDemand;
@@ -31,7 +34,6 @@ import pinjemin.R;
 import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityConnection;
 import pinjemin.utility.UtilityDate;
-import pinjemin.utility.UtilityGUI;
 
 
 public class DetailPostDemandActivity extends AppCompatActivity
@@ -46,10 +48,9 @@ public class DetailPostDemandActivity extends AppCompatActivity
 		dataLastNeed, dataAuthorRealName, intentPid;
 	private String currentUid, dataAuthorUID;
 
-	private Handler loadPostHandler;
-
 	private JSONArray jsonResponseArrayPost;
 	private JSONArray jsonResponseArrayComment;
+	private JSONArray jsonResponseArrayActions;
 
 
 	@Override
@@ -91,8 +92,12 @@ public class DetailPostDemandActivity extends AppCompatActivity
 		namaBarang.setText("");
 		deskripsi.setText("");
 		lastNeed.setText("");
+	}
 
+	@Override
+	public void onResume() {
 		// ambil detail post di background
+		super.onResume();
 		loadPostDetails();
 	}
 
@@ -216,13 +221,15 @@ public class DetailPostDemandActivity extends AppCompatActivity
 
 				// jika parentUID sekarang != lastParentUid, berarti harus dimulai thread baru
 				// jika lastParentUid == -1, maka artinya belum ada data sebelumnya (ini yang pertama)
-				// jika lastParentUid !- -1, masukkan ke threadBlockArray untuk data sebelumnya
-				// TODO: benarkan parameter terakhir (harusnya getPossibleThreadAction dari server)!
 				if ((lastParentUid != parentUID) && (lastParentUid != -1)) {
-					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-						Integer.parseInt(intentPid), lastParentUid, 0);
-					threadBlockArray.add(threadBlock);
 					currentThreadBlockArrayPointer++;
+					JSONObject possibleActionCodeJson = jsonResponseArrayActions
+						.getJSONObject(currentThreadBlockArrayPointer);
+					int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
+
+					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
+						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, Integer.parseInt(dataAuthorUID));
+					threadBlockArray.add(threadBlock);
 					commentArray.clear();
 				}
 
@@ -238,11 +245,21 @@ public class DetailPostDemandActivity extends AppCompatActivity
 
 		// thread yang mengandung komentar terakhir belum dimasukkan ke threadBlockArray
 		// jadi, masukkan thread tersebut sekarang
-		CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-			Integer.parseInt(intentPid), lastParentUid, 0);
-		threadBlockArray.add(threadBlock);
-		currentThreadBlockArrayPointer++;
-		commentArray.clear();
+		try {
+			currentThreadBlockArrayPointer++;
+
+			JSONObject possibleActionCodeJson = jsonResponseArrayActions
+					.getJSONObject(currentThreadBlockArrayPointer);
+			int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
+
+			CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
+				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, Integer.parseInt(dataAuthorUID));
+			threadBlockArray.add(threadBlock);
+			commentArray.clear();
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		// buat view items untuk threads
 		int threadBlockArrayLength = threadBlockArray.size();
@@ -258,7 +275,7 @@ public class DetailPostDemandActivity extends AppCompatActivity
 	 * ============================================================================== */
 	private void loadPostDetails() {
 		final Activity activity = this;
-		final Handler handler = new Handler();
+		final Handler handler = new Handler(Looper.getMainLooper());
 		Log.d("DEBUG", "Masuk loadPostDetails");
 		Runnable runnable = new Runnable()
 		{
@@ -272,14 +289,18 @@ public class DetailPostDemandActivity extends AppCompatActivity
 					// kirim data ke server
 					String serverResponsePost = UtilityConnection.runPhp("getpostdetail.php", dataToSend);
 					String serverResponseComment = UtilityConnection.runPhp("getthreads.php", dataToSend);
+					String serverResponseActions = UtilityConnection.runPhp("getallpossiblethreadaction.php", dataToSend);
 					Log.d("DEBUG", serverResponsePost);
 					Log.d("DEBUG", serverResponseComment);
+					Log.d("DEBUG", serverResponseActions);
 
 					// parse data JSON yang diterima dari server
 					JSONObject jsonResponseObjectPost = new JSONObject(serverResponsePost);
 					JSONObject jsonResponseObjectComment = new JSONObject(serverResponseComment);
+					JSONObject jsonResponseObjectActions =  new JSONObject(serverResponseActions);
 					jsonResponseArrayPost = jsonResponseObjectPost.getJSONArray("server_response");
 					jsonResponseArrayComment = jsonResponseObjectComment.getJSONArray("server_response");
+					jsonResponseArrayActions = jsonResponseObjectActions.getJSONArray("server_response");
 
 					// update di UI thread
 					handler.post(new Runnable()
@@ -303,7 +324,7 @@ public class DetailPostDemandActivity extends AppCompatActivity
 					e.printStackTrace();
 				}
 				catch (IOException e) {
-					Toast.makeText(activity, "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
+					Toast.makeText(activity, "Tidak dapat menghubungi server.", Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				}
 
@@ -313,12 +334,14 @@ public class DetailPostDemandActivity extends AppCompatActivity
 		new Thread(runnable).start();
 	}
 
-
 	// --- action handlers ---
 
 	public void kasihPinjem() {
-		startActivity(new Intent(this, MainActivity.class));
-		finish();
+		Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+		intent.putExtra("type", "create");
+		intent.putExtra("ownUid", dataAuthorUID);
+		intent.putExtra("pid", intentPid);
+		startActivity(intent);
 	}
 
 	public void lihatProfil() {
@@ -331,10 +354,37 @@ public class DetailPostDemandActivity extends AppCompatActivity
 	}
 
 	public void ubah() {
+		Intent intent = new Intent(this, UbahPostDemandActivity.class);
+		intent.putExtra("pid", intentPid);
+		intent.putExtra("namabarang", dataNamaBarang);
+		intent.putExtra("deskripsi", dataDeskripsi);
+		intent.putExtra("lastneed", dataLastNeed);
 
+		startActivity(intent);
+		finish();
 	}
 
 	public void hapus() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Apakah anda yakin untuk menghapus post ini")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TreeMap<String, String> inputSend = new TreeMap<>();
+						inputSend.put("PID", intentPid);
 
+						DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
+						delete.execute();
+						finish();
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
 	}
 }

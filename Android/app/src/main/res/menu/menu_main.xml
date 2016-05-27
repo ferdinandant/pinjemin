@@ -19,14 +19,20 @@ tools:context="pinjemin.activity.MainActivity">
 	app:showAsAction="always" />
 
 	<item
-	android:id="@+id/action_ubah_profil"
+	android:id="@+id/action_lihat_profil"
 	android:orderInCategory="3"
+	android:title="Lihat Profil"
+	app:showAsAction="never" />
+
+	<item
+	android:id="@+id/action_ubah_profil"
+	android:orderInCategory="4"
 	android:title="Ubah Profil"
 	app:showAsAction="never" />
 
 	<item
 	android:id="@+id/action_logout"
-	android:orderInCategory="4"
+	android:orderInCategory="5"
 	android:title="@string/action_logout"
 	app:showAsAction="never" />
 

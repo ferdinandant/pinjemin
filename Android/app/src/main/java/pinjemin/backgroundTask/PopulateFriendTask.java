@@ -36,8 +36,8 @@ import pinjemin.utility.UtilityConnection;
 
 public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 {
-	public static final String PHP_PATH_FRIEND_TEMAN_ANDA = "getpenawarantimeline.php";
-	public static final String PHP_PATH_FRIEND_REQUEST = "getpermintaantimeline.php";
+	public static final String PHP_PATH_FRIEND_TEMAN_ANDA = "getfriendlist.php";
+	public static final String PHP_PATH_FRIEND_REQUEST = "getrequestlist.php";
 	public static final int FRIEND_TEMAN_ANDA = 1;
 	public static final int FRIEND_REQUEST = 2;
 
@@ -106,7 +106,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 		else if (friendType == FRIEND_REQUEST) {
 			// create array, configure adapter
 			arrayUser = new ArrayList<>();
-			adapter = new FriendRequestAdapter(arrayUser);
+			adapter = new FriendRequestAdapter(arrayUser, currentUid, activity);
 
 			// configure recycler view
 			recyclerView = (RecyclerView) activity.findViewById(R.id.recylerViewFriendRequest);
@@ -131,7 +131,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			TreeMap<String,String> input = new TreeMap<>();
 			input.put("ownUID", currentUid);
 
-			String serverResponse = UtilityConnection.runPhp(phpFilePath, null);
+			String serverResponse = UtilityConnection.runPhp(phpFilePath, input);
 
 			// parse data JSON yang diterima dari server (berisi daftar post)
 			JSONObject jsonResponseObject = new JSONObject(serverResponse);

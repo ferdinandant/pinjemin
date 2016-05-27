@@ -19,6 +19,7 @@
 	
 	// return value
 	$return = "";
+	
 	while ($row = $result->fetch_assoc()) {
 		if (isset($row["TRUE"])) {
 			$return = "true";

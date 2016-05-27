@@ -453,4 +453,22 @@ begin
    order by RealName;
 end;;
 
+-- ==============================================================================
+-- Mendapatkan daftar review user
+-- ------------------------------------------------------------------------------
+-- @param: varQuery - input 
+-- @return: daftar nama-nama yang dicari sesuai input
+-- ==============================================================================
+drop procedure if exists getUserReviews;;
+create procedure getUserReviews(in varUID int)
+   reads sql data
+begin
+   select pos.NamaBarang, pem.Rating, pem.Review,
+      (select Realname from user where UID = pem.UIDPemberi) as RealName
+   from peminjaman pem natural join post pos
+   where pem.UIDPenerima = varUID and pem.status = 'DIKEMBALIKAN'
+      and ( (rating is not null or rating > 0) or (review is not null and review <> ""));
+end;;
+
+
 delimiter ;

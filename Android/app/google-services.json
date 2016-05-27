@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "419867105254",
+    "project_id": "pinjemin-2016"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419867105254:android:af3ffe607dc61e0d",
+        "android_client_info": {
+          "package_name": "pinjemin.pinjemin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "419867105254-5tvm1mdrekk26chhdl31o3c24rf788ue.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pinjemin.pinjemin",
+            "certificate_hash": "0183295A16365AA001E846797E18585D1B402DF8"
+          }
+        },
+        {
+          "client_id": "419867105254-jt2957he038t3ri37a0pd90r3dkssnvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnDSNl_pPseHLmpmCgvIXY8K5KWQNKmdU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

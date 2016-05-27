@@ -98,6 +98,23 @@ public class TimelineSupplyFragment extends Fragment
 	}
 
 	/** ==============================================================================
+	 * Handling saat activity ini dipanggil kembali (e.g. saat context-switching,
+	 * atau pindah dari activity lainnya ke activity ini)
+	 * ============================================================================== */
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Log.d("DEBUG", "Jumlah barang di adapter " + adapter.getItemCount());
+
+		// hanya kalau isi adapter kosong, jalankan refresh
+		if (adapter.getItemCount() == 0) {
+			Log.d("DEBUG", "Karena kosong, refresh lagi ya!");
+			performRefresh();
+		}
+	}
+
+	/** ==============================================================================
 	 * Memaksa agar data pada timeline di-refresh lagi
 	 * ============================================================================== */
 	public static void resetLastRequest() {

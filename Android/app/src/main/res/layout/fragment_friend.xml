@@ -34,7 +34,8 @@ android:layout_height="match_parent">
 				app:tabGravity="fill"
 				app:tabMode="fixed"
 				app:tabSelectedTextColor="#000"
-				app:tabTextColor="#000" />
+				app:tabTextColor="#000"/>
+
 
 			</android.support.design.widget.AppBarLayout>
 			<!-- submenu tab end -->
@@ -46,6 +47,7 @@ android:layout_height="match_parent">
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
+		android:clipToPadding="false"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 	</LinearLayout>

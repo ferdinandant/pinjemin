@@ -1,42 +1,46 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="pinjemin.menu_peminjaman.OngoingFragment">
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+	<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	tools:context="pinjemin.menu_friend.FriendFragment">
 
-        <TextView
-            android:id="@+id/anda_pinjam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="BARANG YANG ANDA PINJAM" />
+		<android.support.design.widget.CoordinatorLayout
+		android:id="@+id/coordinate"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recylerViewOngoingAndaPinjam"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
 
-        <TextView
-            android:id="@+id/anda_pinjamkan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:text="BARANG YANG ANDA PINJAMKAN" />
+		</android.support.design.widget.CoordinatorLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recylerViewOngoingDipinjamkan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
+		<pinjemin.behavior.CustomViewPager
+		android:id="@+id/viewpager"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:clipToPadding="false"
 
-    </LinearLayout>
+		app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-</FrameLayout>
+		<android.support.design.widget.TabLayout
+		android:id="@+id/tabs"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:background="@color/colorPrimary"
+		app:tabGravity="fill"
+		app:tabMode="fixed"
+		app:tabSelectedTextColor="#ffffff"
+		app:tabTextColor="#44ffffff"/>
+	</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

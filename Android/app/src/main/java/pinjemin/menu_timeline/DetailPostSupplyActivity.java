@@ -1,8 +1,11 @@
 package pinjemin.menu_timeline;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,8 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import pinjemin.activity.MainActivity;
+import pinjemin.backgroundTask.DeletePostTask;
 import pinjemin.backgroundTask.GetProfilTask;
+import pinjemin.comment.CommentActivity;
 import pinjemin.comment.CustomThreadBlock;
 import pinjemin.model.Comment;
 import pinjemin.model.PostDemand;
@@ -30,7 +34,6 @@ import pinjemin.R;
 import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityConnection;
 import pinjemin.utility.UtilityDate;
-import pinjemin.utility.UtilityGUI;
 
 
 public class DetailPostSupplyActivity extends AppCompatActivity
@@ -45,10 +48,9 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	private String dataAuthorUID, currentUid, intentPid, dataTimestamp, dataNamaBarang,
 		dataDeskripsi, dataHarga, dataAuthorRealName;
 
-	private Handler loadPostHandler;
-
 	private JSONArray jsonResponseArrayPost;
 	private JSONArray jsonResponseArrayComment;
+	private JSONArray jsonResponseArrayActions;
 
 
 	@Override
@@ -90,8 +92,12 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 		namaBarang.setText("");
 		deskripsi.setText("");
 		harga.setText("");
+	}
 
+	@Override
+	public void onResume() {
 		// ambil detail post di background
+		super.onResume();
 		loadPostDetails();
 	}
 
@@ -146,7 +152,7 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 			pemberiPinjam.setVisibility(View.VISIBLE);
 
 			// set listener untuk tombol "ubah"
-			btnMintaPinjem.setOnClickListener(new View.OnClickListener()
+			btnUbah.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View view) {
@@ -155,7 +161,7 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 			});
 
 			// set listener untuk tombol "hapus"
-			btnLihatProfil.setOnClickListener(new View.OnClickListener()
+			btnHapus.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View view) {
@@ -223,12 +229,15 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 				// jika parentUID sekarang != lastParentUid, berarti harus dimulai thread baru
 				// jika lastParentUid == -1, maka artinya belum ada data sebelumnya (ini yang pertama)
 				// jika lastParentUid !- -1, masukkan ke threadBlockArray untuk data sebelumnya
-				// TODO: benarkan parameter terakhir (harusnya getPossibleThreadAction dari server)!
 				if ((lastParentUid != parentUID) && (lastParentUid != -1)) {
-					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-						Integer.parseInt(intentPid), lastParentUid, 0);
-					threadBlockArray.add(threadBlock);
 					currentThreadBlockArrayPointer++;
+					JSONObject possibleActionCodeJson = jsonResponseArrayActions
+						.getJSONObject(currentThreadBlockArrayPointer);
+					int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
+
+					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
+						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, lastParentUid);
+					threadBlockArray.add(threadBlock);
 					commentArray.clear();
 				}
 
@@ -244,18 +253,27 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 
 		// thread yang mengandung komentar terakhir belum dimasukkan ke threadBlockArray
 		// jadi, masukkan thread tersebut sekarang
-		CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-			Integer.parseInt(intentPid), lastParentUid, 0);
-		threadBlockArray.add(threadBlock);
-		currentThreadBlockArrayPointer++;
-		commentArray.clear();
+		try {
+			currentThreadBlockArrayPointer++;
+			JSONObject possibleActionCodeJson = jsonResponseArrayActions
+				.getJSONObject(currentThreadBlockArrayPointer);
+			int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
+
+			CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
+				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, lastParentUid);
+			threadBlockArray.add(threadBlock);
+			commentArray.clear();
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		// buat view items untuk threads
 		int threadBlockArrayLength = threadBlockArray.size();
 
 		for (int i = 0; i < threadBlockArrayLength; i++) {
-			CustomThreadBlock threadBlockToPrint = threadBlockArray.get(i);
-			commentSectionContainer.addView(threadBlockToPrint.getLinearLayout());
+			CustomThreadBlock threadBlock = threadBlockArray.get(i);
+			commentSectionContainer.addView(threadBlock.getLinearLayout());
 		}
 	}
 
@@ -264,7 +282,7 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	 * ============================================================================== */
 	private void loadPostDetails() {
 		final Activity activity = this;
-		final Handler handler = new Handler();
+		final Handler handler = new Handler(Looper.getMainLooper());
 		Log.d("DEBUG", "Masuk loadPostDetails");
 		Runnable runnable = new Runnable()
 		{
@@ -278,14 +296,18 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 					// kirim data ke server
 					String serverResponsePost = UtilityConnection.runPhp("getpostdetail.php", dataToSend);
 					String serverResponseComment = UtilityConnection.runPhp("getthreads.php", dataToSend);
+					String serverResponseActions = UtilityConnection.runPhp("getallpossiblethreadaction.php", dataToSend);
 					Log.d("DEBUG", serverResponsePost);
 					Log.d("DEBUG", serverResponsePost);
+					Log.d("DEBUG", serverResponseActions);
 
 					// parse data JSON yang diterima dari server
 					JSONObject jsonResponseObjectPost = new JSONObject(serverResponsePost);
 					JSONObject jsonResponseObjectComment = new JSONObject(serverResponseComment);
+					JSONObject jsonResponseObjectActions =  new JSONObject(serverResponseActions);
 					jsonResponseArrayPost = jsonResponseObjectPost.getJSONArray("server_response");
 					jsonResponseArrayComment = jsonResponseObjectComment.getJSONArray("server_response");
+					jsonResponseArrayActions = jsonResponseObjectActions.getJSONArray("server_response");
 
 					// update di UI thread
 					handler.post(new Runnable()
@@ -323,10 +345,10 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	// --- action handlers ---
 
 	public void mintaPinjem() {
-		String uidPemberi = session.getUserDetails().get(SessionManager.KEY_UID);
-
-		startActivity(new Intent(this, MainActivity.class));
-		finish();
+		Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
+		intent.putExtra("type", "create");
+		intent.putExtra("ownUid", dataAuthorUID);
+		startActivity(intent);
 	}
 
 	public void lihatProfil() {
@@ -339,10 +361,37 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	}
 
 	public void ubah() {
+		Intent intent = new Intent(this, UbahPostSupplyActivity.class);
+		intent.putExtra("pid", intentPid);
+		intent.putExtra("namabarang", dataNamaBarang);
+		intent.putExtra("deskripsi", dataDeskripsi);
+		intent.putExtra("harga", dataHarga);
 
+		startActivity(intent);
+		finish();
 	}
 
 	public void hapus() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Apakah Anda Yakin Untuk Menghapus Post Ini")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TreeMap<String, String> inputSend = new TreeMap<>();
+						inputSend.put("PID", intentPid);
 
+						DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
+						delete.execute();
+						finish();
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
 	}
 }

@@ -20,9 +20,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+
 import java.util.TreeMap;
 
 import pinjemin.R;
+import pinjemin.backgroundTask.GetProfilTask;
 import pinjemin.backgroundTask.UbahProfilFetchTask;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
@@ -36,13 +44,18 @@ import pinjemin.session.SessionManager;
 import pinjemin.menu_timeline.TimelineFragment;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements
+		GoogleApiClient.OnConnectionFailedListener
 {
 	private SessionManager sessionManager;
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
 	private CustomViewPager menuTabViewPager;
 	private String currentUid;
+
+	// Google Sign Out
+	private GoogleApiClient mGoogleApiClient;
+	private static final String TAG = "SignOutActivity";
 
 	private int[] tabIcons = {
 		R.drawable.ic_tab_home,
@@ -83,6 +96,25 @@ public class MainActivity extends AppCompatActivity
 		tabLayout = (TabLayout) findViewById(R.id.tabs);
 		tabLayout.setupWithViewPager(menuTabViewPager);
 		configureTabLayout();
+		// Sign Out Google
+		// [START configure_signin]
+		// Configure sign-in to request the user's ID, email address, and basic
+		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestEmail()
+				.build();
+		// [END configure_signin]
+		// [START build_client]
+		// Build a GoogleApiClient with access to the Google Sign-In API and the
+		// options specified by gso.
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+				.build();
+		// [END build_client]
+	}
+	public void onBackPressed() {
+		moveTaskToBack(true);
 	}
 
 	/** ==============================================================================
@@ -118,6 +150,14 @@ public class MainActivity extends AppCompatActivity
 		tabLayout.getTabAt(3).setIcon(tabIcons[3]);
 	}
 
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
+		// be available.
+		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+	}
+
+
 	/** ==============================================================================
 	 * Handler ketika ada menu item pada yang dipilih.
 	 * @param item: MenuItem yang dipilih
@@ -127,7 +167,25 @@ public class MainActivity extends AppCompatActivity
 		int id = item.getItemId();
 
 		if (id == R.id.action_logout) {
-			sessionManager.logoutUser();
+			// [START signOut]
+			Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+			new ResultCallback<Status>() {
+				@Override
+				public void onResult(Status status) {
+					// [START_EXCLUDE]
+					sessionManager.logoutUser();
+					// [END_EXCLUDE]
+				}
+			});
+			// [END signOut]
+		}
+		else if (id == R.id.action_lihat_profil) {
+			TreeMap<String,String> input = new TreeMap<>();
+			input.put("ownUID", currentUid);
+			input.put("targetUID", currentUid);
+
+			GetProfilTask lihatProfil = new GetProfilTask(this, input);
+			lihatProfil.execute();
 		}
 		else if (id == R.id.action_ubah_profil) {
 			TreeMap<String,String> input = new TreeMap<>();
@@ -178,12 +236,6 @@ public class MainActivity extends AppCompatActivity
 	/** ==============================================================================
 	 * Handler ketika tombol back ditekan
 	 * ============================================================================== */
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		Log.d("DEBUG", "Back press dari main");
-	}
-
 	// --- inner class declaration ---
 
 	/** ==============================================================================

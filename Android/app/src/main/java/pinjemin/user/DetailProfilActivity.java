@@ -1,15 +1,23 @@
 package pinjemin.user;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.TreeMap;
+
 import pinjemin.R;
 import pinjemin.activity.MainActivity;
+import pinjemin.backgroundTask.DeletePostTask;
+import pinjemin.backgroundTask.FriendTask;
+import pinjemin.backgroundTask.ReviewTask;
+import pinjemin.backgroundTask.UbahProfilFetchTask;
 import pinjemin.session.SessionManager;
 
 
@@ -152,30 +160,86 @@ public class DetailProfilActivity extends AppCompatActivity
 				}
 			});
 		}
+
+		TreeMap<String, String> inputData = new TreeMap<>();
+		inputData.put("targetUID", uid);
+		ReviewTask task = new ReviewTask(this, inputData);
+		task.execute();
 	}
 
 	public void ubahProfil() {
+		TreeMap<String,String> input = new TreeMap<>();
+		input.put("ownUID", currentUid);
+		input.put("targetUID", currentUid);
 
+		UbahProfilFetchTask ubahProfil = new UbahProfilFetchTask(this, input);
+		ubahProfil.execute();
 	}
 
 	public void tambahTeman() {
+		TreeMap<String, String> inputSend = new TreeMap<>();
+		inputSend.put("ownUID", currentUid);
+		inputSend.put("partnerUID", uid);
 
+		FriendTask task = new FriendTask(this, FriendTask.ADD, inputSend, realName);
+		task.execute();
+		finish();
 	}
 
 	public void hapusTeman() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Apakah Anda Yakin Untuk Menghapus Post Ini")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						TreeMap<String, String> inputSend = new TreeMap<>();
 
+						inputSend.put("ownUID", currentUid);
+						inputSend.put("partnerUID", uid);
+
+						FriendTask task = new FriendTask(getApplicationContext(), FriendTask.DELETE, inputSend, realName);
+						task.execute();
+						finish();
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
 	}
 
 	public void batalRequest() {
+		TreeMap<String, String> inputSend = new TreeMap<>();
+		inputSend.put("ownUID", currentUid);
+		inputSend.put("partnerUID", uid);
 
+		FriendTask task = new FriendTask(this, FriendTask.CANCEL, inputSend, realName);
+		task.execute();
+		finish();
 	}
 
 	public void tolakRequest() {
+		TreeMap<String, String> inputSend = new TreeMap<>();
+		inputSend.put("ownUID", currentUid);
+		inputSend.put("partnerUID", uid);
 
+		FriendTask task = new FriendTask(this, FriendTask.REJECT, inputSend, realName);
+		task.execute();
+		finish();
 	}
 
 	public void setujuRequest() {
+		TreeMap<String, String> inputSend = new TreeMap<>();
+		inputSend.put("ownUID", currentUid);
+		inputSend.put("partnerUID", uid);
 
+		FriendTask task = new FriendTask(this, FriendTask.ACCEPT, inputSend, realName);
+		task.execute();
+		finish();
 	}
 
 	@Override

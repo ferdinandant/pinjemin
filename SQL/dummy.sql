@@ -30,3 +30,21 @@ call getThreads(3, 2);
 
 call initiateTransferPenawaran(3, 1, '2017-01-01');
 call confirmTransferPenawaran(3);
+
+
+-- test sprint 3
+call createNewPermintaan(5, 'Ferditest', 'Deskripsi', '2017-01-01');;
+call getPermintaanTimeline(0, 5);;
+call initiateTransfer(96, 10, 5, '2017-02-02');;
+call confirmTransfer(96, 5, 10);;
+
+call changePeminjamanStatus(96, 'HILANG', null, null);;
+call changePeminjamanStatus(96, 'MASIH DIPINJAM', '4', 'Boleh lah...');;
+call changePeminjamanStatus(96, 'DIKEMBALIKAN', '4', 'Boleh lah...');;
+
+call changePeminjamanDeadline(96, '2015-12-25 00:00:00');
+
+call getThreads(96,10);;
+
+call getOngoingDipinjamkanLog(10);;
+call getExpiredLog(10);;

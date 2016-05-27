@@ -4,7 +4,7 @@
  * (satu thread comment mengandung beberapa entri comment, ditambah dengan action
  * buttons di bawahnya)
  * ------------------------------------------------------------------------------------
- * Author: Ferdinand Antonius
+ * target: Ferdinand Antonius
  * Refactoring & Doumentation: Ferdinand Antonius
  * =================================================================================== */
 
@@ -44,19 +44,21 @@ public class CustomThreadBlock
 	private int parentUID;
 	private int postPID;
 	private int possibleAction;
+	private int targetUID;
 
 
 	/** ==============================================================================
 	 * Constructor kelas CustomThreadBlock
 	 * ============================================================================== */
 	public CustomThreadBlock(Activity activity, ArrayList<Comment> commentEntries,
-		int postPID, int parentUID, int possibleAction
+		int postPID, int parentUID, int possibleAction, int targetUID
 	) {
 		this.activity = activity;
 		this.commentEntries = commentEntries;
 		this.postPID = postPID;
 		this.parentUID = parentUID;
 		this.possibleAction = possibleAction;
+		this.targetUID = targetUID;
 
 		// attach semua data ke dalam satu LinearLayout
 		constructLinearLayout();
@@ -99,7 +101,7 @@ public class CustomThreadBlock
 
 		// configure action buttons
 		CustomCommentActionBlock actionButtonBlock = new CustomCommentActionBlock(
-			activity, postPID, parentUID, possibleAction);
+			activity, postPID, parentUID, possibleAction, targetUID);
 
 		// configure gap
 		// (untuk jarak dengan thread lainnya)
@@ -107,7 +109,6 @@ public class CustomThreadBlock
 		gap.setLayoutParams(new LinearLayout.LayoutParams(
 			LinearLayout.LayoutParams.MATCH_PARENT, padding_10dp));
 		gap.setBackgroundColor(COLOR_TRANSPARENT);
-
 
 		// --- ATTACH SEGALA SESUATU ---
 

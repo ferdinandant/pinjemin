@@ -83,7 +83,7 @@ begin
       select "noooo";
    else
       select "yeaaay";
-   endif;
+   end if;
 
    -- ------------------------------------------------------------
    -- bentuk while-do

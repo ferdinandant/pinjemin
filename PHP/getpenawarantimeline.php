@@ -3,8 +3,11 @@
 
 	$page = isset($_POST['page'])? $_POST["page"] : 0;
 	
+	// escape characters
+	$page = addslashes($page);
+	
 	$conn = openConnection();
-	$sql = "call getpenawarantimeline($page, 999999)";
+	$sql = "call getPenawaranTimeline($page, 999999)";
 	$result = $conn->query($sql);
 
 	$response = array();

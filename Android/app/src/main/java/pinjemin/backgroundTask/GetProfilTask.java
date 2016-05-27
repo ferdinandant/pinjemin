@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -11,9 +13,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
+import javax.sql.RowSetEvent;
+
+import pinjemin.R;
+import pinjemin.adapter.PeminjamanOngoingPinjamAdapter;
+import pinjemin.adapter.ProfileReviewAdapter;
+import pinjemin.model.PostPeminjaman;
+import pinjemin.model.Review;
 import pinjemin.model.User;
+import pinjemin.session.SessionManager;
 import pinjemin.user.DetailProfilActivity;
 import pinjemin.utility.UtilityConnection;
 
@@ -29,20 +40,25 @@ public class GetProfilTask extends AsyncTask<Void,Object,Void>
 	private TreeMap<String,String> input;
 
 	private String phpFilePath = "getprofiledetail.php";
+	private String phpFilePath2 = "getuserreviews.php";
+
+	private SessionManager session;
 
 	private User targetUser;
-
 	private String status;
+
+	private ArrayList<Review> arrayReview = new ArrayList<>();
 
 	public GetProfilTask(Context context, TreeMap<String,String> input) {
 		this.context = context;
 		this.activity = (Activity) context;
 		this.input = input;
+
+		session = new SessionManager(activity);
 	}
 
 	@Override
 	protected void onPreExecute() {
-
 	}
 
 	/** ==============================================================================
@@ -82,7 +98,8 @@ public class GetProfilTask extends AsyncTask<Void,Object,Void>
 
 				User user = new User(uid, accountName, realName, bio, fakultas, prodi, telepon, "" + rating, numRating);
 
-				publishProgress(user);
+				targetUser = user;
+				//publishProgress(user);
 
 			}
 		}

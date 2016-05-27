@@ -7,6 +7,7 @@
 -- @version 1.0
 -- ==============================================================================
 
+
 delimiter ;;
 
 -- ==============================================================================
@@ -21,53 +22,36 @@ create function canComment(varPID int, varUID int)
    returns tinyint(1)
    reads sql data
 begin
-   declare peminjamanCount int default 0;
-   -- error handler
+   declare postType varchar(10) default 0;
+   declare isInvolvedInPeminjaman int default 0;
    declare exit handler for sqlexception
-   return false;
-   -- peminjamanCount bernilai 0 (artinya boleh dikomentari) jika:
-   -- [1] post ini belum jadi peminjaman (tidak ada di peminjaman), ATAU
-   -- [2] post ini sudah jadi peminjaman, tapi deal-nya dengan user ini, ATAU
-   -- [3] yang mengomentari UID-nya 0 (sistem)
-   if (varUID <> 0) then
-      select count(*) into peminjamanCount
+      return false;
+   
+   -- varUID = 0 berarti system notification
+   if (varUID = 0) then
+      return true;
+   end if;
+   
+   select getPostType(varPID) into postType;
+      
+   if postType = 'Peminjaman' then
+      -- hanya bisa komentar peminjamna kalau terlibat di dalamnya
+      select count(*) into isInvolvedInPeminjaman
       from peminjaman pem
-      where PID = varPID and PartnerUID <> varUID;
-   end if;
-   -- asalkan peminjamanCount = 0, maka bisa.
-   if peminjamanCount = 0 then
-      return true;
-   else
+      where UIDPemberi = varPID or UIDPenerima = varUID;
+      
+      if isInvolvedInPeminjaman > 0 then
+         return true;
+      else
+         return false;
+      end if;
+   elseif postType = 'Null' then
+      -- post sudah tidak ada
       return false;
-   end if;
-end;;
-
--- ==============================================================================
--- Mengecek apakah suatu post sudah menjadi peminjaman
--- ------------------------------------------------------------------------------
--- @param: varPID - PID post/peminjaman yang dikomentari
--- @param: varUID - UID yang mengomentari
--- @returns: true jika sudah menjadi peminjaman, false jika tidak.
--- ==============================================================================
-drop function if exists isPostPeminjaman;;
-create function isPostPeminjaman(varPID int)
-   returns tinyint(1)
-   reads sql data
-begin
-   declare peminjamanCount int default 0;
-   -- error handler
-   declare exit handler for sqlexception
-   return false;
-   -- cek apakah ada di tabel peminjaman
-   select count(*) into peminjamanCount
-   from peminjaman pem
-   where PID = varPID;
-   -- kalau ada, return true
-   if peminjamanCount > 0 then
-      return true;
    else
-      return false;
+      return true;
    end if;
+   
 end;;
 
 -- ==============================================================================
@@ -82,29 +66,29 @@ create function getPostType(varPID int)
    returns varchar(10)
    reads sql data
 begin
-   -- declare variable boolean
    declare inPermintaan tinyint(1) default 0;
    declare inPenawaran tinyint(1) default 0;
+   declare inPeminjaman tinyint(1) default 0;
    
-   -- cek di permintaan
    select count(*) into inPermintaan
    from permintaan per natural join post pos
    where per.pid = varPID
-      and varPID not in (select pid from peminjaman pem)
       and per.LastNeed >= now();
       
-   -- cek di penawaran
    select count(*) into inPenawaran
    from penawaran pen natural join post pos
-   where pen.PID = varPID
-      and varPID not in (select PID from peminjaman pem);
+   where pen.PID = varPID;
+   
+   select count(*) into inPeminjaman
+   from peminjaman pem
+   where pem.PID = varPID;
       
-   -- handling kalau sudah tidak ada, atau kalau sudah jadi peminjaman
-   -- tapi kalau ada, fetch/join dari tabel yang sesuai
    if inPermintaan > 0 then
       return 'Permintaan';
    elseif inPenawaran > 0 then
       return 'Penawaran';
+   elseif inPeminjaman > 0 then
+      return 'Peminjaman';
    else
       return 'Null';
    end if;
@@ -130,40 +114,38 @@ create function getUserRelationStatus(varUID1 int, varUID2 int)
    returns varchar(20)
    reads sql data
 begin
-   declare counter1 int default 0;
-   declare counter2 int default 0;
-   
+   declare isFriend tinyint(1) default 0;
+   declare isRequesting tinyint(1) default 0;
+   declare isRequested tinyint(1) default 0;
    declare exit handler for sqlexception
-   return false;
+      return false;
     
-    if varUID1 = varUID2 then
-        return 'OwnProfile';
-    end if;
-   
-    -- cek profil yang diliat itu ada di daftar temen kita apa engga
-    -- kalo ada, cek kita ada di daftar temennya apa engga
-    -- kalo kita ngga ada di daftar temennya, berarti kita udah add dia tp blm temenan
-    -- kalo kita ada di daftar temennya, berarti kita udah temenan
-   select count(*) into counter1
-   from friend fr
-   where fr.UID1 = varUID1 and fr.UID2 = varUID2;
-   
-    -- cek user yang diliat temenan ngga sama kita
-    -- kalo ada di tabel temen, berarti dia temenan
-   select count(*) into counter2
-   from friend fr
-   where fr.UID1 = varUID2 and fr.UID2 = varUID1;
-   
-   -- kalau ada, return true
-   if counter1 > 0 && counter2 > 0 then
-      return 'Friends';
-   elseif counter1>0 && counter2=0 then
-      return 'Requesting';
-   elseif counter1=0 && counter2>0 then
-        return 'Requested';
-    else
-      return 'NotFriends';
+   if varUID1 = varUID2 then
+      return 'OwnProfile';
    end if;
+
+   select count(*) into isFriend
+      from friend fr
+      where fr.UID1 = varUID1 and fr.UID2 = varUID2;
+   if (isFriend > 0) then
+      return 'Friends';
+   end if;
+   
+   select count(*) into isRequesting
+      from adds ad
+      where ad.UIDAdder = varUID1 and ad.UIDAdded = varUID2;
+   if (isRequesting > 0) then
+      return 'Requesting';
+   end if;
+   
+   select count(*) into isRequested
+      from adds ad
+      where ad.UIDAdder = varUID2 and ad.UIDAdded = varUID1;
+   if (isRequested > 0) then
+      return 'Requested';
+   end if;
+      
+   return 'NotFriends';
 end;;
 
 -- ==============================================================================
@@ -229,7 +211,6 @@ end;;
 -- @param: varUID - UID user yang berkaitan
 -- @returns: true jika uid dan pid sudah ada di dalam tabel lastseen
 -- ==============================================================================
-delimiter ;;
 drop function if exists getLastseenUser;;
 create function getLastseenUser(varUID int, varPID int)
    returns timestamp
@@ -244,6 +225,192 @@ begin
     where UID=varUID and PID=varPID;
     
     return lastTimeChecking;
+end;;
+
+
+-- ===============<<< SPRINT 3 >>>===============
+
+-- ==============================================================================
+-- Untuk menentukan action buttons apa yang muncul di suatu thread
+-- ------------------------------------------------------------------------------
+-- @param: varPID - PID post
+-- @param: varUID - UID yang ingin dicoba
+-- @param: varParentUID - ParentUID thread
+-- @return: 0 jika tidak bisa melakukan apa-apa, 1 jika bisa meng-initiate
+--    penyerahan barang, 2 jika bisa meng-confirm penyerahan barang, 3 jika
+--    bisa membatalkan initiate penyerahan barang.
+-- ==============================================================================
+drop function if exists getPossibleThreadAction;;
+create function getPossibleThreadAction(varPID int, varUID int, varParentUID int)
+   returns int
+   reads sql data
+begin
+   declare postType varchar(10) default 0;
+   declare isPembuatPost tinyint(1) default 0;
+   declare isSudahKomentar tinyint(1) default 0;
+   declare isDiKonfirmasiUID tinyint(1) default 0;
+   declare isDiKonfirmasiParentUID tinyint(1) default 0;
+   declare isSudahInitiateKeLainnya tinyint(1) default 0;
+   
+   -- cari ada di mana (permintaan atau penawaran)
+   select getPostType(varPID) into postType;
+   
+   -- apakah dia pembuat post
+   select count(*) into isPembuatPost
+   from post pos
+   where pos.PID = varPID and pos.UID = varUID;
+   
+   -- apakah UID terlibat dalam konfirmasi
+   select count(*) into isDiKonfirmasiUID
+   from konfirmasi kon
+   where kon.PID = varPID and kon.UID = varUID;
+   
+   -- apakah parentUID terlibat dalam konfirmasi
+   select count(*) into isDiKonfirmasiParentUID
+   from konfirmasi kon
+   where kon.PID = varPID and kon.UID = varParentUID;
+   
+   if postType = 'Permintaan' then
+      -- untuk post penawaran, yang bisa initiate: pembaca post
+      if isPembuatPost > 0 then
+         -- kalau sudah ada initiate, bisa confirm
+         -- kalau nggak, ya nggak bisa apa-apa
+         if isDiKonfirmasiParentUID > 0 then
+            return 2;
+         else
+            return 0;
+         end if;
+      else
+         -- apakah dia sudah komentar
+         select count(*) into isSudahKomentar
+         from komentar kom
+         where kom.PID = varPID and kom.UID = varUID;
+         -- kalau sudah initate, bisa cancel,
+         -- kalau belum, bisa initiate
+         if isDiKonfirmasiParentUID > 0 and isSudahKomentar > 0 then
+            return 3;
+         elseif isSudahKomentar > 0 then
+            return 1;
+         else
+            return 0;
+         end if;
+      end if;
+   
+   elseif postType = 'Penawaran' then
+      -- untuk post penawaran, yang bisa initiate: penulis post
+      if isPembuatPost > 0 then
+         -- cek kalau belum meng-initiate ke yang lainnya
+         select count(*) into isSudahInitiateKeLainnya
+         from konfirmasi kon
+         where kon.PID = varPID and kon.UID <> varParentUID;
+         -- kalau sudah initiate ke yg lain, nggak bisa ngapa-ngapain untuk yg ini
+         -- kalau sudah initiate untuk ini, maka bisa cancel
+         -- lainnya, maka bisa initiate
+         if isSudahInitiateKeLainnya > 0 then
+            return 0;
+         elseif isDiKonfirmasiParentUID > 0 then
+            return 3;
+         else
+            return 1;
+         end if;
+      else
+         -- apakah dia sudah komentar
+         select count(*) into isSudahKomentar
+         from komentar kom
+         where kom.PID = varPID and kom.UID = varUID;
+         -- kalau sudah ada initiate, bisa confirm
+         -- kalau nggak, ya nggak bisa apa-apa
+         if isDiKonfirmasiParentUID > 0 then
+            return 2;
+         else
+            return 0;
+         end if;
+      end if;
+      
+   else
+      return 0;
+   end if;
+end;;
+
+-- ==============================================================================
+-- Untuk mengecek apakah suatu user pernah mengomentari suatu post
+-- ------------------------------------------------------------------------------
+-- @param: varUID - UID yang ingin di-test
+-- @param: varPID - PID yang ingin di-test
+-- @return: 1 apabila user sudah pernah mengomentari post tersebut, 0 otherwise
+-- ==============================================================================
+drop function if exists userHasCommented;;
+create function userHasCommented(varUID int, varPID int)
+   returns int
+   reads sql data
+begin
+   declare userHasCommented int default 0;
+   
+   select exists (select * from komentar where UID = varUID and PID = varPID)
+   into userHasCommented;
+   
+   return userHasCommented;
+end;;
+
+-- ==============================================================================
+-- Untuk mengecek apakah suatu user pernah mengomentari suatu post
+-- ------------------------------------------------------------------------------
+-- @param: varUID - UID yang ingin di-test
+-- @param: varPID - PID yang ingin di-test
+-- @return: 1 apabila user sudah pernah mengomentari post tersebut, 0 otherwise
+-- ==============================================================================
+drop function if exists userHasCommented;;
+create function userHasCommented(varUID int, varPID int)
+   returns int
+   reads sql data
+begin
+   declare userHasCommented int default 0;
+   
+   select exists (select * from komentar where UID = varUID and PID = varPID)
+   into userHasCommented;
+   
+   return userHasCommented;
+end;;
+
+-- ==============================================================================
+-- Mendapatkan jumlah post yang belum dibaca oleh user pada suatu post/peminjaman
+-- ------------------------------------------------------------------------------
+-- @param: varUID - UID yang ingin di-test
+-- @param: varPID - PID yang ingin di-test
+-- @param: varAuthorUID - UID yang membuat post tersebut (sengaja di-denormalisasi
+--   agar tidak perlu mengecek lagi apakah varUID adalah pembuat post).
+-- @return: jumlah post yang belum dibaca oleh user pada suatu post/peminjaman
+-- ==============================================================================
+drop function if exists getUnreadCount;;
+create function getUnreadCount(varUID int, varPID int, varAuthorUID int)
+   returns int
+   reads sql data
+begin
+   declare unreadComments int default 0;
+   declare lastSeenTimestamp datetime default '0000-00-00 00:00:00';
+      
+   select las.LastSeen into lastSeenTimestamp
+   from lastseen las
+   where las.UID = varUID and las.PID = varPID;
+   
+   if varUID = varAuthorUID then
+      -- pembuat post bisa perlu menghitung semuanya
+      select count(*) into unreadComments
+      from komentar kom
+      where kom.PID = varPID
+         and kom.Timestamp > lastSeenTimestamp;
+
+      return unreadComments;
+   else
+      -- pembaca post hanya perlu cek yang parent UID-nya dia
+      select count(*) into unreadComments
+      from komentar kom
+      where kom.PID = varPID
+         and kom.parentUID = varUID
+         and kom.Timestamp > lastSeenTimestamp;
+         
+      return unreadComments;
+   end if;     
 end;;
 
 delimiter ;

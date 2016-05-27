@@ -35,7 +35,8 @@ public class FriendTemanAnda extends Fragment
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		session = new SessionManager(getActivity());
+		SessionManager session = new SessionManager(getActivity());
+
 		String currentUid = session.getUserDetails().get(SessionManager.KEY_UID);
 
 		PopulateFriendTask populateFriendTask = new PopulateFriendTask(getActivity(), PopulateFriendTask.FRIEND_TEMAN_ANDA, currentUid);

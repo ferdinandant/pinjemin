@@ -35,7 +35,7 @@ public class CreatePostDemandActivity extends AppCompatActivity
 {
 	private static final int DATEPICKER_DIALOG = 0;
 
-	private EditText inputNamaBarang, inputDeskripsi, inputHarga;
+	private EditText inputNamaBarang, inputDeskripsi;
 	private TextInputLayout inputLayoutNamaBarang, inputLayoutDeskripsi;
 	private TextView dateView;
 	private View garisBawah;
@@ -66,7 +66,6 @@ public class CreatePostDemandActivity extends AppCompatActivity
 		// initialize components:
 		inputNamaBarang = (EditText) findViewById(R.id.input_namaBarang);
 		inputDeskripsi = (EditText) findViewById(R.id.input_deskripsi);
-		inputHarga = (EditText) findViewById(R.id.input_harga);
 		dateView = (TextView) findViewById(R.id.dateView);
 		btnBatas = (ImageButton) findViewById(R.id.btn_batas);
 		btnSubmit = (Button) findViewById(R.id.btn_submit);

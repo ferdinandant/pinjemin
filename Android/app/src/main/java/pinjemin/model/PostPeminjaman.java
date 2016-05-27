@@ -8,110 +8,194 @@
 
 package pinjemin.model;
 
-public class PostPeminjaman
-{
+public class PostPeminjaman {
 
-	private String uidPeminjam;
-	private String uidPemberi;
-	private String timestamp;
-	private String namaBarang;
-	private String deskripsi;
-	private String harga;
-	private String accountName;
-	private String deadline;
-	private String status;
+    private String pid;
+    private String uid;
+    private String uidPemberi;
+    private String uidPenerima;
 
+    private String timestamp;
+    private String timestampMulai;
+    private String timestampKembali;
+    private String deadline;
 
-	/** ==============================================================================
-	 * Constructor kelas PostPeminjaman
-	 * ============================================================================== */
-	public PostPeminjaman(String uidPeminjam, String uidPemberi,
-		String timestamp, String namaBarang, String deskripsi,
-		String harga, String accountName, String deadline, String status
-	) {
-		this.uidPeminjam = uidPeminjam;
-		this.uidPemberi = uidPemberi;
-		this.timestamp = timestamp;
-		this.namaBarang = namaBarang;
-		this.deskripsi = deskripsi;
-		this.harga = harga;
-		this.accountName = accountName;
-		this.deadline = deadline;
-		this.status = status;
-	}
+    private String status;
+    private String review;
+    private String rating;
 
+    private String namaBarang;
+    private String deskripsi;
 
-	// --- setter & getter methods ---
+    private String realname;
+    private String realnamePemberi;
+    private String realnamePenerima;
 
-	public String getUidPeminjam() {
-		return uidPeminjam;
-	}
+    private String lastneed;
+    private String harga;
 
-	public void setUidPeminjam(String uidPeminjam) {
-		this.uidPeminjam = uidPeminjam;
-	}
+    public PostPeminjaman(String pid, String uid, String uidPemberi, String uidPenerima, String timestamp, String timestampMulai, String timestampKembali, String deadline, String status, String review, String rating, String namaBarang, String deskripsi, String realname, String realnamePemberi, String realnamePenerima, String lastneed, String harga) {
+        this.pid = pid;
+        this.uid = uid;
+        this.uidPemberi = uidPemberi;
+        this.uidPenerima = uidPenerima;
+        this.timestamp = timestamp;
+        this.timestampMulai = timestampMulai;
+        this.timestampKembali = timestampKembali;
+        this.deadline = deadline;
+        this.status = status;
+        this.review = review;
+        this.rating = rating;
+        this.namaBarang = namaBarang;
+        this.deskripsi = deskripsi;
+        this.realname = realname;
+        this.realnamePemberi = realnamePemberi;
+        this.realnamePenerima = realnamePenerima;
+        this.lastneed = lastneed;
+        this.harga = harga;
+    }
 
-	public String getUidPemberi() {
-		return uidPemberi;
-	}
+    public String getPid() {
+        return pid;
+    }
 
-	public void setUidPemberi(String uidPemberi) {
-		this.uidPemberi = uidPemberi;
-	}
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
 
-	public String getTimestamp() {
-		return timestamp;
-	}
+    public String getUid() {
+        return uid;
+    }
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
-	}
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
-	public String getNamaBarang() {
-		return namaBarang;
-	}
+    public String getUidPemberi() {
+        return uidPemberi;
+    }
 
-	public void setNamaBarang(String namaBarang) {
-		this.namaBarang = namaBarang;
-	}
+    public void setUidPemberi(String uidPemberi) {
+        this.uidPemberi = uidPemberi;
+    }
 
-	public String getDeskripsi() {
-		return deskripsi;
-	}
+    public String getUidPenerima() {
+        return uidPenerima;
+    }
 
-	public void setDeskripsi(String deskripsi) {
-		this.deskripsi = deskripsi;
-	}
+    public void setUidPenerima(String uidPenerima) {
+        this.uidPenerima = uidPenerima;
+    }
 
-	public String getHarga() {
-		return harga;
-	}
+    public String getTimestamp() {
+        return timestamp;
+    }
 
-	public void setHarga(String harga) {
-		this.harga = harga;
-	}
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public String getAccountName() {
-		return accountName;
-	}
+    public String getTimestampMulai() {
+        return timestampMulai;
+    }
 
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
+    public void setTimestampMulai(String timestampMulai) {
+        this.timestampMulai = timestampMulai;
+    }
 
-	public String getDeadline() {
-		return deadline;
-	}
+    public String getTimestampKembali() {
+        return timestampKembali;
+    }
 
-	public void setDeadline(String deadline) {
-		this.deadline = deadline;
-	}
+    public void setTimestampKembali(String timestampKembali) {
+        this.timestampKembali = timestampKembali;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getDeadline() {
+        return deadline;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getNamaBarang() {
+        return namaBarang;
+    }
+
+    public void setNamaBarang(String namaBarang) {
+        this.namaBarang = namaBarang;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
+    }
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getRealnamePemberi() {
+        return realnamePemberi;
+    }
+
+    public void setRealnamePemberi(String realnamePemberi) {
+        this.realnamePemberi = realnamePemberi;
+    }
+
+    public String getRealnamePenerima() {
+        return realnamePenerima;
+    }
+
+    public void setRealnamePenerima(String realnamePenerima) {
+        this.realnamePenerima = realnamePenerima;
+    }
+
+    public String getLastneed() {
+        return lastneed;
+    }
+
+    public void setLastneed(String lastneed) {
+        this.lastneed = lastneed;
+    }
+
+    public String getHarga() {
+        return harga;
+    }
+
+    public void setHarga(String harga) {
+        this.harga = harga;
+    }
 }

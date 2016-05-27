@@ -2,7 +2,8 @@
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:layout_width="match_parent"
-android:layout_height="match_parent">
+android:layout_height="match_parent"
+>
 
 	<LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -32,10 +33,10 @@ android:layout_height="match_parent">
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:fillViewport="false"
-				app:tabGravity="fill"
+				android:elevation="14dp"
 				app:tabMode="fixed"
 				app:tabSelectedTextColor="#000"
-				app:tabTextColor="#000" />
+				app:tabTextColor="#000"/>
 			</android.support.design.widget.AppBarLayout>
 			<!-- submenu tab end -->
 
@@ -53,10 +54,11 @@ android:layout_height="match_parent">
 	android:id="@+id/btn_post"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:layout_gravity="bottom|end"
+	android:layout_gravity="bottom|right|end"
 	android:layout_marginBottom="16dp"
 	android:layout_marginRight="16dp"
 	android:src="@drawable/ic_action_create"
+	app:rippleColor="@color/ripple_material_light"
 	app:layout_behavior="pinjemin.behavior.FloatingButtonBehavior"
 	/>
 </android.support.design.widget.CoordinatorLayout>

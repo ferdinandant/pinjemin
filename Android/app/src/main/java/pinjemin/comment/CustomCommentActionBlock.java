@@ -11,6 +11,7 @@ package pinjemin.comment;
 // pochika
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,7 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
+import pinjemin.backgroundTask.CommentTask;
 import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityDate;
 import pinjemin.utility.UtilityGUI;
@@ -46,16 +49,17 @@ public class CustomCommentActionBlock
 	private int postPID;
 	private int loggedInUID;
 	private int possibleAction;
-
+	private int targetUID;
 
 	/** ==============================================================================
 	 * Constructor kelas CustomCommentActionBlock
 	 * ============================================================================== */
-	public CustomCommentActionBlock(Activity activity, int postPID, int parentUID, int possibleAction) {
+	public CustomCommentActionBlock(Activity activity, int postPID, int parentUID, int possibleAction, int targetUID) {
 		this.activity = activity;
 		this.parentUID = parentUID;
 		this.postPID = postPID;
 		this.possibleAction = possibleAction;
+		this.targetUID = targetUID;
 
 		// dapatkan UID yang sedang login
 		SessionManager sessionManager = new SessionManager(activity);
@@ -122,6 +126,13 @@ public class CustomCommentActionBlock
 		{
 			@Override
 			public void onClick(View view) {
+				Intent intent = new Intent(activity.getApplicationContext(), CommentActivity.class);
+				intent.putExtra("parentUid", ""+parentUID);
+				intent.putExtra("ownUid", ""+loggedInUID);
+				intent.putExtra("pid", ""+postPID);
+				intent.putExtra("type", "reply");
+
+				activity.startActivity(intent);
 				Log.d("DEBUG", "Tadinya mau bales...");
 			}
 		});
@@ -130,11 +141,17 @@ public class CustomCommentActionBlock
 		// bisa initiate penyerahan barang
 		if (possibleAction == ACTIONS_CAN_INITIATE) {
 			ButtonTextView initiateButton = new ButtonTextView(
-				activity, "SUDAH DIKASIH!", new View.OnClickListener()
+				activity, "PENYERAHAN BARANG", new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau initiate...");
+					Intent intent = new Intent(activity, UbahDeadline.class);
+					intent.putExtra("pid", ""+postPID);
+					intent.putExtra("targetUID", "" +targetUID);
+
+					activity.startActivity(intent);
+
 				}
 			});
 			buttonsArray.add(initiateButton);
@@ -148,6 +165,13 @@ public class CustomCommentActionBlock
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau confirm initiate...");
+					TreeMap<String, String> inputData = new TreeMap<>();
+					inputData.put("PID", ""+postPID);
+					inputData.put("ownUID", ""+loggedInUID);
+					inputData.put("targetUID", ""+targetUID);
+
+					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CONFIRM_TRANSFER, inputData);
+					task.execute();
 				}
 			});
 			buttonsArray.add(confirmInitiateButton);
@@ -161,6 +185,13 @@ public class CustomCommentActionBlock
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau cancel initiate...");
+					TreeMap<String, String> inputData = new TreeMap<>();
+					inputData.put("PID", ""+postPID);
+					inputData.put("ownUID", ""+loggedInUID);
+					inputData.put("targetUID", ""+targetUID);
+
+					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CANCEL_TRANSFER, inputData);
+					task.execute();
 				}
 			});
 			buttonsArray.add(cancelInitiateButton);
