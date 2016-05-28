@@ -127,9 +127,9 @@ public class CustomCommentActionBlock
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(activity.getApplicationContext(), CommentActivity.class);
-				intent.putExtra("parentUid", ""+parentUID);
-				intent.putExtra("ownUid", ""+loggedInUID);
-				intent.putExtra("pid", ""+postPID);
+				intent.putExtra("parentUid", "" + parentUID);
+				intent.putExtra("ownUid", "" + loggedInUID);
+				intent.putExtra("pid", "" + postPID);
 				intent.putExtra("type", "reply");
 
 				activity.startActivity(intent);
@@ -147,8 +147,8 @@ public class CustomCommentActionBlock
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau initiate...");
 					Intent intent = new Intent(activity, UbahDeadline.class);
-					intent.putExtra("pid", ""+postPID);
-					intent.putExtra("targetUID", "" +targetUID);
+					intent.putExtra("pid", "" + postPID);
+					intent.putExtra("targetUID", "" + targetUID);
 
 					activity.startActivity(intent);
 
@@ -165,10 +165,10 @@ public class CustomCommentActionBlock
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau confirm initiate...");
-					TreeMap<String, String> inputData = new TreeMap<>();
-					inputData.put("PID", ""+postPID);
-					inputData.put("ownUID", ""+loggedInUID);
-					inputData.put("targetUID", ""+targetUID);
+					TreeMap<String,String> inputData = new TreeMap<>();
+					inputData.put("PID", "" + postPID);
+					inputData.put("ownUID", "" + loggedInUID);
+					inputData.put("targetUID", "" + targetUID);
 
 					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CONFIRM_TRANSFER, inputData);
 					task.execute();
@@ -185,10 +185,10 @@ public class CustomCommentActionBlock
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau cancel initiate...");
-					TreeMap<String, String> inputData = new TreeMap<>();
-					inputData.put("PID", ""+postPID);
-					inputData.put("ownUID", ""+loggedInUID);
-					inputData.put("targetUID", ""+targetUID);
+					TreeMap<String,String> inputData = new TreeMap<>();
+					inputData.put("PID", "" + postPID);
+					inputData.put("ownUID", "" + loggedInUID);
+					inputData.put("targetUID", "" + targetUID);
 
 					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CANCEL_TRANSFER, inputData);
 					task.execute();

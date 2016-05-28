@@ -1,7 +1,7 @@
 /** ===================================================================================
  * [LOGIN TASK]
  * Helper class untuk mengirim data ke web sercive di server (asynchronously)
- * Dipakai untuk kelas LoginActivity
+ * Dipakai untuk kelas LoginActivity (ini untuk login dengan akun pinjemin)
  * ------------------------------------------------------------------------------------
  * Author: Ferdinand Antonius, Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius
@@ -27,9 +27,9 @@ import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityConnection;
 
 
-public class LoginTask extends AsyncTask<Void,Void,Void>
+public class LoginNormalTask extends AsyncTask<Void,Void,Void>
 {
-	public static final String PHP_PATH = "logingoogle.php";
+	public static final String PHP_PATH = "login.php";
 
 	private Context context;
 	private Activity activity;
@@ -44,7 +44,7 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 	String userAccountName;
 	String userRealName;
 
-	public LoginTask(Activity activity, TreeMap<String,String> dataToSend) {
+	public LoginNormalTask(Activity activity, TreeMap<String,String> dataToSend) {
 		this.dataToSend = dataToSend;
 		this.activity = activity;
 		this.context = activity.getApplicationContext();
@@ -64,7 +64,7 @@ public class LoginTask extends AsyncTask<Void,Void,Void>
 			// login gagal: server mengembalikan empty set
 			this.isServerReachable = false;
 			String serverResponse = UtilityConnection.runPhp(PHP_PATH, dataToSend);
-			Log.d("response: ", serverResponse);
+			Log.d("Login response: ", serverResponse);
 			this.isServerReachable = true;
 
 			// parse data JSON yang diterima dari server

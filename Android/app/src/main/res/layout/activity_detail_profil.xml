@@ -1,228 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:card_view="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+	<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+		<android.support.design.widget.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                layout="@layout/app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:layout_gravity="fill"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+			<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			layout="@layout/app_bar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:layout_gravity="fill"
+			android:background="?attr/colorPrimary"
+			app:layout_scrollFlags="scroll|enterAlways"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        </android.support.design.widget.AppBarLayout>
+		</android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:contentPadding="15dp"
-            card_view:cardBackgroundColor="#FFFF">
+		<android.support.v7.widget.CardView
+		android:id="@+id/card_view"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp"
+		app:contentPadding="15dp"
+		card_view:cardBackgroundColor="#FFFF">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+			<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/output_realname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Real Name"
-                    android:textColor="#000"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+				<TextView
+				android:id="@+id/output_realname"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Real Name"
+				android:textColor="#000"
+				android:textSize="15sp"
+				android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/output_accountname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Account Name"
-                    android:textColor="#000" />
+				<TextView
+				android:id="@+id/output_accountname"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Account Name"
+				android:textColor="#000" />
 
-                <LinearLayout
-                    android:id="@+id/layout_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+				<LinearLayout
+				android:id="@+id/layout_rating"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="4dp"
+				android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/output_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rating" />
+					<TextView
+					android:id="@+id/output_rating"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Rating" />
 
-                    <TextView
-                        android:id="@+id/output_numrating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Num Rating" />
+					<TextView
+					android:id="@+id/output_numrating"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="Num Rating" />
 
-                </LinearLayout>
+				</LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Profil"
-                    android:textColor="#000" />
+				<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginTop="10dp"
+				android:layout_marginBottom="0dp"
+				android:background="@android:color/darker_gray" />
 
-                <TextView
-                    android:id="@+id/output_bio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Isi Profil"
-                    android:textColor="#000" />
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text="Profil:"
+				android:textColor="#000"
+				android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Prodi/Fakultas"
-                    android:textColor="#000" />
+				<TextView
+				android:id="@+id/output_bio"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Isi Profil"
+				android:textColor="#000" />
 
-                <TextView
-                    android:id="@+id/output_prodi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Isi Prodi"
-                    android:textColor="#000" />
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text="Prodi/Fakultas:"
+				android:textColor="#000"
+				android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/output_fakultas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Isi Fakultas"
-                    android:textColor="#000" />
+				<TextView
+				android:id="@+id/output_prodi"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Isi Prodi"
+				android:textColor="#000" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Telepon"
-                    android:textColor="#000" />
+				<TextView
+				android:id="@+id/output_fakultas"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Isi Fakultas"
+				android:textColor="#000" />
 
-                <TextView
-                    android:id="@+id/output_telepon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Isi Telepon"
-                    android:textColor="#000" />
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="10dp"
+				android:text="Telepon:"
+				android:textColor="#000"
+				android:textStyle="bold" />
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="10dp" />
+				<TextView
+				android:id="@+id/output_telepon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Isi Telepon"
+				android:textColor="#000" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+				<View
+				android:layout_width="wrap_content"
+				android:layout_height="10dp" />
 
-                    <TextView
-                        android:id="@+id/btn_ubah_profil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:text="UBAH PROFIL"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
+				<RelativeLayout
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content">
 
-                    <LinearLayout
-                        android:id="@+id/setuju_tolak"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_alignParentRight="true"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+					<TextView
+					android:id="@+id/btn_ubah_profil"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_marginTop="10dp"
+					android:text="UBAH PROFIL"
+					android:textColor="@color/colorPrimary"
+					android:textSize="15sp"
+					android:textStyle="bold"
+					android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/btn_setuju_request"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SETUJUI REQUEST"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+					<LinearLayout
+					android:id="@+id/setuju_tolak"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_marginTop="10dp"
+					android:orientation="horizontal"
+					android:visibility="gone">
 
-                        <TextView
-                            android:id="@+id/btn_tolak_request"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="TOLAK REQUEST"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+						<TextView
+						android:id="@+id/btn_setuju_request"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="SETUJUI REQUEST"
+						android:textColor="@color/colorPrimary"
+						android:textSize="15sp"
+						android:textStyle="bold" />
 
-                    </LinearLayout>
+						<TextView
+						android:id="@+id/btn_tolak_request"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginLeft="20dp"
+						android:text="TOLAK REQUEST"
+						android:textColor="@color/colorPrimary"
+						android:textSize="15sp"
+						android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/btn_batal_request"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:text="BATALKAN PERMINTAAN"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
+					</LinearLayout>
 
-                    <TextView
-                        android:id="@+id/btn_tambah_teman"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:text="TAMBAHKAN TEMAN"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
+					<TextView
+					android:id="@+id/btn_batal_request"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_marginTop="10dp"
+					android:text="BATALKAN PERMINTAAN"
+					android:textColor="@color/colorPrimary"
+					android:textSize="15sp"
+					android:textStyle="bold"
+					android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/btn_hapus_teman"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="10dp"
-                        android:text="HAPUS TEMAN"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                </RelativeLayout>
-            </LinearLayout>
+					<TextView
+					android:id="@+id/btn_tambah_teman"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_marginTop="10dp"
+					android:text="TAMBAHKAN TEMAN"
+					android:textColor="@color/colorPrimary"
+					android:textSize="15sp"
+					android:textStyle="bold"
+					android:visibility="gone" />
 
-        </android.support.v7.widget.CardView>
+					<TextView
+					android:id="@+id/btn_hapus_teman"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:layout_marginTop="10dp"
+					android:text="HAPUS TEMAN"
+					android:textColor="@color/colorPrimary"
+					android:textSize="15sp"
+					android:textStyle="bold"
+					android:visibility="gone" />
+				</RelativeLayout>
+			</LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewReview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp" />
-    </LinearLayout>
+		</android.support.v7.widget.CardView>
 
+		<android.support.v7.widget.RecyclerView
+		android:id="@+id/recyclerViewReview"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp" />
+	</LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

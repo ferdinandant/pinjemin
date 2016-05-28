@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import pinjemin.activity.LoginActivity;
+import pinjemin.activity.MainActivity;
 
 
 public class SessionManager

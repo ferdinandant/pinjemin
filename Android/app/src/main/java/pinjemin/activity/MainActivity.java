@@ -69,10 +69,8 @@ public class MainActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		// initialize sessionManager:
+		// initialize sessionManager: cek sudah login atau belum
 		sessionManager = new SessionManager(getApplicationContext());
-
-		// cek sudah login atau belum
 		sessionManager.checkLogin();
 
 		currentUid = sessionManager.getUserDetails().get(SessionManager.KEY_UID);

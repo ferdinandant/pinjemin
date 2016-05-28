@@ -249,7 +249,7 @@ public class DetailPostDemandActivity extends AppCompatActivity
 			currentThreadBlockArrayPointer++;
 
 			JSONObject possibleActionCodeJson = jsonResponseArrayActions
-					.getJSONObject(currentThreadBlockArrayPointer);
+				.getJSONObject(currentThreadBlockArrayPointer);
 			int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
 
 			CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
@@ -297,7 +297,7 @@ public class DetailPostDemandActivity extends AppCompatActivity
 					// parse data JSON yang diterima dari server
 					JSONObject jsonResponseObjectPost = new JSONObject(serverResponsePost);
 					JSONObject jsonResponseObjectComment = new JSONObject(serverResponseComment);
-					JSONObject jsonResponseObjectActions =  new JSONObject(serverResponseActions);
+					JSONObject jsonResponseObjectActions = new JSONObject(serverResponseActions);
 					jsonResponseArrayPost = jsonResponseObjectPost.getJSONArray("server_response");
 					jsonResponseArrayComment = jsonResponseObjectComment.getJSONArray("server_response");
 					jsonResponseArrayActions = jsonResponseObjectActions.getJSONArray("server_response");
@@ -367,23 +367,25 @@ public class DetailPostDemandActivity extends AppCompatActivity
 	public void hapus() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Apakah anda yakin untuk menghapus post ini")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TreeMap<String, String> inputSend = new TreeMap<>();
-						inputSend.put("PID", intentPid);
+			.setPositiveButton("OK", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					TreeMap<String,String> inputSend = new TreeMap<>();
+					inputSend.put("PID", intentPid);
 
-						DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
-						delete.execute();
-						finish();
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+					DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
+					delete.execute();
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 
 		builder.create().show();
 	}

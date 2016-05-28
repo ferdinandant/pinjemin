@@ -1,7 +1,16 @@
+/** ===================================================================================
+ * [DETAIL PROFIL ACTIVITY]
+ * Activity saat melihat profil suatu user
+ * ------------------------------------------------------------------------------------
+ * Author: Kemal Amru Ramadhan
+ * Refactoring & Doumentation: Ferdinand Antonius
+ * =================================================================================== */
+
 package pinjemin.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +32,6 @@ import pinjemin.session.SessionManager;
 
 public class DetailProfilActivity extends AppCompatActivity
 {
-
 	private TextView outputRealname, outputAccountname, outputRating, outputNumRating,
 		outputBio, outputFakultas, outputProdi, outputTelepon;
 
@@ -78,22 +86,48 @@ public class DetailProfilActivity extends AppCompatActivity
 		fakultas = intent.getStringExtra("fakultas");
 		prodi = intent.getStringExtra("prodi");
 		telepon = intent.getStringExtra("telepon");
-		rating = intent.getStringExtra("rating");
+
 		numRating = intent.getStringExtra("numRating");
+		rating = intent.getStringExtra("rating");
 		status = intent.getStringExtra("status");
 
 		outputRealname.setText(realName);
 		outputAccountname.setText(accountName);
-		outputBio.setText(bio);
 		outputFakultas.setText(fakultas);
 		outputProdi.setText(prodi);
+		outputBio.setText(bio);
 		outputTelepon.setText("Tambahkan sebagai teman untuk melihat");
-		outputRating.setText(rating);
-		outputNumRating.setText(" Berdasarkan " + numRating + " review");
+		;
 
+		// agar bio tidak terlihat kosong
+		if (bio.length() == 0) {
+			outputBio.setText("n/a");
+		}
+
+		// setting rating dengan bintang
+		if (rating.equals("NaN")) {
+			outputRating.setText("Belum ada rating");
+			outputNumRating.setText("");
+		}
+		else {
+			double ratingDouble = Double.parseDouble(rating) + 0.5;
+			String starString = "";
+
+			if (ratingDouble >= 4.5) starString = "\u2605\u2605\u2605\u2605\u2605";
+			else if (ratingDouble >= 3.5) starString = "\u2605\u2605\u2605\u2605\u2606";
+			else if (ratingDouble >= 2.5) starString = "\u2605\u2605\u2605\u2606\u2606";
+			else if (ratingDouble >= 1.5) starString = "\u2605\u2605\u2606\u2606\u2606";
+			else starString = "\u2605\u2606\u2606\u2606\u2606";
+
+			outputRating.setText(starString + " " + rating);
+			outputNumRating.setText(" \u00B7 berdasarkan " + numRating + " review");
+		}
+
+		// ubah daata dan action buttoins yang ditampilkan
+		// berdasarkan relasi user yang masuk dan yang profil user yang dilihat
 		if (status.equalsIgnoreCase("OwnProfile")) {
 			btnUbahProfil.setVisibility(View.VISIBLE);
-
+			outputTelepon.setText(telepon);
 			btnUbahProfil.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -101,11 +135,9 @@ public class DetailProfilActivity extends AppCompatActivity
 					ubahProfil();
 				}
 			});
-
 		}
 		else if (status.equalsIgnoreCase("NotFriends")) {
 			btnTambahTeman.setVisibility(View.VISIBLE);
-
 			btnTambahTeman.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -117,9 +149,7 @@ public class DetailProfilActivity extends AppCompatActivity
 		}
 		else if (status.equalsIgnoreCase("Friends")) {
 			btnHapusTeman.setVisibility(View.VISIBLE);
-
 			outputTelepon.setText(telepon);
-
 			btnHapusTeman.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -131,7 +161,6 @@ public class DetailProfilActivity extends AppCompatActivity
 		}
 		else if (status.equalsIgnoreCase("Requesting")) {
 			btnBatalRequest.setVisibility(View.VISIBLE);
-
 			btnBatalRequest.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -143,7 +172,6 @@ public class DetailProfilActivity extends AppCompatActivity
 		}
 		else if (status.equalsIgnoreCase("Requested")) {
 			setujuTolak.setVisibility(View.VISIBLE);
-
 			btnSetujuRequest.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -151,7 +179,6 @@ public class DetailProfilActivity extends AppCompatActivity
 					setujuRequest();
 				}
 			});
-
 			btnTolakRequest.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
@@ -161,11 +188,14 @@ public class DetailProfilActivity extends AppCompatActivity
 			});
 		}
 
-		TreeMap<String, String> inputData = new TreeMap<>();
+		TreeMap<String,String> inputData = new TreeMap<>();
 		inputData.put("targetUID", uid);
 		ReviewTask task = new ReviewTask(this, inputData);
 		task.execute();
 	}
+
+
+	// --- action handlers ---
 
 	public void ubahProfil() {
 		TreeMap<String,String> input = new TreeMap<>();
@@ -177,7 +207,7 @@ public class DetailProfilActivity extends AppCompatActivity
 	}
 
 	public void tambahTeman() {
-		TreeMap<String, String> inputSend = new TreeMap<>();
+		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
@@ -188,32 +218,34 @@ public class DetailProfilActivity extends AppCompatActivity
 
 	public void hapusTeman() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Apakah Anda Yakin Untuk Menghapus Post Ini")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TreeMap<String, String> inputSend = new TreeMap<>();
+		builder.setMessage("Apakah Anda yakin untuk menghapus pertemanan ini?")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					TreeMap<String,String> inputSend = new TreeMap<>();
 
-						inputSend.put("ownUID", currentUid);
-						inputSend.put("partnerUID", uid);
+					inputSend.put("ownUID", currentUid);
+					inputSend.put("partnerUID", uid);
 
-						FriendTask task = new FriendTask(getApplicationContext(), FriendTask.DELETE, inputSend, realName);
-						task.execute();
-						finish();
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+					FriendTask task = new FriendTask(getApplicationContext(), FriendTask.DELETE, inputSend, realName);
+					task.execute();
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 
 		builder.create().show();
 	}
 
 	public void batalRequest() {
-		TreeMap<String, String> inputSend = new TreeMap<>();
+		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
@@ -223,7 +255,7 @@ public class DetailProfilActivity extends AppCompatActivity
 	}
 
 	public void tolakRequest() {
-		TreeMap<String, String> inputSend = new TreeMap<>();
+		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
@@ -233,7 +265,7 @@ public class DetailProfilActivity extends AppCompatActivity
 	}
 
 	public void setujuRequest() {
-		TreeMap<String, String> inputSend = new TreeMap<>();
+		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 

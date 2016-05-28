@@ -143,4 +143,14 @@ public class RegisterActivity extends AppCompatActivity
 		// tutup activity ini
 		finish();
 	}
+
+	/** ==============================================================================
+	 * Custom implementation onBackPressed() agar user tidak bisa keluar dari activity
+	 * ini dengan menekan tombol back.
+	 * ============================================================================== */
+	@Override
+	public void onBackPressed() {
+		// jangan panggil super.onBackPressed()
+		// agar default action saat tombol back ditekan tidak dijalankan
+	}
 }

@@ -13,10 +13,7 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
-import pinjemin.backgroundTask.LoginTask;
 import pinjemin.R;
 import pinjemin.backgroundTask.PeminjamanTask;
 import pinjemin.behavior.EditTextTextWatcher;

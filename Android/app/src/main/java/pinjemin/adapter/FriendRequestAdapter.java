@@ -68,11 +68,12 @@ public class FriendRequestAdapter
 
 		holder.accountName.setText(user.getAccountName());
 		holder.realName.setText(user.getRealName());
-		holder.btnSetuju.setOnClickListener(new View.OnClickListener() {
+		holder.btnSetuju.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v) {
 
-				TreeMap<String, String> inputSend = new TreeMap<>();
+				TreeMap<String,String> inputSend = new TreeMap<>();
 				inputSend.put("ownUID", currentUid);
 				inputSend.put("partnerUID", user.getUid());
 
@@ -80,10 +81,11 @@ public class FriendRequestAdapter
 				task.execute();
 			}
 		});
-		holder.btnTolak.setOnClickListener(new View.OnClickListener() {
+		holder.btnTolak.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v) {
-				TreeMap<String, String> inputSend = new TreeMap<>();
+				TreeMap<String,String> inputSend = new TreeMap<>();
 				inputSend.put("ownUID", currentUid);
 				inputSend.put("partnerUID", user.getUid());
 

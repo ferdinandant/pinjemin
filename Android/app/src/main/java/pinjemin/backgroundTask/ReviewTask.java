@@ -95,7 +95,7 @@ public class ReviewTask extends AsyncTask<Void,Object,Void>
 				String review = postInstance.getString("Review");
 				String realName = postInstance.getString("RealName");
 				
-				Review newReview = new Review(namaBarang, review, rating, realName);
+				Review newReview = new Review(realName, review, rating, namaBarang);
 				publishProgress(newReview);
 			}
 		}

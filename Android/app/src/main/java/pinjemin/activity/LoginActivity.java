@@ -14,14 +14,11 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -36,14 +33,16 @@ import com.google.android.gms.common.api.Status;
 
 import java.util.TreeMap;
 
-import pinjemin.backgroundTask.LoginTask;
+import pinjemin.backgroundTask.LoginGoogleTask;
 import pinjemin.R;
+import pinjemin.backgroundTask.LoginNormalTask;
 import pinjemin.behavior.EditTextTextWatcher;
+import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityGUI;
 
 
 public class LoginActivity extends AppCompatActivity implements
-		GoogleApiClient.OnConnectionFailedListener
+	GoogleApiClient.OnConnectionFailedListener
 {
 	private Toolbar toolbar;
 	private EditText inputName, inputPassword;
@@ -52,12 +51,14 @@ public class LoginActivity extends AppCompatActivity implements
 
 	// Sign In Google
 	private SignInButton signInButton;
-	private static final String TAG = "SignInActivity";
 	private static final int RC_SIGN_IN = 9001;
 
 	private GoogleApiClient mGoogleApiClient;
 	private ProgressDialog mProgressDialog;
 
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,48 +80,51 @@ public class LoginActivity extends AppCompatActivity implements
 			this, inputPassword, inputLayoutPassword, "Masukkan password Anda"));
 
 		// set action listener (submit form)
+		// INI UNTUK LOGIN PINJEMIN BIASA
 		buttonSignIn.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view) {
+				Log.d("DEBUG", "Login biasa...");
 				submitForm();
 			}
 		});
 
 		// Google Sign In
-
+		// INI UNTUK LOGIN GOOGLE
 		signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
-		// [START configure_signin]
 		// Configure sign-in to request the user's ID, email address, and basic
 		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestEmail()
-				.build();
-		// [END configure_signin]
+			.requestEmail()
+			.build();
 
-		// [START build_client]
 		// Build a GoogleApiClient with access to the Google Sign-In API and the
 		// options specified by gso.
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
-		// [END build_client]
+			.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+			.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+			.build();
 
 		SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 		signInButton.setSize(SignInButton.SIZE_WIDE);
 		signInButton.setScopes(gso.getScopeArray());
 		signInButton.setColorScheme(SignInButton.COLOR_DARK);
 
-		signInButton.setOnClickListener(new View.OnClickListener() {
+		signInButton.setOnClickListener(new View.OnClickListener()
+		{
 			@Override
 			public void onClick(View v) {
+				Log.d("DEBUG", "Login google...");
 				signIn();
 			}
 		});
 	}
 
+	/** ==============================================================================
+	 * Dispatch onStart() ke semua fragments. Memastikan setiap loaders di-start.
+	 * ============================================================================== */
 	@Override
 	public void onStart() {
 		super.onStart();
@@ -129,15 +133,17 @@ public class LoginActivity extends AppCompatActivity implements
 		if (opr.isDone()) {
 			// If the user's cached credentials are valid, the OptionalPendingResult will be "done"
 			// and the GoogleSignInResult will be available instantly.
-			Log.d(TAG, "Got cached sign-in");
+			Log.d("DEBUG", "Got cached sign-in");
 			GoogleSignInResult result = opr.get();
 			handleSignInResult(result);
-		} else {
+		}
+		else {
 			// If the user has not previously signed in on this device or the sign-in has expired,
 			// this asynchronous branch will attempt to sign in the user silently.  Cross-device
 			// single sign-on will occur in this branch.
 			showProgressDialog();
-			opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+			opr.setResultCallback(new ResultCallback<GoogleSignInResult>()
+			{
 				@Override
 				public void onResult(GoogleSignInResult googleSignInResult) {
 					hideProgressDialog();
@@ -147,7 +153,9 @@ public class LoginActivity extends AppCompatActivity implements
 		}
 	}
 
-	// [START onActivityResult]
+	/** ==============================================================================
+	 * Dispatch incoming result to the correct fragment.
+	 * ============================================================================== */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -158,75 +166,80 @@ public class LoginActivity extends AppCompatActivity implements
 			handleSignInResult(result);
 		}
 	}
-	// [END onActivityResult]
 
-	// [START handleSignInResult]
+	/** ==============================================================================
+	 * Menangani hasil sign in
+	 * ============================================================================== */
 	private void handleSignInResult(GoogleSignInResult result) {
-		Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+		// kalau berhasil, coba cek di database apakah sudah ada account-nya
+		// kalau belum ada, akan dibuatkan akun di server dan user diminta untuk register
+		Log.d("DEBUG", "handleSignInResult:" + result.isSuccess());
 		if (result.isSuccess()) {
 			// Signed in successfully, show authenticated UI.
 			GoogleSignInAccount acct = result.getSignInAccount();
 			String email = acct.getEmail();
 
-			TreeMap<String, String> inputData = new TreeMap<>();
+			TreeMap<String,String> inputData = new TreeMap<>();
 			inputData.put("username", email);
 
-			LoginTask task = new LoginTask(this, inputData);
+			LoginGoogleTask task = new LoginGoogleTask(this, inputData);
 			task.execute();
 			finish();
-		} else {
-			// Signed out, show unauthenticated UI.
-
 		}
 	}
-	// [END handleSignInResult]
 
-	// [START signIn]
+	/** ==============================================================================
+	 * Manangani action sign in (kirim intent ke google sign in API)
+	 * ============================================================================== */
 	private void signIn() {
 		Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
-	// [END signIn]
 
-	// [START signOut]
+	/** ==============================================================================
+	 * Manangani action sign out
+	 * (SEMENTARA INI TIDAK DIPAKAI)
+	 * ============================================================================== */
 	private void signOut() {
 		Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-				new ResultCallback<Status>() {
-					@Override
-					public void onResult(Status status) {
-						// [START_EXCLUDE]
-
-						// [END_EXCLUDE]
-					}
-				});
+			new ResultCallback<Status>()
+			{
+				@Override
+				public void onResult(Status status) {
+				}
+			});
 	}
-	// [END signOut]
 
-	// [START revokeAccess]
+	/** ==============================================================================
+	 * Manangani action sign out
+	 * (SEMENTARA INI TIDAK DIPAKAI)
+	 * ============================================================================== */
 	private void revokeAccess() {
 		Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-				new ResultCallback<Status>() {
-					@Override
-					public void onResult(Status status) {
-						// [START_EXCLUDE]
+			new ResultCallback<Status>()
+			{
+				@Override
+				public void onResult(Status status) {
 
-						// [END_EXCLUDE]
-					}
-				});
+				}
+			});
 	}
-	// [END revokeAccess]
 
+	/** ==============================================================================
+	 * Menangani kasus tidak bisa mengubungi server google
+	 * ============================================================================== */
 	@Override
 	public void onConnectionFailed(ConnectionResult connectionResult) {
 		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
 		// be available.
-		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+		Log.d("DEBUG", "onConnectionFailed:" + connectionResult);
+		Toast.makeText(getBaseContext(), "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
 	}
 
 	private void showProgressDialog() {
 		if (mProgressDialog == null) {
 			mProgressDialog = new ProgressDialog(this);
-			mProgressDialog.setMessage("Loading....");
+			mProgressDialog.setMessage("Loading...");
 			mProgressDialog.setIndeterminate(true);
 		}
 
@@ -266,9 +279,9 @@ public class LoginActivity extends AppCompatActivity implements
 		loginData.put("password", password);
 
 		// kirimkan data login ke server pada background
-		// LoginTask loginTask = new LoginTask(LoginActivity.this, "login.php", username, password);
-		LoginTask loginTask = new LoginTask(this, loginData);
-		loginTask.execute();
-		finish();
+		// LoginGoogleTask loginGoogleTask = new LoginGoogleTask(LoginActivity.this, "login.php", username, password);
+		Log.d("DEBUG", "Handling untuk login biasa!!!");
+		LoginNormalTask loginNormalTask = new LoginNormalTask(this, loginData);
+		loginNormalTask.execute();
 	}
 }

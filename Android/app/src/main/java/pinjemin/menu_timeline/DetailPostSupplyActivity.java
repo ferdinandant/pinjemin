@@ -291,14 +291,14 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 					// persiapkan data yang mau dikirim ke server
 					TreeMap<String,String> dataToSend = new TreeMap<>();
 					dataToSend.put("PID", intentPid);
-					dataToSend.put("ownUID", intentPid);
+					dataToSend.put("ownUID", currentUid);
 
 					// kirim data ke server
 					String serverResponsePost = UtilityConnection.runPhp("getpostdetail.php", dataToSend);
 					String serverResponseComment = UtilityConnection.runPhp("getthreads.php", dataToSend);
 					String serverResponseActions = UtilityConnection.runPhp("getallpossiblethreadaction.php", dataToSend);
 					Log.d("DEBUG", serverResponsePost);
-					Log.d("DEBUG", serverResponsePost);
+					Log.d("DEBUG", serverResponseComment);
 					Log.d("DEBUG", serverResponseActions);
 
 					// parse data JSON yang diterima dari server
@@ -347,6 +347,7 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	public void mintaPinjem() {
 		Intent intent = new Intent(getApplicationContext(), CommentActivity.class);
 		intent.putExtra("type", "create");
+		intent.putExtra("pid", intentPid);
 		intent.putExtra("ownUid", dataAuthorUID);
 		startActivity(intent);
 	}

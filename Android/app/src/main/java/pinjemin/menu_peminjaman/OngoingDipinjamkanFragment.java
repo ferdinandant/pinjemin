@@ -10,40 +10,43 @@ import pinjemin.R;
 import pinjemin.backgroundTask.PopulatePeminjamanTask;
 import pinjemin.session.SessionManager;
 
-public class OngoingDipinjamkanFragment extends Fragment {
 
-    PopulatePeminjamanTask task;
-    public OngoingDipinjamkanFragment() {
-        // Required empty public constructor
-    }
+public class OngoingDipinjamkanFragment extends Fragment
+{
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	PopulatePeminjamanTask task;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ongoing_dipinjamkan, container, false);
-    }
+	public OngoingDipinjamkanFragment() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-        SessionManager session = new SessionManager(getActivity());
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		return inflater.inflate(R.layout.fragment_ongoing_dipinjamkan, container, false);
+	}
 
-        String ownUid = session.getUserDetails().get(SessionManager.KEY_UID);
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
-        task = new PopulatePeminjamanTask(getActivity(), PopulatePeminjamanTask.PEMINJAMAN_ONGOING_DIPINJAMKAN, ownUid);
-        task.execute();
-    }
+		SessionManager session = new SessionManager(getActivity());
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        task.update();
-    }
+		String ownUid = session.getUserDetails().get(SessionManager.KEY_UID);
+
+		task = new PopulatePeminjamanTask(getActivity(), PopulatePeminjamanTask.PEMINJAMAN_ONGOING_DIPINJAMKAN, ownUid);
+		task.execute();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		task.update();
+	}
 }

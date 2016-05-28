@@ -18,6 +18,8 @@ public class PostDemand
 	private String batasAkhir;
 	private String accountName;
 
+	private int unreadCount;
+
 	public PostDemand(String pid, String uid, String timestamp, String namaBarang, String deskripsi, String batasAkhir, String accountName) {
 		this.pid = pid;
 		this.uid = uid;
@@ -26,6 +28,15 @@ public class PostDemand
 		this.deskripsi = deskripsi;
 		this.batasAkhir = batasAkhir;
 		this.accountName = accountName;
+		this.unreadCount = 0;
+	}
+
+	public int getUnreadCount() {
+		return unreadCount;
+	}
+
+	public void setUnreadCount(int unreadCount) {
+		this.unreadCount = unreadCount;
 	}
 
 	public String getPid() {
