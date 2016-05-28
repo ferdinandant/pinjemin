@@ -1,214 +1,243 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <!-- toolbar section start -->
+	<!-- toolbar section start -->
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+	<android.support.design.widget.AppBarLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
+		<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="?attr/colorPrimary"
+		app:layout_scrollFlags="scroll|enterAlways"
+		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+	</android.support.design.widget.AppBarLayout>
 
-    <!-- scrolling section starts -->
-    <!-- this contains info section and comment section -->
+	<!-- scrolling section starts -->
+	<!-- this contains info section and comment section -->
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+	<android.support.v4.widget.NestedScrollView
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- post info section start -->
+		<!-- post info section start -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginTop="6dp"
-            android:orientation="vertical">
+		<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="6dp"
+		android:layout_marginTop="6dp"
+		android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="#ffffff"
-                android:orientation="vertical">
+			<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="6dp"
+			android:background="#ffffff"
+			android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/darker_gray" />
+				<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginBottom="10dp"
+				android:background="@android:color/darker_gray" />
 
-                <TextView
-                    android:id="@+id/pembuatPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Kemal Amru"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+				<TextView
+				android:id="@+id/pembuatPost"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:text="Kemal Amru"
+				android:textSize="15sp"
+				android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tanggal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Dipostkan pada"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
+				<TextView
+				android:id="@+id/tanggal"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:text="Dipostkan pada"
+				android:textSize="15sp"
+				android:textStyle="italic" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:color/darker_gray" />
+				<View
+				android:layout_width="match_parent"
+				android:layout_height="2dp"
+				android:layout_marginBottom="10dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginTop="10dp"
+				android:background="@android:color/darker_gray" />
 
-                <TextView
-                    android:id="@+id/namaBarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Nama Barang"
-                    android:textColor="#000"
-                    android:textSize="24sp" />
+				<TextView
+				android:id="@+id/namaBarang"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="2dp"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:text="Nama Barang"
+				android:textColor="#000"
+				android:textSize="18sp"
+				android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/deskripsi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Deskripsi weleh-weleh ahahaha pokipo cukipi lalala"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+				<TextView
+				android:id="@+id/deskripsi"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="10dp"
+				android:text="Deskripsi weleh-weleh ahahaha pokipo cukipi lalala"
+				android:textColor="#000"
+				android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/dipinjamkanOleh"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Dipinjamkan Oleh"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:textSize="15sp"
+				android:textColor="#000"
+				android:textStyle="bold"
+				android:text="Pemberi pinjam:" />
 
-                <TextView
-                    android:id="@+id/deadline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Deadline"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+				<TextView
+				android:id="@+id/dipinjamkanOleh"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="5dp"
+				android:text="Dipinjamkan Oleh"
+				android:textColor="#000"
+				android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:text="Status"
-                    android:textColor="#000"
-                    android:textSize="15sp" />
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:textSize="15sp"
+				android:textColor="#000"
+				android:textStyle="bold"
+				android:text="Deadline pengembalian:" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingRight="15dp">
+				<TextView
+				android:id="@+id/deadline"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="5dp"
+				android:text="Deadline"
+				android:textColor="#000"
+				android:textSize="15sp" />
 
-                    <LinearLayout
-                        android:id="@+id/btn_lihatProfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:orientation="horizontal">
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:textSize="15sp"
+				android:textColor="#000"
+				android:textStyle="bold"
+				android:text="Status:" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="LIHAT PROFIL"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+				<TextView
+				android:id="@+id/status"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="10dp"
+				android:layout_marginRight="10dp"
+				android:layout_marginBottom="5dp"
+				android:text="Status"
+				android:textColor="#000"
+				android:textSize="15sp" />
 
-                    <LinearLayout
-                        android:id="@+id/btn_ubahStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:layout_toLeftOf="@id/btn_lihatProfil"
-                        android:orientation="horizontal">
+				<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="15dp"
+				android:paddingRight="15dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="UBAH STATUS"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+					<LinearLayout
+					android:id="@+id/btn_lihatProfil"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentRight="true"
+					android:orientation="horizontal">
 
-                    </LinearLayout>
+						<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="LIHAT PROFIL"
+						android:textColor="@color/colorPrimary"
+						android:textSize="15sp"
+						android:textStyle="bold" />
+					</LinearLayout>
 
-                </RelativeLayout>
+					<LinearLayout
+					android:id="@+id/btn_ubahStatus"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="15dp"
+					android:layout_toLeftOf="@id/btn_lihatProfil"
+					android:orientation="horizontal">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@android:color/darker_gray" />
+						<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="UBAH STATUS"
+						android:textColor="@color/colorPrimary"
+						android:textSize="15sp"
+						android:textStyle="bold" />
 
-            </LinearLayout>
+					</LinearLayout>
 
-            <!-- comment section start -->
+				</RelativeLayout>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
+				<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:layout_marginTop="15dp"
+				android:background="@android:color/darker_gray" />
 
-            <LinearLayout
-                android:id="@+id/commentContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:orientation="vertical">
+			</LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:text="KOMENTAR"
-                    android:textColor="@color/postDetailCommentHeader"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+			<!-- comment section start -->
 
-            </LinearLayout>
+			<Space
+			android:layout_width="match_parent"
+			android:layout_height="10dp" />
 
-        </LinearLayout>
+			<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="10dp"
+			android:layout_marginBottom="6dp"
+			android:paddingLeft="10dp"
+			android:text="KOMENTAR"
+			android:textColor="@color/postDetailCommentHeader"
+			android:textSize="15sp"
+			android:textStyle="bold" />
 
-    </android.support.v4.widget.NestedScrollView>
+			<LinearLayout
+			android:id="@+id/commentContainer"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="6dp"
+			android:orientation="vertical">
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -203,6 +203,10 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 		LinearLayout commentSectionContainer = (LinearLayout) findViewById(R.id.commentContainer);
 		int jsonResponseArrayCommentLength = jsonResponseArrayComment.length();
 
+		// mulai dengan linear list yang kosong
+		// atau kalau tidak, saat di-resume, list-nya numpuk
+		commentSectionContainer.removeAllViews();
+
 		ArrayList<CustomThreadBlock> threadBlockArray = new ArrayList<>();
 		ArrayList<Comment> commentArray = new ArrayList<>();
 		int currentThreadBlockArrayPointer = -1;
@@ -235,8 +239,20 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 						.getJSONObject(currentThreadBlockArrayPointer);
 					int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
 
+					// target UID untuk post penawaran:
+					// kalau ini yang meng-initiate, target parent UID
+					// kalau ini yang meng-confirm, target si pembuat post
+					int targetUID = -1;
+					if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_INITIATE
+						|| possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CANCEL) {
+						targetUID = lastParentUid;
+					}
+					else if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CONFIRM) {
+						targetUID = Integer.parseInt(dataAuthorUID);
+					}
+
 					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, lastParentUid);
+						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, targetUID);
 					threadBlockArray.add(threadBlock);
 					commentArray.clear();
 				}
@@ -259,8 +275,20 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 				.getJSONObject(currentThreadBlockArrayPointer);
 			int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
 
+			// target UID untuk post penawaran:
+			// kalau ini yang meng-initiate, target parent UID
+			// kalau ini yang meng-confirm, target si pembuat post
+			int targetUID = -1;
+			if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_INITIATE
+				|| possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CANCEL) {
+				targetUID = lastParentUid;
+			}
+			else if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CONFIRM) {
+				targetUID = Integer.parseInt(dataAuthorUID);
+			}
+
 			CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, lastParentUid);
+				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, targetUID);
 			threadBlockArray.add(threadBlock);
 			commentArray.clear();
 		}
@@ -304,7 +332,7 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 					// parse data JSON yang diterima dari server
 					JSONObject jsonResponseObjectPost = new JSONObject(serverResponsePost);
 					JSONObject jsonResponseObjectComment = new JSONObject(serverResponseComment);
-					JSONObject jsonResponseObjectActions =  new JSONObject(serverResponseActions);
+					JSONObject jsonResponseObjectActions = new JSONObject(serverResponseActions);
 					jsonResponseArrayPost = jsonResponseObjectPost.getJSONArray("server_response");
 					jsonResponseArrayComment = jsonResponseObjectComment.getJSONArray("server_response");
 					jsonResponseArrayActions = jsonResponseObjectActions.getJSONArray("server_response");
@@ -375,23 +403,25 @@ public class DetailPostSupplyActivity extends AppCompatActivity
 	public void hapus() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Apakah Anda Yakin Untuk Menghapus Post Ini")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						TreeMap<String, String> inputSend = new TreeMap<>();
-						inputSend.put("PID", intentPid);
+			.setPositiveButton("OK", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					TreeMap<String,String> inputSend = new TreeMap<>();
+					inputSend.put("PID", intentPid);
 
-						DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
-						delete.execute();
-						finish();
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+					DeletePostTask delete = new DeletePostTask(getApplicationContext(), inputSend);
+					delete.execute();
+					finish();
+				}
+			})
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 
 		builder.create().show();
 	}

@@ -14,6 +14,11 @@
 	$sql = "call createThread($var_PID, $var_ownUID, '$var_content')";
 	$result = $conn->query($sql);
 
+	// write file
+	$file = fopen("log.txt", "a");
+	fwrite($file, $sql . "\n");
+	fclose($file);
+	
 	$response = array();
 
 	// return value

@@ -1,5 +1,6 @@
 package pinjemin.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,9 +78,18 @@ public class PeminjamanWaitingAdapter
 			}
 		}
 
-		Log.d("Timestamp", UtilityDate.formatTimestampElapsedTime(peminjaman.getTimestamp()));
-		Log.d("Timestamp", peminjaman.getTimestamp());
-		holder.timestamp.setText(UtilityDate.formatTimestampElapsedTime(peminjaman.getTimestamp()));
+		// kalau ada post baru, tampilkan unreadcount instead of timestamp
+		if (peminjaman.getUnreadCount() > 0) {
+			holder.timestamp.setText("(" + peminjaman.getUnreadCount() + " new)");
+			holder.timestamp.setTextColor(Color.rgb(255,50,0));
+		}
+		else {
+			Log.d("Timestamp", UtilityDate.formatTimestampElapsedTime(peminjaman.getTimestamp()));
+			Log.d("Timestamp", peminjaman.getTimestamp());
+			holder.timestamp.setText(UtilityDate.formatTimestampElapsedTime(peminjaman.getTimestamp()));
+		}
+
+
 		//holder.timestamp.setText("Test");
 	}
 

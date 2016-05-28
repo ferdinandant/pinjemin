@@ -22,54 +22,57 @@ import pinjemin.menu_friend.FriendRequest;
 import pinjemin.menu_friend.FriendTemanAnda;
 import pinjemin.session.SessionManager;
 
-public class OngoingFragment extends Fragment {
 
-    private TabLayout tabLayout;
-    private CustomViewPager viewPager;
+public class OngoingFragment extends Fragment
+{
 
-    public OngoingFragment() {
-        // Required empty public constructor
-    }
+	private TabLayout tabLayout;
+	private CustomViewPager viewPager;
+	private CustomViewPagerAdapter adapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	public OngoingFragment() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_log_ongoing, container, false);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabs);
-        viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                tabLayout.setupWithViewPager(viewPager);
-            }
-        });
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		View view = inflater.inflate(R.layout.fragment_log_ongoing, container, false);
 
-        return view;
-    }
+		tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+		viewPager = (CustomViewPager) view.findViewById(R.id.viewpager);
+		setupViewPager(viewPager);
+		tabLayout.post(new Runnable()
+		{
+			@Override
+			public void run() {
+				tabLayout.setupWithViewPager(viewPager);
+			}
+		});
 
-    private void setupViewPager(ViewPager viewPager) {
-        CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
-              getChildFragmentManager());
+		return view;
+	}
 
-        adapter.addFragment(new OngoingDipinjamFragment(), "Dipinjam");
-        adapter.addFragment(new OngoingDipinjamkanFragment(), "Dipinjamkan");
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+	}
 
-        Log.d("debug", "bikin tab");
-        viewPager.setAdapter(adapter);
+	private void setupViewPager(ViewPager viewPager) {
+		adapter = new CustomViewPagerAdapter(
+			getChildFragmentManager());
 
-    }
+		adapter.addFragment(new OngoingDipinjamFragment(), "Dipinjam");
+		adapter.addFragment(new OngoingDipinjamkanFragment(), "Dipinjamkan");
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+		Log.d("debug", "bikin tab");
+		viewPager.setAdapter(adapter);
 
-    }
+	}
 }

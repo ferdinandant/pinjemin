@@ -3,6 +3,7 @@ package pinjemin.menu_peminjaman;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,10 @@ import pinjemin.R;
 import pinjemin.backgroundTask.PopulatePeminjamanTask;
 import pinjemin.session.SessionManager;
 
-public class OngoingDipinjamFragment extends Fragment {
 
+public class OngoingDipinjamFragment extends Fragment
+{
+	boolean hasBeenInflated = false;
 	PopulatePeminjamanTask task;
 
 	public OngoingDipinjamFragment() {
@@ -21,8 +24,9 @@ public class OngoingDipinjamFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-									 Bundle savedInstanceState) {
+		Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+		hasBeenInflated = true;
 		return inflater.inflate(R.layout.fragment_ongoing_dipinjam, container, false);
 	}
 
@@ -31,7 +35,6 @@ public class OngoingDipinjamFragment extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 
 		SessionManager session = new SessionManager(getActivity());
-
 		String ownUid = session.getUserDetails().get(SessionManager.KEY_UID);
 
 		task = new PopulatePeminjamanTask(getActivity(), PopulatePeminjamanTask.PEMINJAMAN_ONGOING_DIPINJAM, ownUid);
@@ -42,6 +45,20 @@ public class OngoingDipinjamFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		task.update();
 	}
+
+	/** ==============================================================================
+	 * Handler saat fragment ini muncul ke user
+	 * ============================================================================== */
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		// refresh status visible atau tidak
+		super.setUserVisibleHint(isVisibleToUser);
+
+		// kalau visible, refresh
+		if (isVisibleToUser && hasBeenInflated) {
+
+		}
+	}
+
 }

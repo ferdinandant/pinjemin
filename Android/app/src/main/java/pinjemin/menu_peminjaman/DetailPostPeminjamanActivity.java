@@ -32,7 +32,6 @@ import pinjemin.utility.UtilityDate;
 
 public class DetailPostPeminjamanActivity extends AppCompatActivity
 {
-
 	private TextView pembuatPost, tanggal, namaBarang, deskripsi, status, deadline, partnerName;
 	private LinearLayout btnUbahStatus, btnLihatProfil;
 	private Toolbar toolbar;
@@ -40,10 +39,17 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 	private String intentUid, intentTimestamp, intentNamaBarang,
 		intentDeskripsi, intentDeadline, intentAccountName,
 		intentUIDPemberi, intentUIDPenerima, intentRealnamePemberi,
-		intentStatus, intentRealnamePenerima, intentPID;
-	private String currentUid;
-	private JSONArray jsonResponseArrayComment;
+		intentStatus, intentRealnamePenerima, intentPID, currentUid;
 
+	private JSONArray jsonResponseArrayComment;
+	private JSONArray jsonResponseArrayPost;
+
+	private String dataAuthorUID, dataTimestamp, dataAuthorRealName,
+		dataNamaBarang, dataDeadline, dataDeskripsi, dataStatus;
+	private String dataRealNamePemberi, dataRealNamePenerima;
+	private String dataUIDPemberi, dataUIDPenerima;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,22 +91,71 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		intentRealnamePenerima = intent.getStringExtra("RealNamePenerima");
 		intentPID = intent.getStringExtra("PID");
 
-		Log.d("Deadline", intentDeadline);
-
 		// initialize components:
-		pembuatPost.setText(intentAccountName);
-		tanggal.setText("Diposkan " + UtilityDate.formatTimestampDateOnly(intentTimestamp) + ", jam " + UtilityDate.formatTimestampTimeOnly(intentTimestamp));
-		namaBarang.setText(intentNamaBarang);
-		deskripsi.setText(intentDeskripsi);
-		deadline.setText("Deadline pengembalian tanggal " + UtilityDate.formatTimestampDateOnly(intentDeadline) + ", jam " + UtilityDate.formatTimestampTimeOnly(intentDeadline));
-		status.setText("STATUS: " + intentStatus);
+		pembuatPost.setText("");
+		tanggal.setText("");
+		namaBarang.setText("");
+		deskripsi.setText("");
+		deadline.setText("");
+		status.setText("");
+		partnerName.setText("");
 
-		if (currentUid.equalsIgnoreCase(intentUIDPenerima)) {
-			btnUbahStatus.setVisibility(View.GONE);
-			partnerName.setText("Diberi Pinjam Oleh " + intentRealnamePemberi);
+		loadPeminjamanDetails();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadPeminjamanDetails();
+	}
+
+	public void configureTextViews() {
+		try {
+			// ambil detail post dari jsonResponseArrayPost
+			JSONObject postInstance = jsonResponseArrayPost.getJSONObject(0);
+
+			// set instance variables
+			Log.d("DEBUG", "Mengonfigurasi text views...");
+			Log.d("DEBUG", postInstance.toString());
+			dataAuthorUID = postInstance.getString("UID");
+			dataTimestamp = postInstance.getString("Timestamp");
+			dataAuthorRealName = postInstance.getString("RealName");
+			dataNamaBarang = postInstance.getString("NamaBarang");
+			dataDeskripsi = postInstance.getString("Deskripsi");
+			dataDeadline = postInstance.getString("Deadline");
+			dataStatus = postInstance.getString("Status");
+			dataRealNamePemberi = postInstance.getString("RealNamePemberi");
+			dataRealNamePenerima = postInstance.getString("RealNamePenerima");
+			dataUIDPemberi = postInstance.getString("UIDPemberi");
+			dataUIDPenerima = postInstance.getString("UIDPenerima");
+
+			// initialize components:
+			pembuatPost.setText(dataAuthorRealName);
+			tanggal.setText("Diposkan "
+				+ UtilityDate.formatTimestampDateOnly(dataTimestamp)
+				+ ", jam " + UtilityDate.formatTimestampTimeOnly(dataTimestamp));
+			namaBarang.setText(dataNamaBarang);
+			deskripsi.setText(dataDeskripsi);
+			deadline.setText(UtilityDate.formatTimestampDateOnly(dataDeadline)
+				+ ", jam " + UtilityDate.formatTimestampTimeOnly(dataDeadline));
+			status.setText(dataStatus);
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/** ==============================================================================
+	 * untuk menampilkan action buttons yang sesuai dengan user yang mengakses post
+	 * ini, serta assign listener yang sesuai.
+	 * ============================================================================== */
+	public void configureActionButtons() {
+		if (currentUid.equalsIgnoreCase(dataUIDPemberi)) {
+			partnerName.setText("Dipinjamkan kepada " + dataRealNamePenerima);
 		}
 		else {
-			partnerName.setText("Dipinjamkan Kepada " + intentRealnamePenerima);
+			btnUbahStatus.setVisibility(View.GONE);
+			partnerName.setText("Diberi pinjam oleh " + dataRealNamePemberi);
 		}
 
 		btnLihatProfil.setOnClickListener(new View.OnClickListener()
@@ -110,7 +165,6 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 				lihatProfil();
 			}
 		});
-
 		btnUbahStatus.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -118,32 +172,6 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 				ubahStatus();
 			}
 		});
-	}
-
-	public void lihatProfil() {
-		TreeMap<String,String> inputData = new TreeMap<>();
-
-		if (currentUid.equalsIgnoreCase(intentUIDPenerima)) {
-			inputData.put("ownUID", intentUid);
-			inputData.put("targetUID", intentUIDPemberi);
-
-			GetProfilTask task = new GetProfilTask(this, inputData);
-			task.execute();
-		}
-		else {
-			inputData.put("ownUID", intentUid);
-			inputData.put("targetUID", intentUIDPenerima);
-
-			GetProfilTask task = new GetProfilTask(this, inputData);
-			task.execute();
-		}
-	}
-
-	public void ubahStatus() {
-		Intent intent = new Intent(this, UbahStatusActivity.class);
-		intent.putExtra("PID", intentPID);
-
-		startActivity(intent);
 	}
 
 	/** ==============================================================================
@@ -163,18 +191,32 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 					dataToSend.put("ownUID", session.getUserDetails().get(SessionManager.KEY_UID));
 
 					// kirim data ke server
+					String serverResponsePost = UtilityConnection.runPhp("getpeminjamandetail.php", dataToSend);
 					String serverResponseComment = UtilityConnection.runPhp("getthreads.php", dataToSend);
+					Log.d("DEBUG", serverResponsePost);
 					Log.d("DEBUG", serverResponseComment);
 
 					// parse data JSON yang diterima dari server
+					JSONObject jsonResponseObjectPost = new JSONObject(serverResponsePost);
 					JSONObject jsonResponseObjectComment = new JSONObject(serverResponseComment);
+					jsonResponseArrayPost = jsonResponseObjectPost.getJSONArray("server_response");
 					jsonResponseArrayComment = jsonResponseObjectComment.getJSONArray("server_response");
 
 					// update di UI thread
 					handler.post(new Runnable()
 					{
 						public void run() {
-							populateComments();
+							// berarti post-nya sudah tidak ada
+							if (jsonResponseArrayPost.length() == 0) {
+								Toast.makeText(activity,
+									"Entri peminjaman sudah tidak tersedia.", Toast.LENGTH_LONG).show();
+								finish();
+							}
+							else {
+								configureTextViews();
+								configureActionButtons();
+								populateComments();
+							}
 						}
 					});
 				}
@@ -198,9 +240,12 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		LinearLayout commentSectionContainer = (LinearLayout) findViewById(R.id.commentContainer);
 		int jsonResponseArrayCommentLength = jsonResponseArrayComment.length();
 
+		// mulai dengan linear list yang kosong
+		// atau kalau tidak, saat di-resume, list-nya numpuk
+		commentSectionContainer.removeAllViews();
+
 		ArrayList<CustomThreadBlock> threadBlockArray = new ArrayList<>();
 		ArrayList<Comment> commentArray = new ArrayList<>();
-		int currentThreadBlockArrayPointer = -1;
 		int lastParentUid = -1;
 
 		// kalau tidak ada komentar, cetak pesan tidak ada komentar dan keluar
@@ -230,12 +275,10 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 				// jika parentUID sekarang != lastParentUid, berarti harus dimulai thread baru
 				// jika lastParentUid == -1, maka artinya belum ada data sebelumnya (ini yang pertama)
 				if ((lastParentUid != parentUID) && (lastParentUid != -1)) {
-					currentThreadBlockArrayPointer++;
-
 					// hanya perlu action balas
 					CustomThreadBlock threadBlock = new CustomThreadBlock(this,
 						commentArray, Integer.parseInt(intentPID), lastParentUid,
-						CustomThreadBlock.ACTIONS_NONE, Integer.parseInt(intentUid));
+						CustomThreadBlock.ACTIONS_NONE, Integer.parseInt(dataAuthorUID));
 					threadBlockArray.add(threadBlock);
 					commentArray.clear();
 				}
@@ -252,15 +295,12 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 
 		// thread yang mengandung komentar terakhir belum dimasukkan ke threadBlockArray
 		// jadi, masukkan thread tersebut sekarang
-		currentThreadBlockArrayPointer++;
-
 		CustomThreadBlock threadBlock = new CustomThreadBlock(this,
 			commentArray, Integer.parseInt(intentPID),
 			lastParentUid, CustomThreadBlock.ACTIONS_NONE,
-			Integer.parseInt(intentUid));
+			Integer.parseInt(dataAuthorUID));
 		threadBlockArray.add(threadBlock);
 		commentArray.clear();
-
 
 		// buat view items untuk threads
 		int threadBlockArrayLength = threadBlockArray.size();
@@ -269,5 +309,34 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 			CustomThreadBlock threadBlockToPrint = threadBlockArray.get(i);
 			commentSectionContainer.addView(threadBlockToPrint.getLinearLayout());
 		}
+	}
+
+
+	// --- action handlers ---
+
+	public void lihatProfil() {
+		TreeMap<String,String> inputData = new TreeMap<>();
+
+		if (currentUid.equalsIgnoreCase(intentUIDPenerima)) {
+			inputData.put("ownUID", intentUid);
+			inputData.put("targetUID", intentUIDPemberi);
+
+			GetProfilTask task = new GetProfilTask(this, inputData);
+			task.execute();
+		}
+		else {
+			inputData.put("ownUID", intentUid);
+			inputData.put("targetUID", intentUIDPenerima);
+
+			GetProfilTask task = new GetProfilTask(this, inputData);
+			task.execute();
+		}
+	}
+
+	public void ubahStatus() {
+		Intent intent = new Intent(this, UbahStatusActivity.class);
+		intent.putExtra("PID", intentPID);
+
+		startActivity(intent);
 	}
 }

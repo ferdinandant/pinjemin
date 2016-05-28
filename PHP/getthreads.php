@@ -13,6 +13,11 @@
 	$result = $conn->query($sql);
 
 	$response = array();
+	
+	// write file
+	$file = fopen("log.txt", "a");
+	fwrite($file, $sql . "\n");
+	fclose($file);
    
 	// if there is no error
 	if ($result != false) {

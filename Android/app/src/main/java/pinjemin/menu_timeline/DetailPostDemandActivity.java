@@ -190,6 +190,11 @@ public class DetailPostDemandActivity extends AppCompatActivity
 		LinearLayout commentSectionContainer = (LinearLayout) findViewById(R.id.commentContainer);
 		int jsonResponseArrayCommentLength = jsonResponseArrayComment.length();
 
+		// mulai dengan linear list yang kosong
+		// atau kalau tidak, saat di-resume, list-nya numpuk
+		Log.d("DEBUG", "Gw hapus nih!!");
+		commentSectionContainer.removeAllViews();
+
 		ArrayList<CustomThreadBlock> threadBlockArray = new ArrayList<>();
 		ArrayList<Comment> commentArray = new ArrayList<>();
 		int currentThreadBlockArrayPointer = -1;
@@ -227,8 +232,20 @@ public class DetailPostDemandActivity extends AppCompatActivity
 						.getJSONObject(currentThreadBlockArrayPointer);
 					int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
 
+					// target UID untuk post permintaan:
+					// kalau ini yang meng-initiate, target parent UID
+					// kalau ini yang meng-confirm, target si pembuat post
+					int targetUID = -1;
+					if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_INITIATE
+						|| possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CANCEL) {
+						targetUID = parentUID;
+					}
+					else if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CONFIRM) {
+						targetUID = Integer.parseInt(dataAuthorUID);
+					}
+
 					CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, Integer.parseInt(dataAuthorUID));
+						Integer.parseInt(intentPid), lastParentUid, possibleActionCode, targetUID);
 					threadBlockArray.add(threadBlock);
 					commentArray.clear();
 				}
@@ -252,8 +269,20 @@ public class DetailPostDemandActivity extends AppCompatActivity
 				.getJSONObject(currentThreadBlockArrayPointer);
 			int possibleActionCode = possibleActionCodeJson.getInt("ThreadAction");
 
+			// target UID untuk post permintaan:
+			// kalau ini yang meng-initiate, target si pembuat post
+			// kalau ini yang meng-confirm, target parent UID
+			int targetUID = -1;
+			if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_INITIATE
+				|| possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CANCEL) {
+				targetUID = Integer.parseInt(dataAuthorUID);
+			}
+			else if (possibleActionCode == CustomThreadBlock.ACTIONS_CAN_CONFIRM) {
+				targetUID = lastParentUid;
+			}
+
 			CustomThreadBlock threadBlock = new CustomThreadBlock(this, commentArray,
-				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, Integer.parseInt(dataAuthorUID));
+				Integer.parseInt(intentPid), lastParentUid, possibleActionCode, targetUID);
 			threadBlockArray.add(threadBlock);
 			commentArray.clear();
 		}

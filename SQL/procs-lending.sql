@@ -185,6 +185,8 @@ begin
          
          delete from konfirmasi where PID = varPID;
          delete from komentar where PID = varPID and parentUID <> partnerUID;
+         -- delete from permintaan where PID = varPID;
+         -- delete from penawaran where PID = varPID;
          
          -- buat entri peminjaman
          insert into peminjaman (PID, UIDPemberi, UIDPenerima, Deadline, TimestampMulai, Status)
@@ -193,7 +195,7 @@ begin
          -- buat notifikasi sistem
          -- return true/false ditentukan replyThread
          call replyThread(varPID, null, partnerUID, concat(initiatorRealName,
-         ' mengonfirmasi penyerahan barang. Jangan lupa mengembalikan barang yang dipinjam, ya!.'));
+         ' mengonfirmasi penyerahan barang. Jangan lupa mengembalikan barang yang dipinjam, ya!'));
       end if;
    end if;
 end;;
@@ -272,8 +274,9 @@ begin
       natural join user usr 
       natural left join permintaan per
       natural left join penawaran pen
-   where (pos.UID = varUID or userHasCommented(varUID, pos.PID) > 0) and
-      (per.LastNeed is null or per.LastNeed > now())
+   where (pos.UID = varUID or userHasCommented(varUID, pos.PID) > 0)
+      and (per.LastNeed is null or per.LastNeed > now())
+      and not exists (select * from peminjaman pem where pem.PID = pos.PID)
    order by pos.Timestamp desc;
 end;;
 
@@ -318,7 +321,7 @@ begin
    declare initiatorRealName varchar(80) default '';
    declare extractedStatus varchar(60) default 'DIKEMBALIKAN';
    declare extractedReview varchar(240) default '';
-   declare starRating varchar(10) default '';
+   declare starRating varchar(20) default '';
    
    declare extractedRating int default null;
    declare extractedUIDPemberi int default -1;
@@ -424,12 +427,12 @@ begin
       from user usr where usr.UID = extractedUIDPemberi;
       -- ubah varRating ke bintang:
       case varRating
-         when 1 then set starRating = '[[*]] ';
-         when 2 then set starRating = '[[**]] ';
-         when 3 then set starRating = '[[***]] ';
-         when 4 then set starRating = '[[****]] ';
-         when 5 then set starRating = '[[*****]] ';
-         else set starRating = '';
+         when 1 then set starRating = '[1 Bintang] ';
+         when 2 then set starRating = '[2 Bintang] ';
+         when 3 then set starRating = '[3 Bintang] ';
+         when 4 then set starRating = '[4 Bintang] ';
+         when 5 then set starRating = '[5 Bintang] ';
+         else set starRating = '[Tanpa rating] ';
       end case;
       -- buat notifikasi sistem
       call replyThread(varPID, null, impliedParentUID, concat('Update review dari ', initiatorRealName, ':\n',

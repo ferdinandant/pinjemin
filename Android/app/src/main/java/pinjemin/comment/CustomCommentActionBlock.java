@@ -170,7 +170,7 @@ public class CustomCommentActionBlock
 					inputData.put("ownUID", "" + loggedInUID);
 					inputData.put("targetUID", "" + targetUID);
 
-					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CONFIRM_TRANSFER, inputData);
+					CommentTask task = new CommentTask(activity, CommentTask.CONFIRM_TRANSFER, inputData);
 					task.execute();
 				}
 			});
@@ -190,7 +190,7 @@ public class CustomCommentActionBlock
 					inputData.put("ownUID", "" + loggedInUID);
 					inputData.put("targetUID", "" + targetUID);
 
-					CommentTask task = new CommentTask(activity.getApplicationContext(), CommentTask.CANCEL_TRANSFER, inputData);
+					CommentTask task = new CommentTask(activity, CommentTask.CANCEL_TRANSFER, inputData);
 					task.execute();
 				}
 			});
