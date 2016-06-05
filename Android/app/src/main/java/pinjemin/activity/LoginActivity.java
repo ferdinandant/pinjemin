@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	/** ==============================================================================
-	 * Manangani action sign out
+	 * Manangani action sign out+
 	 * (SEMENTARA INI TIDAK DIPAKAI)
 	 * ============================================================================== */
 	private void signOut() {

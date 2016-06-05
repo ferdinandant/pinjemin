@@ -91,9 +91,12 @@ public class SessionManager
 		editor.commit();
 	}
 
+	/** ==============================================================================
+	 * Mengubah data session user pada saat register / ubah profil
+	 * @param realname - nama asli user (e.g. Ferdinand Antonius)
+	 * ============================================================================== */
 	public void ubahProfilSession(String realname) {
 		editor.remove(KEY_REALNAME);
-
 		editor.putString(KEY_REALNAME, realname);
 
 		// commit changes
