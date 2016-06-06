@@ -50,7 +50,7 @@ xmlns:android="http://schemas.android.com/apk/res/android">
 		<activity android:name=".menu_timeline.UbahPostSupplyActivity"></activity>
 		<activity android:name=".comment.CommentActivity"></activity>
 		<activity android:name=".menu_peminjaman.UbahStatusActivity"></activity>
-		<activity android:name=".comment.UbahDeadline"></activity>
+		<activity android:name=".menu_peminjaman.UbahDeadlineActivity"></activity>
 	</application>
 
 </manifest>

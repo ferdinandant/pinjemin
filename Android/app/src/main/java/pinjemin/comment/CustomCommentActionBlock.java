@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import pinjemin.backgroundTask.CommentTask;
+import pinjemin.menu_peminjaman.UbahDeadlineActivity;
 import pinjemin.session.SessionManager;
-import pinjemin.utility.UtilityDate;
 import pinjemin.utility.UtilityGUI;
 
 
@@ -146,7 +146,7 @@ public class CustomCommentActionBlock
 				@Override
 				public void onClick(View view) {
 					Log.d("DEBUG", "Tadinya mau initiate...");
-					Intent intent = new Intent(activity, UbahDeadline.class);
+					Intent intent = new Intent(activity, UbahDeadlineActivity.class);
 					intent.putExtra("pid", "" + postPID);
 					intent.putExtra("targetUID", "" + targetUID);
 

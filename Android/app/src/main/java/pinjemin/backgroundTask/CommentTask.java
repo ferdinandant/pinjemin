@@ -10,7 +10,6 @@
 package pinjemin.backgroundTask;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -20,8 +19,6 @@ import java.io.IOException;
 import java.util.TreeMap;
 
 import pinjemin.menu_peminjaman.DetailPostPeminjamanActivity;
-import pinjemin.menu_timeline.TimelineDemandFragment;
-import pinjemin.menu_timeline.TimelineSupplyFragment;
 import pinjemin.utility.UtilityConnection;
 
 
@@ -30,7 +27,7 @@ public class CommentTask extends AsyncTask<Void,Object,Void>
 	public static final String PHP_PATH_CREATE_THREAD = "createthread.php";
 	public static final String PHP_PATH_REPLY_THREAD = "replythread.php";
 	public static final String PHP_PATH_INITIATE_TRANSFER = "initiatetransfer.php";
-	public static final String PHP_PATH_CANCEL_TRANSFER_TRANSFER = "canceltransfer.php";
+	public static final String PHP_PATH_CANCEL_TRANSFER = "canceltransfer.php";
 	public static final String PHP_PATH_CONFIRM_TRANSFER = "confirmtransfer.php";
 
 	public static final int CREATE_THREAD = 1;
@@ -67,7 +64,7 @@ public class CommentTask extends AsyncTask<Void,Object,Void>
 			phpFilePath = PHP_PATH_INITIATE_TRANSFER;
 		}
 		else if (postType == CANCEL_TRANSFER) {
-			phpFilePath = PHP_PATH_CANCEL_TRANSFER_TRANSFER;
+			phpFilePath = PHP_PATH_CANCEL_TRANSFER;
 		}
 		else if (postType == CONFIRM_TRANSFER) {
 			phpFilePath = PHP_PATH_CONFIRM_TRANSFER;

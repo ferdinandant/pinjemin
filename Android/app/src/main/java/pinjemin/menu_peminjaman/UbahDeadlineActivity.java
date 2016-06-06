@@ -6,7 +6,7 @@
  * Refactoring & Doumentation: Ferdinand Antonius
  * =================================================================================== */
 
-package pinjemin.comment;
+package pinjemin.menu_peminjaman;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -33,7 +33,7 @@ import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityGUI;
 
 
-public class UbahDeadline extends AppCompatActivity
+public class UbahDeadlineActivity extends AppCompatActivity
 {
     private static final int DATEPICKER_DIALOG = 0;
 
@@ -57,7 +57,7 @@ public class UbahDeadline extends AppCompatActivity
         // initialize toolbar:
         // set title dan jadikan toolbar ini Action Bar (main toolbar) di activity ini
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Membuat Permintaan");
+        toolbar.setTitle("Mengubah Deadline");
         setSupportActionBar(toolbar);
 
         dateView = (TextView) findViewById(R.id.dateView);

@@ -1,0 +1,2540 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.3">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>730</y>
+      <w>90</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*Post*
+--
+- pid
+- uid
+- accountName
+- timeStamp
+- namaBarang
+- deskripsi
+- unreadCount
+
+
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>1130</y>
+      <w>90</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*Review*
+--
+- realName
+- review
+- rating {0..5}
+
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>850</y>
+      <w>90</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*PostDemand*
+--
+- batasAkhir
+
+
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>905</y>
+      <w>90</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*PostSupply*
+--
+- harga
+
+
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1910</x>
+      <y>800</y>
+      <w>75</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+layer=1</panel_attributes>
+    <additional_attributes>130.0;10.0;130.0;60.0;10.0;60.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1910</x>
+      <y>870</y>
+      <w>35</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>
+layer=1</panel_attributes>
+    <additional_attributes>50.0;110.0;10.0;110.0;10.0;10.0;50.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>980</y>
+      <w>90</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*Comment*
+--
+- realName
+- timeStamp
+- content
+- cid
+- uid
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1935</x>
+      <y>1055</y>
+      <w>90</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*User*
+--
+- realName
+- review
+- rating {0..5}
+
+
+layer=0</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>855</x>
+      <y>480</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*MainActivity*
+--
+- toolbar
+- tabLayout
+- tabIcons[4]
+--
++ configureViewPager()
++ configureTabLayout()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>705</y>
+      <w>165</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*Activity*
+--
+
+--
++ onCreate(bundle)
++ onStart()
++ onResume()
++ onActivityResult(requestCode, resultcode, intent)
++ onBackPressed()
++ onOptionsItemSelected(menuItem)
++ onCreateOptionsMenu(menu)
++ finish()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1125</x>
+      <y>250</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*SessionManager*
+--
+- sharedPreference
+- editor
+- context
+--
++ isLoggedIn()
++ checkLogin()
++ getUserDetails()
++ createLoginSession(uid, accountName)
++ createRegisterSession(realName)
++ editRegisterSession(realName)
++ logoutUser() </panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>485</x>
+      <y>480</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*LoginActivity*
+--
+- toolbar
+- inputName
+- inputPassword
+- buttonSignIn
+- buttonGoogleSignIn
+--
++ handleSignInResult(googleSignInResult)
++ signIn()
++ onConnectionFailed()
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>325</y>
+      <w>110</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*GoogleApiClient*
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1015</x>
+      <y>345</y>
+      <w>175</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m1=1
+m2=0..*
+mengecek
+login ^</panel_attributes>
+    <additional_attributes>270.0;10.0;270.0;310.0;10.0;310.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>665</x>
+      <y>480</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*RegisterActivity*
+--
+- toolbar
+- inputName
+- inputFakultas
+- inputProdi
+- inputTelepon
+- inputBio
+- buttonSubmit
+--
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>575</x>
+      <y>355</y>
+      <w>40</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m1=1
+m2=0..*
+menggu-
+nakan ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>355</y>
+      <w>285</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m1=1
+m2=0..*
+menggu-
+nakan ^</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;160.0;530.0;160.0;530.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>470</x>
+      <y>395</y>
+      <w>625</w>
+      <h>390</h>
+    </coordinates>
+    <panel_attributes>*activity*
+--
+bg=#ffddee
+layer=-1
+lw=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>560</y>
+      <w>165</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CustomViewPager*
+--
+- toolbar
+- tabLayout
+--
++ handleSignInResult(googleSignInResult)
++ signIn()
++ onConnectionFailed()
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>320</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;static&gt;&gt;
+*Builder*
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>655</x>
+      <y>330</y>
+      <w>45</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>575</y>
+      <w>555</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=1
+menuTab
+ViewPager</panel_attributes>
+    <additional_attributes>10.0;60.0;1090.0;60.0;1090.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>690</x>
+      <y>265</y>
+      <w>110</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;interface&gt;&gt;
+*OnConnectionFailedListener*
+--
+
+--
++ onConnectionFailed()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>595</x>
+      <y>285</y>
+      <w>105</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>190.0;10.0;10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>490</y>
+      <w>165</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CustomViewPagerAdapter*
+--
+- fragmentTitleList[0..*]
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>520</y>
+      <w>25</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>945</x>
+      <y>590</y>
+      <w>75</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*ViewPagerListener*
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>915</x>
+      <y>575</y>
+      <w>35</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>50.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>405</y>
+      <w>165</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*FragmentPagerAdapter*
+--
+
+--
++ getItem(position)
++ getCount()
++ getPageTitle(position)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>460</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>575</y>
+      <w>575</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;310.0;1130.0;310.0;1130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>685</x>
+      <y>575</y>
+      <w>15</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;310.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1100</x>
+      <y>225</y>
+      <w>215</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>*session*
+--
+bg=#ddddfff
+layer=-2
+lw=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>515</y>
+      <w>155</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*AsyncTask*
+--
+- dataToSend
+- jsonResponseObject
+- jsonResponseArray
+--
++ onPreExecute()
++ doInBackground(params)
++ onProgressUpdate(objects)
++ onPostExecute(void)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>685</y>
+      <w>155</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*LoginGoogleTask*
+--
+- PHP_PATH = "logingoogle.php"
+- isLoginSuccessful
+- isServerReachable
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>625</y>
+      <w>155</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*LoginNormalTask*
+--
+- PHP_PATH = "login.php"
+- isLoginSuccessful
+- isServerReachable
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>505</x>
+      <y>575</y>
+      <w>15</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;310.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>525</x>
+      <y>575</y>
+      <w>845</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1670.0;180.0;10.0;180.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>545</x>
+      <y>575</y>
+      <w>825</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1630.0;230.0;10.0;230.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1355</x>
+      <y>195</y>
+      <w>165</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;utility&gt;&gt;
+*UtilityGUI*
+--
+
+--
+_+ assureNotEmpty(activity, input, layout, errMsg)_
+_+ assureNumeric(activity, input, layout, errMsg)_
+_+ requestFocus(activity, view)_
+_+ dpIntoPixel(activity, dp)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1355</x>
+      <y>130</y>
+      <w>165</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;utility&gt;&gt;
+*UtilityConnection*
+--
+
+--
+_+ runPhp(path, dataTreeMap)_
+_+ removeUnicodeBOM(string)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1355</x>
+      <y>280</y>
+      <w>165</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;utility&gt;&gt;
+*UtilityDate*
+--
+
+--
+_+ monthNameAbbr(monthNum)_
+_+ isToRefreshAgain(lastRequest)_
+_+ formatTimestampElapsedTime(timestamp)_
+_+ formatTimestampDateOnly(timestamp)_
+_+ formatTimestampTimeOnly(timestamp)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1215</x>
+      <y>150</y>
+      <w>100</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>fungsi-fungsi assure() digunakan pada setiap input field yang memerlukan validasi.
+
+(Panah tidak digambar agar diagram tidak semakin ribet)
+bg=#00ff55</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>745</y>
+      <w>155</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*RegisterTask*
+--
+- PHP_PATH = "register.php"
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>705</x>
+      <y>575</y>
+      <w>665</w>
+      <h>195</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1310.0;360.0;10.0;360.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>530</y>
+      <w>50</w>
+      <h>1570</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0;80.0;3120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1365</x>
+      <y>465</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Attributes pada kelas ini sebenarnya dideklarasi pada masing-masing subclass
+bg=#00ff55</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1345</x>
+      <y>480</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>30.0;120.0;10.0;120.0;10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1335</x>
+      <y>0</y>
+      <w>205</w>
+      <h>375</h>
+    </coordinates>
+    <panel_attributes>*utility*
+--
+bg=#ddbbff
+layer=-3
+lw=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>135</y>
+      <w>105</w>
+      <h>535</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>20.0;10.0;160.0;10.0;160.0;1050.0;10.0;1050.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>145</y>
+      <w>130</w>
+      <h>570</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>20.0;10.0;210.0;10.0;210.0;1120.0;10.0;1120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>155</y>
+      <w>155</w>
+      <h>620</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>20.0;10.0;260.0;10.0;260.0;1220.0;10.0;1220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>850</y>
+      <w>165</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*Fragment*
+--
+
+--
++ onCreateView(viewGroup, container, bundle)
++ onActivityCreated(bundle)
++ onPrepareOptionsMenu(menu)
++ onCreate(bundle)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>685</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>640</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>645</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>690</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>505</x>
+      <y>725</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>685</x>
+      <y>725</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>855</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*TimelineFragment*
+--
+- timelineTabLayout
+- timelineViewPager
+- currentTimelineMode {DEMAND, SUPPLY}
+--
++ configureViewPager()
++ configureTabLayout()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>2015</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*LogPeminjamanFragment*
+--
+- toolbar
+- tabLayout
+- tabIcons[4]
+--
++ ()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>2135</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*FriendFragment*
+--
+- toolbar
+- tabLayout
+- tabIcons[4]
+--
++ 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>850</x>
+      <y>295</y>
+      <w>165</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+&lt;&lt;interface&gt;&gt;
+*ViewPager.OnPageChangeListener*
+--
+
+--
++ onPageSelected(position)
++ onPageScrolled(pos, posOffset, posOffsetPx)
++ onPageScrollStateChanged(int state)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1310</x>
+      <y>170</y>
+      <w>55</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;70.0;60.0;70.0;60.0;10.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>750</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>745</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1275</x>
+      <y>345</y>
+      <w>95</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;instantiate&gt;&gt;</panel_attributes>
+    <additional_attributes>170.0;610.0;10.0;610.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1260</x>
+      <y>345</y>
+      <w>110</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;instantiate&gt;&gt;</panel_attributes>
+    <additional_attributes>200.0;720.0;10.0;720.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>755</x>
+      <y>345</y>
+      <w>390</w>
+      <h>145</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;
+m1=1
+m2=0..*
+update
+session &gt;</panel_attributes>
+    <additional_attributes>760.0;10.0;760.0;220.0;10.0;220.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1020</x>
+      <y>860</y>
+      <w>115</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1020</x>
+      <y>2145</y>
+      <w>110</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1015</x>
+      <y>510</y>
+      <w>140</w>
+      <h>1650</h>
+    </coordinates>
+    <panel_attributes>lt=.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>210.0;3280.0;210.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>565</y>
+      <w>680</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=1
+timeline
+View
+Pager</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0;200.0;530.0;1340.0;530.0;1340.0;580.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>885</y>
+      <w>125</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*FloatingActionButtonListener*
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>890</y>
+      <w>250</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;480.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>170</y>
+      <w>165</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*View.OnClickListener*
+--
+
+--
++ onClick(view)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>1035</y>
+      <w>125</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CreatePostDemandActivity*
+--
+- toolbar
+- inputNamaBarang
+- inputDeskripsi
+- inputDate
+- btnDatePicker
+- btnSubmit
+--
++ onCreateDialog(viewId)
++ submitForm()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>120</y>
+      <w>165</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*DatePickerDialog.OnDateSetListener*
+--
+
+--
++ onDateSet(view, yyyy, mm, dd)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>175</y>
+      <w>175</w>
+      <h>735</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0;160.0;1450.0;330.0;1450.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>860</y>
+      <w>535</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;1050.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1100</x>
+      <y>150</y>
+      <w>110</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Setiap kelas di luar package "activity" akan me-refer ke kelas ini jika ingin mendapatkan UID, accountName, atau realName nama user yang seang login.
+
+(Panah tidak digambar agar diagram tidak semakin ribet)
+bg=#00ff55</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1080</x>
+      <y>185</y>
+      <w>55</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0;10.0;170.0;90.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>500</x>
+      <y>1180</y>
+      <w>125</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*MyOnDateSetListener*
+--
+
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>1120</y>
+      <w>15</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>125</y>
+      <w>175</w>
+      <h>1080</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0;140.0;2140.0;330.0;2140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>635</x>
+      <y>1035</y>
+      <w>125</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CreatePostDemandActivity*
+--
+- toolbar
+- inputNamaBarang
+- inputDeskripsi
+- inputHarga
+- btnSubmit
+--
++ submitForm()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>740</y>
+      <w>395</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;560.0;770.0;560.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>585</x>
+      <y>1020</y>
+      <w>15</w>
+      <h>25</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>715</x>
+      <y>1015</y>
+      <w>15</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>585</x>
+      <y>1015</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1115</x>
+      <y>2025</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>505</x>
+      <y>1005</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>645</x>
+      <y>1000</y>
+      <w>15</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>505</x>
+      <y>995</y>
+      <w>155</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=.
+</panel_attributes>
+    <additional_attributes>10.0;20.0;290.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>505</x>
+      <y>915</y>
+      <w>40</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>505</x>
+      <y>1000</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>565</x>
+      <y>1240</y>
+      <w>165</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*TimelineDemandFragment*
+--
+- lastRequest
+- recyclerView
+--
++ resetLastRequest()
++ performRefresh()
++ refreshRoutine()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>595</x>
+      <y>1400</y>
+      <w>135</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*RecyclerClickListener*
+--
+- lastRequest
+--
++ onClick(view, position);
++ onLongClick(view, position);</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>320</y>
+      <w>65</w>
+      <h>295</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0;110.0;570.0;20.0;570.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1115</x>
+      <y>860</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>1120</y>
+      <w>730</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1440.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>600</x>
+      <y>1120</y>
+      <w>770</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1520.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>1120</y>
+      <w>155</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CreatePostTask*
+--
+- PHP_PATH_SUPPLY =
+        "createnewpenawaran.php"
+- PHP_PATH_DEMAND =
+        "createnewpermintaan.php"
+- postType {DEMAND, SUPPLY}
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>1140</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>1135</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>1240</y>
+      <w>165</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*TimelineDemandFragment*
+--
+- lastRequest
+- recyclerView
+--
++ resetLastRequest()
++ performRefresh()
++ refreshRoutine()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>1935</x>
+      <y>685</y>
+      <w>75</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>(Pada kode Android tidak dilakukan generalisasi)
+bg=#00ff55</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1920</x>
+      <y>695</y>
+      <w>25</w>
+      <h>145</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;270.0;10.0;10.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>820</x>
+      <y>1400</y>
+      <w>135</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*RecyclerClickListener*
+--
+- lastRequest
+--
++ onClick(view, position);
++ onLongClick(view, position);</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>570</x>
+      <y>1305</y>
+      <w>30</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-</panel_attributes>
+    <additional_attributes>40.0;240.0;10.0;240.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>795</x>
+      <y>1305</y>
+      <w>30</w>
+      <h>125</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-</panel_attributes>
+    <additional_attributes>40.0;230.0;10.0;230.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>565</x>
+      <y>1475</y>
+      <w>165</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*DetailPostSupplyActivity*
+--
+- pembuatPost
+- tanggal
+- deskripsi
+- harga
+- btnMintaPinjem
+- btnLihatProfil
+- btnUbah
+- btnHapus
+--
++ configureTextViews()
++ configureActionButtons()
++ populateComments()
++ loadPostDetails()
++ mintaPinjem()
++ lihatProfil()
++ ubah()
++ hapus()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1890</x>
+      <y>1320</y>
+      <w>135</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*TimelineSupplyAdapter*
+--
+
+--
++ getarrayList()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1890</x>
+      <y>1235</y>
+      <w>135</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*RecyclerView.Adapter*
+--
+
+--
++ onCreateViewHolder(parent, viewType)
++ onBindViewHolder(RVholder, position)
++ getItemCount()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2020</x>
+      <y>1260</y>
+      <w>40</w>
+      <h>410</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0;60.0;800.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>1210</y>
+      <w>710</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>1400.0;20.0;10.0;20.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>1195</y>
+      <w>155</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*PopulateTimelineTask*
+--
+- PHP_PATH_SUPPLY =
+        "getpenawarantimeline.php"
+- PHP_PATH_DEMAND =
+        "getpermintaantimeline.php"
+- postType {DEMAND, SUPPLY}
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>655</x>
+      <y>1440</y>
+      <w>40</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>1440</y>
+      <w>40</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>1475</y>
+      <w>165</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*DetailPostSupplyActivity*
+--
+- pembuatPost
+- tanggal
+- deskripsi
+- harga
+- btnMintaPinjem
+- btnLihatProfil
+- btnUbah
+- btnHapus
+--
++ configureTextViews()
++ configureActionButtons()
++ populateComments()
++ loadPostDetails()
++ mintaPinjem()
++ lihatProfil()
++ ubah()
++ hapus()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>950</x>
+      <y>1230</y>
+      <w>420</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+meng-
+ekse-
+kusi &gt;</panel_attributes>
+    <additional_attributes>820.0;10.0;40.0;10.0;40.0;130.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1890</x>
+      <y>1385</y>
+      <w>135</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*TimelineDemandAdapter*
+--
+
+--
++ getarrayList()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2020</x>
+      <y>1330</y>
+      <w>40</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2020</x>
+      <y>1395</y>
+      <w>40</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;60.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1910</x>
+      <y>870</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2020</x>
+      <y>855</y>
+      <w>60</w>
+      <h>575</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;1120.0;100.0;1120.0;100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2020</x>
+      <y>910</y>
+      <w>70</w>
+      <h>455</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*</panel_attributes>
+    <additional_attributes>10.0;880.0;120.0;880.0;120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>2045</x>
+      <y>1335</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>2045</x>
+      <y>1400</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>1175</y>
+      <w>310</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+</panel_attributes>
+    <additional_attributes>10.0;130.0;10.0;10.0;600.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>935</x>
+      <y>950</y>
+      <w>40</w>
+      <h>300</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;580.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>935</x>
+      <y>1175</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1020</x>
+      <y>2025</y>
+      <w>115</w>
+      <h>15</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>1225</y>
+      <w>390</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+up-
+da-
+te
+ &gt;</panel_attributes>
+    <additional_attributes>760.0;210.0;720.0;210.0;720.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>1240</y>
+      <w>390</w>
+      <h>175</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+up-
+da-
+te
+ &gt;</panel_attributes>
+    <additional_attributes>760.0;320.0;680.0;320.0;680.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>935</x>
+      <y>1305</y>
+      <w>965</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>1910.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>585</x>
+      <y>1305</y>
+      <w>1315</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>2610.0;210.0;2510.0;210.0;2510.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>790</x>
+      <y>1720</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*UbahPostSupplyActivity*
+--
+- toolbar
+- inputNamaBarang
+- inputDeskripsi
+- inputHarga
+- btnSubmit
+- jsonResponseArrayPost
+- jsonResponseArrayComment
+--
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>565</x>
+      <y>1720</y>
+      <w>165</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*UbahPostDemandActivity*
+--
+- toolbar
+- inputNamaBarang
+- inputDeskripsi
+- inputDate
+- btnDatePicker
+- btnSubmit
+- jsonResponseArrayPost
+- jsonResponseArrayComment
+--
++ onCreateDialog(viewId)
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>1215</y>
+      <w>55</w>
+      <h>540</h>
+    </coordinates>
+    <panel_attributes>lt=(+)-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1060.0;90.0;1060.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>1270</y>
+      <w>155</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*UbahPostTask*
+--
+- PHP_PATH_SUPPLY =
+        "editpenawaran.php"
+- PHP_PATH_DEMAND =
+        "editpermintaan.php"
+- postType {DEMAND, SUPPLY}
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>710</x>
+      <y>165</y>
+      <w>980</w>
+      <h>1485</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;</panel_attributes>
+    <additional_attributes>1620.0;10.0;1910.0;10.0;1910.0;2950.0;10.0;2950.0;10.0;2920.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>935</x>
+      <y>175</y>
+      <w>780</w>
+      <h>1485</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;</panel_attributes>
+    <additional_attributes>1170.0;10.0;1510.0;10.0;1510.0;2950.0;10.0;2950.0;10.0;2900.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>1620</y>
+      <w>40</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>575</x>
+      <y>1620</y>
+      <w>40</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;200.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1500</x>
+      <y>100</y>
+      <w>230</w>
+      <h>1065</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;20.0;440.0;20.0;440.0;2110.0;30.0;2110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1490</x>
+      <y>85</y>
+      <w>250</w>
+      <h>1140</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;20.0;480.0;20.0;480.0;2260.0;50.0;2260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1480</x>
+      <y>70</y>
+      <w>270</w>
+      <h>1230</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;
+</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;20.0;520.0;20.0;520.0;2440.0;70.0;2440.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>925</x>
+      <y>1275</y>
+      <w>445</w>
+      <h>580</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+meng-
+ekse-
+kusi &gt;</panel_attributes>
+    <additional_attributes>870.0;10.0;190.0;10.0;190.0;1140.0;10.0;1140.0;10.0;1090.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>695</x>
+      <y>1320</y>
+      <w>675</w>
+      <h>550</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1
+m2=1
+meng-
+ekse-
+kusi &gt;</panel_attributes>
+    <additional_attributes>1330.0;10.0;720.0;10.0;720.0;1080.0;10.0;1080.0;10.0;1000.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>470</x>
+      <y>800</y>
+      <w>625</w>
+      <h>1090</h>
+    </coordinates>
+    <panel_attributes>*timeline*
+--
+bg=#eeeeaa
+layer=-1
+lw=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>1335</x>
+      <y>435</y>
+      <w>205</w>
+      <h>1660</h>
+    </coordinates>
+    <panel_attributes>*backgroundTask*
+--
+bg=#dddddd
+layer=-3
+lw=2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>1925</y>
+      <w>165</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*UbahPostDemandActivity*
+--
+- toolbar
+- inputNamaBarang
+- inputDeskripsi
+- inputDate
+- btnDatePicker
+- btnSubmit
+--
++ onCreateDialog(viewId)
++ submitForm()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>810</x>
+      <y>860</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>695</x>
+      <y>1325</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>910</y>
+      <w>585</w>
+      <h>430</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;240.0;10.0;240.0;840.0;1150.0;840.0;1150.0;800.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>695</x>
+      <y>1305</y>
+      <w>15</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>335</x>
+      <y>755</y>
+      <w>55</w>
+      <h>1100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;10.0;90.0;2180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>375</x>
+      <y>1620</y>
+      <w>455</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;70.0;890.0;70.0;890.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>1620</y>
+      <w>15</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>375</x>
+      <y>1650</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>590</x>
+      <y>1650</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>375</x>
+      <y>1815</y>
+      <w>450</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;60.0;880.0;60.0;880.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>585</x>
+      <y>1815</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>585</x>
+      <y>1840</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>1195</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>1200</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1510</x>
+      <y>1270</y>
+      <w>50</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>1545</x>
+      <y>1275</y>
+      <w>10</w>
+      <h>10</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>1665</y>
+      <w>155</w>
+      <h>115</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*CommentTask*
+--
+- PHP_PATH_CREATE_THREAD =
+        "createthread.php"
+- PHP_PATH_REPLY_THREAD =
+        "editpermintaan.php"
+- PHP_PATH_INITIATE_TRANSFER =
+        "editpermintaan.php"  
+- PHP_PATH_CANCEL_TRANSFER =
+        "editpermintaan.php"
+- PHP_PATH_CONFIRM_TRANSFER =
+        "confirmtransfer.php"
+- actionType
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>840</x>
+      <y>1620</y>
+      <w>530</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1
+
+
+meng-
+ekse-
+kusi &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0;1040.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>615</x>
+      <y>1620</y>
+      <w>755</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1
+
+
+
+
+
+
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0;1490.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1360</x>
+      <y>1365</y>
+      <w>155</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>bg=#cccccc
+*deletePostTask*
+--
+- PHP_PATH = "deletepost.php"
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>870</x>
+      <y>1370</y>
+      <w>500</w>
+      <h>305</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1
+mengeksekusi &gt;</panel_attributes>
+    <additional_attributes>10.0;510.0;10.0;590.0;900.0;590.0;900.0;10.0;980.0;10.0</additional_attributes>
+  </element>
+</diagram>
