@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -55,8 +53,8 @@ public class FriendFragment extends Fragment
 		CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
 			getChildFragmentManager());
 
-		adapter.addFragment(new FriendTemanAnda(), "Teman Anda");
-		adapter.addFragment(new FriendRequest(), "Request Add");
+		adapter.addFragment(new FriendTemanAndaFragment(), "Teman Anda");
+		adapter.addFragment(new FriendRequestFragment(), "Request Add");
 
 		Log.d("debug", "bikin tab");
 		viewPager.setAdapter(adapter);

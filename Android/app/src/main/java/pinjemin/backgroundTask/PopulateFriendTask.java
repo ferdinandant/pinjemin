@@ -27,8 +27,8 @@ import java.util.TreeMap;
 
 import pinjemin.adapter.FriendRequestAdapter;
 import pinjemin.adapter.FriendTemanAndaAdapter;
-import pinjemin.menu_friend.FriendRequest;
-import pinjemin.menu_friend.FriendTemanAnda;
+import pinjemin.menu_friend.FriendRequestFragment;
+import pinjemin.menu_friend.FriendTemanAndaFragment;
 import pinjemin.model.User;
 import pinjemin.R;
 import pinjemin.utility.UtilityConnection;
@@ -99,7 +99,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new FriendTemanAnda.RecyclerTouchListener
+				new FriendTemanAndaFragment.RecyclerTouchListener
 					(context, recyclerView, new FriendTemanAndaListener()));
 		}
 
@@ -116,7 +116,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new FriendRequest.RecyclerTouchListener
+				new FriendRequestFragment.RecyclerTouchListener
 					(context, recyclerView, new FriendRequestListener()));
 		}
 	}
@@ -182,7 +182,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineDemandFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineDemandFragment ditekan
 	 * ============================================================================== */
-	private class FriendTemanAndaListener implements FriendTemanAnda.ClickListener
+	private class FriendTemanAndaListener implements FriendTemanAndaFragment.ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
@@ -209,7 +209,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineSupplyFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineSupplyFragment ditekan
 	 * ============================================================================== */
-	private class FriendRequestListener implements FriendRequest.ClickListener
+	private class FriendRequestListener implements FriendRequestFragment.ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {

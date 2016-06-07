@@ -1,26 +1,18 @@
 package pinjemin.menu_peminjaman;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import pinjemin.R;
-import pinjemin.backgroundTask.PopulatePeminjamanTask;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
-import pinjemin.menu_friend.FriendRequest;
-import pinjemin.menu_friend.FriendTemanAnda;
-import pinjemin.session.SessionManager;
 
 
 public class OngoingFragment extends Fragment

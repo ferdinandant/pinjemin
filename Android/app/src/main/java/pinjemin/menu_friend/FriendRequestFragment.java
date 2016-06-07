@@ -16,12 +16,12 @@ import pinjemin.backgroundTask.PopulateFriendTask;
 import pinjemin.session.SessionManager;
 
 
-public class FriendRequest extends Fragment
+public class FriendRequestFragment extends Fragment
 {
 
 	private SessionManager session;
 
-	public FriendRequest() {
+	public FriendRequestFragment() {
 		// Required empty public constructor
 	}
 
@@ -62,9 +62,9 @@ public class FriendRequest extends Fragment
 	{
 
 		private GestureDetector gestureDetector;
-		private FriendRequest.ClickListener clickListener;
+		private FriendRequestFragment.ClickListener clickListener;
 
-		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final FriendRequest.ClickListener clickListener) {
+		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final FriendRequestFragment.ClickListener clickListener) {
 			this.clickListener = clickListener;
 			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
 			{

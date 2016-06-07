@@ -6,7 +6,7 @@
  * Refactoring & Doumentation: Ferdinand Antonius
  * =================================================================================== */
 
-package pinjemin.menu_peminjaman;
+package pinjemin.comment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -33,8 +33,6 @@ import pinjemin.adapter.PeminjamanExpiredAdapter;
 import pinjemin.adapter.PeminjamanOngoingPinjamAdapter;
 import pinjemin.adapter.PeminjamanOngoingPinjamkanAdapter;
 import pinjemin.adapter.PeminjamanWaitingAdapter;
-import pinjemin.menu_friend.FriendRequest;
-import pinjemin.menu_friend.FriendTemanAnda;
 import pinjemin.menu_timeline.DetailPostDemandActivity;
 import pinjemin.menu_timeline.DetailPostSupplyActivity;
 import pinjemin.model.PostPeminjaman;
