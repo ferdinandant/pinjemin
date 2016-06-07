@@ -89,7 +89,8 @@ public class SearchActivity extends AppCompatActivity
 
 		// pasang listener pada searchTabViewPager
 		// untuk handling saat berpindah halaman pada tab search
-		searchTabViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+		searchTabViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+		{
 			@Override
 			public void onPageSelected(int position) {
 				searchMenuSelectedPage = position;
