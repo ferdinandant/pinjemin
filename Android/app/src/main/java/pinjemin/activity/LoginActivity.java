@@ -29,7 +29,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 
 import java.util.TreeMap;
 
@@ -37,7 +36,6 @@ import pinjemin.backgroundTask.LoginGoogleTask;
 import pinjemin.R;
 import pinjemin.backgroundTask.LoginNormalTask;
 import pinjemin.behavior.EditTextTextWatcher;
-import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityGUI;
 
 
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements
 			@Override
 			public void onClick(View view) {
 				Log.d("DEBUG", "Login biasa...");
-				submitForm();
+				normalSignIn();
 			}
 		});
 
@@ -117,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements
 			@Override
 			public void onClick(View v) {
 				Log.d("DEBUG", "Login google...");
-				signIn();
+				googleSignIn();
 			}
 		});
 	}
@@ -191,38 +189,35 @@ public class LoginActivity extends AppCompatActivity implements
 	/** ==============================================================================
 	 * Manangani action sign in (kirim intent ke google sign in API)
 	 * ============================================================================== */
-	private void signIn() {
+	private void googleSignIn() {
 		Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
 		startActivityForResult(signInIntent, RC_SIGN_IN);
 	}
 
 	/** ==============================================================================
-	 * Manangani action sign out+
-	 * (SEMENTARA INI TIDAK DIPAKAI)
+	 * Submit data login
 	 * ============================================================================== */
-	private void signOut() {
-		Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-			new ResultCallback<Status>()
-			{
-				@Override
-				public void onResult(Status status) {
-				}
-			});
-	}
+	private void normalSignIn() {
+		// kalau form tidak valid, jangan lakukan apa-apa lagi
+		if (!UtilityGUI.assureNotEmpty(this, inputName, inputLayoutName,
+			"Masukkan username Anda")) return;
+		if (!UtilityGUI.assureNotEmpty(this, inputPassword, inputLayoutPassword,
+			"Masukkan password Anda")) return;
 
-	/** ==============================================================================
-	 * Manangani action sign out
-	 * (SEMENTARA INI TIDAK DIPAKAI)
-	 * ============================================================================== */
-	private void revokeAccess() {
-		Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-			new ResultCallback<Status>()
-			{
-				@Override
-				public void onResult(Status status) {
+		// ambil username dan password dari text field
+		String username = inputName.getText().toString();
+		String password = inputPassword.getText().toString();
 
-				}
-			});
+		// susun informasi login yang akan dikirim ke server
+		TreeMap<String,String> loginData = new TreeMap<String,String>();
+		loginData.put("username", username);
+		loginData.put("password", password);
+
+		// kirimkan data login ke server pada background
+		// LoginGoogleTask loginGoogleTask = new LoginGoogleTask(LoginActivity.this, "login.php", username, password);
+		Log.d("DEBUG", "Handling untuk login biasa!!!");
+		LoginNormalTask loginNormalTask = new LoginNormalTask(this, loginData);
+		loginNormalTask.execute();
 	}
 
 	/** ==============================================================================
@@ -256,32 +251,5 @@ public class LoginActivity extends AppCompatActivity implements
 	@Override
 	public void onBackPressed() {
 		moveTaskToBack(true);
-	}
-
-
-	/** ==============================================================================
-	 * Submit data login
-	 * ============================================================================== */
-	private void submitForm() {
-		// kalau form tidak valid, jangan lakukan apa-apa lagi
-		if (!UtilityGUI.assureNotEmpty(this, inputName, inputLayoutName,
-			"Masukkan username Anda")) return;
-		if (!UtilityGUI.assureNotEmpty(this, inputPassword, inputLayoutPassword,
-			"Masukkan password Anda")) return;
-
-		// ambil username dan password dari text field
-		String username = inputName.getText().toString();
-		String password = inputPassword.getText().toString();
-
-		// susun informasi login yang akan dikirim ke server
-		TreeMap<String,String> loginData = new TreeMap<String,String>();
-		loginData.put("username", username);
-		loginData.put("password", password);
-
-		// kirimkan data login ke server pada background
-		// LoginGoogleTask loginGoogleTask = new LoginGoogleTask(LoginActivity.this, "login.php", username, password);
-		Log.d("DEBUG", "Handling untuk login biasa!!!");
-		LoginNormalTask loginNormalTask = new LoginNormalTask(this, loginData);
-		loginNormalTask.execute();
 	}
 }

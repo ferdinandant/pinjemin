@@ -165,17 +165,15 @@ public class MainActivity extends AppCompatActivity implements
 		int id = item.getItemId();
 
 		if (id == R.id.action_logout) {
-			// [START signOut]
+			// google logout sequence
 			Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-			new ResultCallback<Status>() {
-				@Override
-				public void onResult(Status status) {
-					// [START_EXCLUDE]
-					sessionManager.logoutUser();
-					// [END_EXCLUDE]
+				new ResultCallback<Status>() {
+					@Override
+					public void onResult(Status status) {
+						sessionManager.logoutUser();
+					}
 				}
-			});
-			// [END signOut]
+			);
 		}
 		else if (id == R.id.action_lihat_profil) {
 			TreeMap<String,String> input = new TreeMap<>();
