@@ -24,6 +24,7 @@ import java.util.TreeMap;
 import pinjemin.R;
 import pinjemin.backgroundTask.GetProfilTask;
 import pinjemin.comment.CustomThreadBlock;
+import pinjemin.comment.UbahDeadlineActivity;
 import pinjemin.model.Comment;
 import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityConnection;
@@ -33,7 +34,7 @@ import pinjemin.utility.UtilityDate;
 public class DetailPostPeminjamanActivity extends AppCompatActivity
 {
 	private TextView pembuatPost, tanggal, namaBarang, deskripsi, status, deadline, partnerName;
-	private LinearLayout btnUbahStatus, btnLihatProfil;
+	private LinearLayout btnUbahStatus, btnLihatProfil, btnUbahDeadline;
 	private Toolbar toolbar;
 	private SessionManager session;
 	private String intentUid, intentTimestamp, intentNamaBarang,
@@ -76,6 +77,7 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		status = (TextView) findViewById(R.id.status);
 		partnerName = (TextView) findViewById(R.id.dipinjamkanOleh);
 
+		btnUbahDeadline = (LinearLayout) findViewById(R.id.btn_ubahDeadline);
 		btnUbahStatus = (LinearLayout) findViewById(R.id.btn_ubahStatus);
 		btnLihatProfil = (LinearLayout) findViewById(R.id.btn_lihatProfil);
 
@@ -159,12 +161,13 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 	 * ini, serta assign listener yang sesuai.
 	 * ============================================================================== */
 	public void configureActionButtons() {
+		// pembedaan jika
 		if (currentUid.equalsIgnoreCase(dataUIDPemberi)) {
-			partnerName.setText("Dipinjamkan kepada " + dataRealNamePenerima);
+			partnerName.setText("Anda meminjamkan kepada " + dataRealNamePenerima);
 		}
 		else {
 			btnUbahStatus.setVisibility(View.GONE);
-			partnerName.setText("Diberi pinjam oleh " + dataRealNamePemberi);
+			partnerName.setText("Anda diberi pinjam oleh " + dataRealNamePemberi);
 		}
 
 		btnLihatProfil.setOnClickListener(new View.OnClickListener()
@@ -179,6 +182,13 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v) {
 				ubahStatus();
+			}
+		});
+		btnUbahDeadline.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v) {
+				ubahDeadline();
 			}
 		});
 	}
@@ -347,5 +357,12 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		intent.putExtra("PID", intentPID);
 
 		startActivity(intent);
+	}
+
+	public void ubahDeadline() {
+		//Intent intent = new Intent(this, UbahDeadlineActivity.class);
+		//intent.putExtra("PID", intentPID);
+
+		//startActivity(intent);
 	}
 }

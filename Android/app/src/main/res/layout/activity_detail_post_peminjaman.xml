@@ -94,9 +94,9 @@ android:layout_height="match_parent">
 				android:id="@+id/deskripsi"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="10dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginRight="10dp"
-				android:layout_marginBottom="10dp"
 				android:text="Deskripsi weleh-weleh ahahaha pokipo cukipi lalala"
 				android:textColor="#000"
 				android:textSize="15sp" />
@@ -105,18 +105,18 @@ android:layout_height="match_parent">
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dp"
-				android:textSize="15sp"
+				android:text="Pemberi pinjam:"
 				android:textColor="#000"
-				android:textStyle="bold"
-				android:text="Pemberi pinjam:" />
+				android:textSize="15sp"
+				android:textStyle="bold" />
 
 				<TextView
 				android:id="@+id/dipinjamkanOleh"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="5dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginRight="10dp"
-				android:layout_marginBottom="5dp"
 				android:text="Dipinjamkan Oleh"
 				android:textColor="#000"
 				android:textSize="15sp" />
@@ -125,18 +125,18 @@ android:layout_height="match_parent">
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dp"
-				android:textSize="15sp"
+				android:text="Deadline pengembalian:"
 				android:textColor="#000"
-				android:textStyle="bold"
-				android:text="Deadline pengembalian:" />
+				android:textSize="15sp"
+				android:textStyle="bold" />
 
 				<TextView
 				android:id="@+id/deadline"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="5dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginRight="10dp"
-				android:layout_marginBottom="5dp"
 				android:text="Deadline"
 				android:textColor="#000"
 				android:textSize="15sp" />
@@ -145,18 +145,18 @@ android:layout_height="match_parent">
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginLeft="10dp"
-				android:textSize="15sp"
+				android:text="Status:"
 				android:textColor="#000"
-				android:textStyle="bold"
-				android:text="Status:" />
+				android:textSize="15sp"
+				android:textStyle="bold" />
 
 				<TextView
 				android:id="@+id/status"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginBottom="5dp"
 				android:layout_marginLeft="10dp"
 				android:layout_marginRight="10dp"
-				android:layout_marginBottom="5dp"
 				android:text="Status"
 				android:textColor="#000"
 				android:textSize="15sp" />
@@ -173,7 +173,6 @@ android:layout_height="match_parent">
 					android:layout_height="wrap_content"
 					android:layout_alignParentRight="true"
 					android:orientation="horizontal">
-
 						<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -190,7 +189,6 @@ android:layout_height="match_parent">
 					android:layout_marginRight="15dp"
 					android:layout_toLeftOf="@id/btn_lihatProfil"
 					android:orientation="horizontal">
-
 						<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
@@ -198,7 +196,22 @@ android:layout_height="match_parent">
 						android:textColor="@color/colorPrimary"
 						android:textSize="15sp"
 						android:textStyle="bold" />
+					</LinearLayout>
 
+					<LinearLayout
+					android:id="@+id/btn_ubahDeadline"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="15dp"
+					android:layout_toLeftOf="@id/btn_ubahStatus"
+					android:orientation="horizontal">
+						<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="UBAH DEADLINE"
+						android:textColor="@color/colorPrimary"
+						android:textSize="15sp"
+						android:textStyle="bold" />
 					</LinearLayout>
 
 				</RelativeLayout>
@@ -220,8 +233,8 @@ android:layout_height="match_parent">
 			<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="10dp"
 			android:layout_marginBottom="6dp"
+			android:layout_marginTop="10dp"
 			android:paddingLeft="10dp"
 			android:text="KOMENTAR"
 			android:textColor="@color/postDetailCommentHeader"
@@ -233,8 +246,7 @@ android:layout_height="match_parent">
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="6dp"
-			android:orientation="vertical">
-			</LinearLayout>
+			android:orientation="vertical"></LinearLayout>
 
 		</LinearLayout>
 

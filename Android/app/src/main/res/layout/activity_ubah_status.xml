@@ -8,13 +8,13 @@ android:layout_height="match_parent">
 	android:layout_height="wrap_content"
 	android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-		<android.support.v7.widget.Toolbar
-		android:id="@+id/toolbar"
-		android:layout_width="match_parent"
-		android:layout_height="?attr/actionBarSize"
-		android:background="?attr/colorPrimary"
-		app:layout_scrollFlags="scroll|enterAlways"
-		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+	<android.support.v7.widget.Toolbar
+	android:id="@+id/toolbar"
+	android:layout_width="match_parent"
+	android:layout_height="?attr/actionBarSize"
+	android:background="?attr/colorPrimary"
+	app:layout_scrollFlags="scroll|enterAlways"
+	app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 	</android.support.design.widget.AppBarLayout>
 
 	<LinearLayout
@@ -24,7 +24,15 @@ android:layout_height="match_parent">
 	android:orientation="vertical"
 	android:paddingLeft="20dp"
 	android:paddingRight="20dp"
-	android:paddingTop="60dp">
+	android:paddingTop="20dp">
+
+		<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:text="@string/UbahStatusPeminjamanWarning"
+		android:textColor="#aaa"
+		android:textSize="15sp" />
 
 		<TextView
 		android:layout_width="wrap_content"

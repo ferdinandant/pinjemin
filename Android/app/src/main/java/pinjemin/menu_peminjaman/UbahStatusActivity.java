@@ -69,11 +69,12 @@ public class UbahStatusActivity extends AppCompatActivity implements AdapterView
 
 		// spinner drop down elements
 		List<String> categoriesRating = new ArrayList<>();
-		categoriesRating.add("5 bintang");
-		categoriesRating.add("4 bintang");
-		categoriesRating.add("3 bintang");
-		categoriesRating.add("2 bintang");
-		categoriesRating.add("1 bintang");
+		categoriesRating.add("--- Pilih Rating ---");
+		categoriesRating.add("5 bintang (★★★★★)");
+		categoriesRating.add("4 bintang (★★★★)");
+		categoriesRating.add("3 bintang (★★★)");
+		categoriesRating.add("2 bintang (★★)");
+		categoriesRating.add("1 bintang (★)");
 
 		ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoriesRating);
 
@@ -101,10 +102,6 @@ public class UbahStatusActivity extends AppCompatActivity implements AdapterView
 		// attaching data adapter to spinner
 		spinnerStatus.setAdapter(dataAdapter2);
 
-		// NOTE: inner class MyTextWatcher diimplementasikan  di bawah
-		inputreview.addTextChangedListener(new EditTextTextWatcher(
-			this, inputreview, inputLayoutreview, "Masukkan Review Anda"));
-
 		// set action listener (submit form)
 		buttonSubmit.setOnClickListener(new View.OnClickListener()
 		{
@@ -125,6 +122,9 @@ public class UbahStatusActivity extends AppCompatActivity implements AdapterView
 		String status = spinnerStatus.getSelectedItem().toString();
 
 		rating = "" + rating.charAt(0);
+		if (rating.equals("-")) {
+			rating = "0";
+		}
 
 		// susun informasi login yang akan dikirim ke server
 		TreeMap<String,String> inputData = new TreeMap<String,String>();

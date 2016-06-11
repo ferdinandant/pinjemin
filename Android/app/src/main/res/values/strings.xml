@@ -18,4 +18,7 @@
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_password">Enter the password</string>
 
+	<!-- Ferdi's work -->
+	<string name="UbahStatusPeminjamanWarning"><b>CATATAN:</b> Anda tidak dapat mengubah status maupun review untuk peminjaman yang statusnya sudah diubah menjadi DIKEMBALIKAN."</string>
+	<string name="commentTips"><b>TIPS:</b> Anda dapat mengetikkan tempat bertemu, kriteria tambahan, dll. di sini."</string>
 </resources>

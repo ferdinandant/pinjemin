@@ -126,11 +126,9 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[0] == null) {
-				lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new PeminjamanListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
+			lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new PeminjamanListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
 		}
 		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAM) {
@@ -148,11 +146,9 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[1] == null) {
-				lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new PeminjamanListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
+			lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new PeminjamanListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
 		}
 		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAMKAN) {
@@ -170,11 +166,9 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[2] == null) {
-				lastRecyclerOnItemTouchListener[2] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new PeminjamanListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[2]);
+			lastRecyclerOnItemTouchListener[2] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new PeminjamanListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[2]);
 		}
 		else if (peminjamanType == PEMINJAMAN_EXPIRED) {
@@ -192,11 +186,9 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[3] == null) {
-				lastRecyclerOnItemTouchListener[3] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new PeminjamanListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[3]);
+			lastRecyclerOnItemTouchListener[3] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new PeminjamanListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[3]);
 		}
 	}

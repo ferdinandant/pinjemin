@@ -107,11 +107,9 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[0] == null) {
-				lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new FriendRequestListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
+			lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new FriendRequestListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
 		}
 
@@ -129,11 +127,9 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			// tambahkan listener ke RecyclerView
 			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
 			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
-			if (lastRecyclerOnItemTouchListener[1] == null) {
-				lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
-					context, recyclerView, new FriendRequestListener());
-			}
 			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
+			lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
+				context, recyclerView, new FriendRequestListener());
 			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
 		}
 	}

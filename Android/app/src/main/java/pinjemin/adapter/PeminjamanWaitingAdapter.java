@@ -60,16 +60,22 @@ public class PeminjamanWaitingAdapter
 	@Override
 	public void onBindViewHolder(PeminjamanWaitingAdapter.RecyclerViewHolder holder, int position) {
 		PostPeminjaman peminjaman = arrayPeminjaman.get(position);
-
 		holder.namaBarang.setText(peminjaman.getNamaBarang());
-		holder.deskripsi.setText(peminjaman.getDeskripsi());
 
 		if (peminjaman.getHarga() == "null") {
 			// ini post permintaan
+			holder.deskripsi.setText(
+				"Permintaan oleh " + peminjaman.getRealname() + ":"
+				+ "\n" +	peminjaman.getDeskripsi());
+
 			holder.status.setText("Dibutuhkan Paling Lambat "
 					+ UtilityDate.formatTimestampDateOnly(peminjaman.getLastneed()));
 		} else {
 			// ini post penawaran
+			holder.deskripsi.setText(
+				"Penawaran dari " + peminjaman.getRealname() + ":"
+					+ "\n" +	peminjaman.getDeskripsi());
+
 			int hargaParsedInt = Integer.parseInt(peminjaman.getHarga());
 			if (hargaParsedInt == 0) {
 				holder.status.setText("GRATIS");

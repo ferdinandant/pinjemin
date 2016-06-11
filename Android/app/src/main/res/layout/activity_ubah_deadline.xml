@@ -1,78 +1,95 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+	<android.support.design.widget.AppBarLayout
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/menuDark"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
+		<android.support.v7.widget.Toolbar
+		android:id="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="?attr/actionBarSize"
+		android:background="@color/menuDark"
+		app:layout_scrollFlags="scroll|enterAlways"
+		app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+	</android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="20dp">
-idget.TextInputLayout>
+	<LinearLayout
+	android:layout_width="fill_parent"
+	android:layout_height="match_parent"
+	android:layout_marginTop="?attr/actionBarSize"
+	android:orientation="vertical"
+	android:paddingLeft="20dp"
+	android:paddingRight="20dp"
+	android:paddingTop="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="15dp"
-            android:text="Masukkan Deadline Pengembalian Barang:"
-            android:textSize="15sp" />
+		<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="1dp"
+		android:layout_marginTop="15dp"
+		android:text="Masukkan Deadline Pengembalian Barang:"
+		android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp">
+		<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="3dp"
+		android:orientation="horizontal">
+			<TextView
+			android:id="@+id/dateView"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="10/8/2016"
+			android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/dateView"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="10/8/2016"
-                android:textSize="20sp" />
+			<ImageButton
+			android:id="@+id/btn_datePicker"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="#0000"
+			android:src="@drawable/ic_date_picker" />
+		</LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btn_batas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#0000"
-                android:src="@drawable/ic_date_picker" />
+		<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="3dp"
+		android:orientation="horizontal">
+			<TextView
+			android:id="@+id/timeView"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:text="10/8/2016"
+			android:textSize="20sp" />
 
-        </LinearLayout>
+			<ImageButton
+			android:id="@+id/btn_timePicker"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="#0000"
+			android:src="@drawable/ic_date_picker" />
+		</LinearLayout>
 
-        <View
-            android:id="@+id/garisBawah"
-            android:layout_width="95dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="-6dp"
-            android:background="#999999" />
+		<View
+		android:id="@+id/garisBawah"
+		android:layout_width="95dp"
+		android:layout_height="1dp"
+		android:layout_marginTop="-6dp"
+		android:background="#999999" />
 
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="23dp"
-            android:background="@color/colorPrimary"
-            android:text="SUBMIT"
-            android:textColor="@android:color/white" />
+		<Button
+		android:id="@+id/btn_submit"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="23dp"
+		android:background="@color/colorPrimary"
+		android:text="SUBMIT"
+		android:textColor="@android:color/white" />
 
-    </LinearLayout>
+	</LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
