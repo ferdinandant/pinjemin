@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:card_view="http://schemas.android.com/apk/res-auto"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:background="?android:attr/selectableItemBackground"
 android:clickable="true"
 android:focusable="true"
-android:orientation="vertical"
-				xmlns:card_view="http://schemas.android.com/apk/res-auto">
-<!-- android:paddingBottom="10dp"
-android:paddingLeft="16dp"
-android:paddingRight="16dp"
-android:paddingTop="10dp"
--->
+android:orientation="vertical">
+	<!-- android:paddingBottom="10dp"
+	android:paddingLeft="16dp"
+	android:paddingRight="16dp"
+	android:paddingTop="10dp"
+	-->
 
 	<android.support.v7.widget.CardView
 	android:id="@+id/card_view"
@@ -30,8 +30,8 @@ android:paddingTop="10dp"
 			<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_weight="3">
+			android:layout_weight="3"
+			android:orientation="vertical">
 
 				<TextView
 				android:id="@+id/namaBarang"
@@ -40,7 +40,7 @@ android:paddingTop="10dp"
 				android:layout_alignParentTop="true"
 				android:textColor="@color/title"
 				android:textSize="@dimen/abc_text_size_subhead_material"
-				android:textStyle="bold"/>
+				android:textStyle="bold" />
 
 				<TextView
 				android:id="@+id/accountName"
@@ -48,9 +48,9 @@ android:paddingTop="10dp"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/namaBarang"
 				android:layout_marginBottom="5dp"
+				android:alpha="@dimen/secondaryTextDark"
 				android:textColor="#000"
-				android:textSize="@dimen/abc_text_size_caption_material"
-				android:alpha="@dimen/secondaryTextDark"/>
+				android:textSize="@dimen/abc_text_size_caption_material" />
 
 				<TextView
 				android:id="@+id/deskripsi"
@@ -58,9 +58,9 @@ android:paddingTop="10dp"
 				android:layout_height="wrap_content"
 				android:layout_below="@id/accountName"
 				android:layout_marginBottom="5dp"
+				android:alpha="@dimen/primaryTextDark"
 				android:textColor="#000"
-				android:textSize="@dimen/abc_text_size_body_1_material"
-				android:alpha="@dimen/primaryTextDark"/>
+				android:textSize="@dimen/abc_text_size_body_1_material" />
 
 				<TextView
 				android:id="@+id/batasAkhir"
@@ -75,8 +75,8 @@ android:paddingTop="10dp"
 			android:id="@+id/timestamp"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:textColor="#000"
-			android:alpha="@dimen/disabledTextDark"/>
+			android:alpha="@dimen/disabledTextDark"
+			android:textColor="#000" />
 			<!-- android:layout_alignParentRight="true" -->
 
 		</LinearLayout>

@@ -36,6 +36,7 @@ import pinjemin.adapter.PeminjamanWaitingAdapter;
 import pinjemin.behavior.ClickListener;
 import pinjemin.behavior.RecyclerOnItemTouchListener;
 import pinjemin.menu_peminjaman.LogPeminjamanFragment;
+import pinjemin.menu_peminjaman.OngoingFragment;
 import pinjemin.menu_timeline.DetailPostDemandActivity;
 import pinjemin.menu_timeline.DetailPostSupplyActivity;
 import pinjemin.model.PostPeminjaman;
@@ -68,6 +69,10 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 
 	// penampung object RecyclerView:
 	private ArrayList<PostPeminjaman> arrayPeminjaman;
+
+	// patch untuk kodingan jorok Amru:
+	private static RecyclerOnItemTouchListener[] lastRecyclerOnItemTouchListener =
+		new RecyclerOnItemTouchListener[4];
 
 	private String currentUid;
 
@@ -110,8 +115,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			// create array, configure adapter
 			arrayPeminjaman = new ArrayList<>();
 			adapter = new PeminjamanWaitingAdapter(arrayPeminjaman, currentUid);
-
-			Log.d("Masuk", "Waiting");
+			Log.d("DEBUG", "Masuk Waiting");
 
 			// configure RecyclerView
 			recyclerView = (RecyclerView) activity.findViewById(R.id.recylerViewWaiting);
@@ -120,15 +124,20 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new PeminjamanListener()));
-
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[0] == null) {
+				lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new PeminjamanListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
 		}
 		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAM) {
 			// create array, configure adapter
 			arrayPeminjaman = new ArrayList<>();
 			adapter = new PeminjamanOngoingPinjamAdapter(arrayPeminjaman);
+			Log.d("DEBUG", "Masuk OngoingDipinjam");
 
 			// configure recycler view barang yang di pinjam
 			recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerViewDipinjam);
@@ -136,16 +145,21 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setHasFixedSize(true);
 			recyclerView.setAdapter(adapter);
 
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new PeminjamanListener()));
-
-
+			// tambahkan listener ke RecyclerView
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[1] == null) {
+				lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new PeminjamanListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
 		}
 		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAMKAN) {
 			// create array, configure adapter
 			arrayPeminjaman = new ArrayList<>();
 			adapter = new PeminjamanOngoingPinjamkanAdapter(arrayPeminjaman);
+			Log.d("DEBUG", "Masuk OngoingDipinjamkan");
 
 			// configure recycler view barang yang di pinjam
 			recyclerView = (RecyclerView) activity.findViewById(R.id.recyclerViewDipinjamkan);
@@ -153,18 +167,21 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setHasFixedSize(true);
 			recyclerView.setAdapter(adapter);
 
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new PeminjamanListener()));
-
-
+			// tambahkan listener ke RecyclerView
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[2] == null) {
+				lastRecyclerOnItemTouchListener[2] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new PeminjamanListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[2]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[2]);
 		}
 		else if (peminjamanType == PEMINJAMAN_EXPIRED) {
 			// create array, configure adapter
 			arrayPeminjaman = new ArrayList<>();
 			adapter = new PeminjamanExpiredAdapter(arrayPeminjaman, currentUid);
-
-			Log.d("Masuk", "Expired");
+			Log.d("DEBUG", "Masuk Expired");
 
 			// configure recycler view
 			recyclerView = (RecyclerView) activity.findViewById(R.id.recylerViewExpired);
@@ -173,9 +190,14 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new PeminjamanListener()));
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[3] == null) {
+				lastRecyclerOnItemTouchListener[3] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new PeminjamanListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[3]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[3]);
 		}
 	}
 
@@ -185,7 +207,6 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 	@Override
 	protected Void doInBackground(Void... params) {
 		try {
-
 			if (currentUid != null) {
 				// kirim permintaan ke server, tanpa mengirimkan parameter apa pun
 				TreeMap<String,String> input = new TreeMap<>();
@@ -216,7 +237,6 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 						int UnreadCount = Integer.parseInt(postInstance.getString("UnreadCount"));
 
 						String RealName = postInstance.getString("RealName");
-
 
 						if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAM) {
 							String RealNamePemberi = postInstance.getString("RealNamePemberi");
@@ -325,6 +345,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 		}
 
 		LogPeminjamanFragment.updateTabLayoutDisplay();
+		OngoingFragment.updateTabLayoutDisplay();
 	}
 
 

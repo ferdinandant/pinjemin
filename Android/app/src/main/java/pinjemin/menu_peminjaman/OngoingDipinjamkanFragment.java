@@ -1,5 +1,6 @@
 package pinjemin.menu_peminjaman;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,36 +15,48 @@ import pinjemin.session.SessionManager;
 
 public class OngoingDipinjamkanFragment extends Fragment
 {
-	boolean hasBeenInflated = false;
-	PopulatePeminjamanTask task;
+	private static boolean isFragmentReady = false;
+	private static String currentUID;
+	private static Activity activity;
+
 
 	public OngoingDipinjamkanFragment() {
 		// Required empty public constructor
 	}
 
+	/** ==============================================================================
+	 *Initial creation of fragment, dipanggil sebelum pemanggilan onCreateView()
+	 * ============================================================================== */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
+	/** ==============================================================================
+	 * Untuk instansiasi GUI
+	 * ============================================================================== */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+		Bundle savedInstanceState
+	) {
 		// Inflate the layout for this fragment
-		hasBeenInflated = true;
 		return inflater.inflate(R.layout.fragment_ongoing_dipinjamkan, container, false);
 	}
 
+	/** ==============================================================================
+	 * Dipanggil saat activity yang mengandung fragment ini sudah di-create dan view
+	 * hierarchy dari fragment ini sudah diinstansiasi.
+	 * ============================================================================== */
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		SessionManager session = new SessionManager(getActivity());
+		currentUID = session.getUserDetails().get(SessionManager.KEY_UID);
+		activity = getActivity();
 
-		String ownUid = session.getUserDetails().get(SessionManager.KEY_UID);
-
-		task = new PopulatePeminjamanTask(getActivity(), PopulatePeminjamanTask.PEMINJAMAN_ONGOING_DIPINJAMKAN, ownUid);
-		task.execute();
+		isFragmentReady = true;
+		performRefresh();
 	}
 
 	@Override
@@ -58,10 +71,17 @@ public class OngoingDipinjamkanFragment extends Fragment
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		// refresh status visible atau tidak
 		super.setUserVisibleHint(isVisibleToUser);
+	}
 
-		// kalau visible, refresh
-		if (isVisibleToUser && hasBeenInflated) {
-
+	/** ==============================================================================
+	 * Mmeperbarui semua item yang ditampilkan pada fragment ini
+	 * ============================================================================== */
+	public static void performRefresh() {
+		if (isFragmentReady) {
+			Log.d("DEBUG", "performRefresh di Ongoing2");
+			PopulatePeminjamanTask task = new PopulatePeminjamanTask(activity,
+				PopulatePeminjamanTask.PEMINJAMAN_ONGOING_DIPINJAMKAN, currentUID);
+			task.execute();
 		}
 	}
 }

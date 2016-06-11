@@ -74,9 +74,11 @@ public class OngoingFragment extends Fragment
 	 * Mengubah text pada tabLayout sehingga menampilkan jumlah items
 	 * ============================================================================== */
 	public static void updateTabLayoutDisplay() {
-		tabLayout.getTabAt(0).setText("Dipinjam ("
-			+ LogPeminjamanFragment.OngoingTakenCount + ")");
-		tabLayout.getTabAt(1).setText("Dipinjamkan ("
-			+ LogPeminjamanFragment.OngoingGivenCount+ ")");
+		if (tabLayout.getTabCount() >= 2) {
+			tabLayout.getTabAt(0).setText("Dipinjam ("
+				+ LogPeminjamanFragment.OngoingTakenCount + ")");
+			tabLayout.getTabAt(1).setText("Dipinjamkan ("
+				+ LogPeminjamanFragment.OngoingGivenCount + ")");
+		}
 	}
 }

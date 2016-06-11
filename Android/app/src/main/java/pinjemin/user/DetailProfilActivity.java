@@ -111,14 +111,14 @@ public class DetailProfilActivity extends AppCompatActivity
 			outputNumRating.setText("");
 		}
 		else {
-			double ratingDouble = Double.parseDouble(rating) + 0.5;
+			double ratingDouble = Double.parseDouble(rating);
 			String starString = "";
 
 			if (ratingDouble >= 4.5) starString = "\u2605\u2605\u2605\u2605\u2605";
-			else if (ratingDouble >= 3.5) starString = "\u2605\u2605\u2605\u2605\u2606";
-			else if (ratingDouble >= 2.5) starString = "\u2605\u2605\u2605\u2606\u2606";
-			else if (ratingDouble >= 1.5) starString = "\u2605\u2605\u2606\u2606\u2606";
-			else starString = "\u2605\u2606\u2606\u2606\u2606";
+			else if (ratingDouble >= 3.5) starString = "\u2605\u2605\u2605\u2605";
+			else if (ratingDouble >= 2.5) starString = "\u2605\u2605\u2605";
+			else if (ratingDouble >= 1.5) starString = "\u2605\u2605";
+			else starString = "\u2605";
 
 			outputRating.setText(starString + " " + rating);
 			outputNumRating.setText(" \u00B7 berdasarkan " + numRating + " review");

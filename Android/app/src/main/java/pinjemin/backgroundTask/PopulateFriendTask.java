@@ -57,6 +57,10 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	// penampung object RecyclerView:
 	private ArrayList<User> arrayUser;
 
+	// patch untuk kodingan jorok Amru:
+	private static RecyclerOnItemTouchListener[] lastRecyclerOnItemTouchListener =
+		new RecyclerOnItemTouchListener[2];
+
 	private String status;
 	private String currentUid;
 
@@ -101,9 +105,14 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new FriendTemanAndaListener()));
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[0] == null) {
+				lastRecyclerOnItemTouchListener[0] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new FriendRequestListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[0]);
 		}
 
 		else if (friendType == FRIEND_REQUEST) {
@@ -118,9 +127,14 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			// tambahkan listener ke RecyclerView
-			recyclerView.addOnItemTouchListener(
-				new RecyclerOnItemTouchListener
-					(context, recyclerView, new FriendRequestListener()));
+			// FERDI: Kodingan Amru jorok, mau nggak mau di-patch begini
+			// kalau nggak, bisa ngeganti sampai 5 kelas lebih ==
+			if (lastRecyclerOnItemTouchListener[1] == null) {
+				lastRecyclerOnItemTouchListener[1] = new RecyclerOnItemTouchListener(
+					context, recyclerView, new FriendRequestListener());
+			}
+			recyclerView.removeOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
+			recyclerView.addOnItemTouchListener(lastRecyclerOnItemTouchListener[1]);
 		}
 	}
 

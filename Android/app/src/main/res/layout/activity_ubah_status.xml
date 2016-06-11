@@ -31,7 +31,8 @@ android:layout_height="match_parent">
 		android:layout_height="wrap_content"
 		android:text="Pilih Status"
 		android:textColor="#000"
-		android:textSize="15sp" />
+		android:textSize="15sp"
+		android:textStyle="bold" />
 
 		<Spinner
 		android:id="@+id/spinner_status"
@@ -47,7 +48,8 @@ android:layout_height="match_parent">
 		android:layout_marginTop="10dp"
 		android:text="Pilih Rating"
 		android:textColor="#000"
-		android:textSize="15sp" />
+		android:textSize="15sp"
+		android:textStyle="bold" />
 
 		<Spinner
 		android:id="@+id/spinner_rating"

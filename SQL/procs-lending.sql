@@ -407,7 +407,7 @@ begin
    -- ---------------
    
    -- buat notifikasi sistem perubahan status
-   if (varStatus != extractedStatus) then
+   if (varStatus <> extractedStatus) then
       call replyThread(varPID, null, impliedParentUID,
       concat('Status peminjaman diubah menjadi ', varStatus, '.'));
       
@@ -419,7 +419,7 @@ begin
    end if;
    
    -- buat notifikasi sistem perubahan rating
-   if (varRating != extractedRating or varReview != extractedReview)
+   if (varRating <> extractedRating or varReview <> extractedReview)
    or (extractedReview is null and varReview is not null) 
    or (extractedRating is null and varRating is not null) then
       -- ambil nama yang memberikan review

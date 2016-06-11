@@ -39,7 +39,7 @@ public class CustomCommentActionBlock
 	public static final int COLOR_GRAY = 0xffcecece;
 
 	public static final int COLOR_TRANSPARENT = 0x00ffffff;
-	public static final int COLOR_BUTTON = 0xff3f51b5;
+	public static final int COLOR_BUTTON = 0xff009688;
 
 	private LinearLayout actionButtonsViewContainer;
 	private LinearLayout buttonsContainer;

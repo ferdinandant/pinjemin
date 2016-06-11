@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pinjemin.R;
+import pinjemin.backgroundTask.PopulateFriendTask;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 

@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.Status;
 import java.util.TreeMap;
 
 import pinjemin.R;
+import pinjemin.adapter.PeminjamanWaitingAdapter;
 import pinjemin.backgroundTask.GetProfilTask;
 import pinjemin.backgroundTask.UbahProfilFetchTask;
 import pinjemin.behavior.CustomViewPager;
@@ -38,7 +39,11 @@ import pinjemin.menu_friend.FriendFragment;
 import pinjemin.menu_friend.FriendRequestFragment;
 import pinjemin.menu_friend.FriendTemanAndaFragment;
 import pinjemin.menu_notification.NotificationFragment;
+import pinjemin.menu_peminjaman.ExpiredFragment;
 import pinjemin.menu_peminjaman.LogPeminjamanFragment;
+import pinjemin.menu_peminjaman.OngoingDipinjamFragment;
+import pinjemin.menu_peminjaman.OngoingDipinjamkanFragment;
+import pinjemin.menu_peminjaman.WaitingFragment;
 import pinjemin.menu_search.SearchActivity;
 import pinjemin.menu_timeline.TimelineDemandFragment;
 import pinjemin.menu_timeline.TimelineSupplyFragment;
@@ -206,18 +211,65 @@ public class MainActivity extends AppCompatActivity implements
 			if (viewPagerListener.getSelectedPage() == 0) {
 				Log.d("DEBUG", "Meminta refresh timeline");
 				Toast.makeText(this, "Memperbarui timeline ...", Toast.LENGTH_LONG).show();
-				TimelineSupplyFragment.resetLastRequest();
-				TimelineDemandFragment.resetLastRequest();
+				try {
+					TimelineSupplyFragment.resetLastRequest();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di supply");
+				}
+				try {
+					TimelineDemandFragment.resetLastRequest();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di demand");
+				}
 			}
 			else if (viewPagerListener.getSelectedPage() == 1) {
 				Log.d("DEBUG", "Meminta refresh log peminjaman");
 				Toast.makeText(this, "Memperbarui log peminjaman ...", Toast.LENGTH_LONG).show();
+				// TWEAK: untuk menghemat memori, yang disimpan di memori hanya tab yang aktif
+				// dan tab-tab di sebelahnya. Jadi, ada kemungkinan Null Pointer untuk tab yang tidak aktif.
+				// Tidak perlu dipermasalahkan. fokuskan refresh di tab yang aktif.
+				try {
+					WaitingFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di waiting");
+				}
+				try {
+					OngoingDipinjamFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di ongoing 1");
+				}
+				try {
+					OngoingDipinjamkanFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di ongoing 2");
+				}
+				try {
+					ExpiredFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di expired");
+				}
 			}
 			else if (viewPagerListener.getSelectedPage() == 2) {
 				Log.d("DEBUG", "Meminta refresh pertemanan");
 				Toast.makeText(this, "Memperbarui daftar pertemanan ...", Toast.LENGTH_LONG).show();
-				FriendRequestFragment.performRefresh();
-				FriendTemanAndaFragment.performRefresh();
+				try {
+					FriendRequestFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di friend request");
+				}
+				try {
+					FriendTemanAndaFragment.performRefresh();
+				}
+				catch (NullPointerException e) {
+					Log.d("DEBUG", "NullPointer di friend teman anda");
+				}
 			}
 		}
 

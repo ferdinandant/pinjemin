@@ -119,10 +119,6 @@ public class UbahStatusActivity extends AppCompatActivity implements AdapterView
 	 * Submit data login
 	 * ============================================================================== */
 	private void submitForm() {
-		// kalau form tidak valid, jangan lakukan apa-apa lagi
-		if (!UtilityGUI.assureNotEmpty(this, inputreview, inputLayoutreview,
-			"Masukkan Review Anda")) return;
-
 		// ambil review dan password dari text field
 		String review = inputreview.getText().toString();
 		String rating = spinnerRating.getSelectedItem().toString();

@@ -78,7 +78,6 @@ public class PeminjamanTask extends AsyncTask<Void, Object, Void> {
         serverResponse = UtilityConnection.removeUnicodeBOM(serverResponse);
         Log.d("FERDEBUG", "serverResponse:" + serverResponse);
 
-
         if (serverResponse.equals("true")) {
             Toast.makeText(context, "Status Peminjaman Berhasil Diubah", Toast.LENGTH_LONG).show();
         } else {

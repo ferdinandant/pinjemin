@@ -1,5 +1,6 @@
 package pinjemin.menu_peminjaman;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,40 +10,55 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import pinjemin.R;
+import pinjemin.backgroundTask.PopulateFriendTask;
 import pinjemin.backgroundTask.PopulatePeminjamanTask;
 import pinjemin.session.SessionManager;
 
 
 public class WaitingFragment extends Fragment
 {
-	boolean hasBeenInflated = false;
-	PopulatePeminjamanTask task;
+	private static boolean isFragmentReady = false;
+	private static String currentUID;
+	private static Activity activity;
+
 
 	public WaitingFragment() {
 		// Required empty public constructor
 	}
 
+	/** ==============================================================================
+	 *Initial creation of fragment, dipanggil sebelum pemanggilan onCreateView()
+	 * ============================================================================== */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
+	/** ==============================================================================
+	 * Untuk instansiasi GUI
+	 * ============================================================================== */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+		Bundle savedInstanceState
+	) {
 		// Inflate the layout for this fragment
-		hasBeenInflated = true;
 		return inflater.inflate(R.layout.fragment_log_waiting, container, false);
 	}
 
+	/** ==============================================================================
+	 * Dipanggil saat activity yang mengandung fragment ini sudah di-create dan view
+	 * hierarchy dari fragment ini sudah diinstansiasi.
+	 * ============================================================================== */
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
 		SessionManager session = new SessionManager(getActivity());
-		String ownUid = session.getUserDetails().get(SessionManager.KEY_UID);
-		task = new PopulatePeminjamanTask(getActivity(), PopulatePeminjamanTask.PEMINJAMAN_WAITING, ownUid);
-		task.execute();
+		currentUID = session.getUserDetails().get(SessionManager.KEY_UID);
+		activity = getActivity();
+
+		isFragmentReady = true;
+		performRefresh();
 	}
 
 	@Override
@@ -58,10 +74,17 @@ public class WaitingFragment extends Fragment
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		// refresh status visible atau tidak
 		super.setUserVisibleHint(isVisibleToUser);
+	}
 
-		// kalau visible, refresh
-		if (isVisibleToUser && hasBeenInflated) {
-
+	/** ==============================================================================
+	 * Mmeperbarui semua item yang ditampilkan pada fragment ini
+	 * ============================================================================== */
+	public static void performRefresh() {
+		if (isFragmentReady) {
+			Log.d("DEBUG", "performRefresh di Waiting");
+			PopulatePeminjamanTask task = new PopulatePeminjamanTask(activity,
+				PopulatePeminjamanTask.PEMINJAMAN_WAITING, currentUID);
+			task.execute();
 		}
 	}
 }

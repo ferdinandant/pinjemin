@@ -71,9 +71,9 @@ public class LogPeminjamanFragment extends Fragment
 		CustomViewPagerAdapter adapter = new CustomViewPagerAdapter(
 			getChildFragmentManager());
 
-		adapter.addFragment(new WaitingFragment(), "Menunggu");
-		adapter.addFragment(new OngoingFragment(), "Berjalan");
-		adapter.addFragment(new ExpiredFragment(), "Berlalu");
+		adapter.addFragment(new WaitingFragment(), "Waiting");
+		adapter.addFragment(new OngoingFragment(), "Ongoing");
+		adapter.addFragment(new ExpiredFragment(), "Expired");
 
 		viewPager.setAdapter(adapter);
 	}
@@ -93,8 +93,10 @@ public class LogPeminjamanFragment extends Fragment
 	 * Mengubah text pada tabLayout sehingga menampilkan jumlah items
 	 * ============================================================================== */
 	public static void updateTabLayoutDisplay() {
-		tabLayout.getTabAt(0).setText("Menunggu (" +  WaitingCount + ")");
-		tabLayout.getTabAt(1).setText("Berjalan (" +  (OngoingGivenCount+OngoingTakenCount) + ")");
-		tabLayout.getTabAt(2).setText("Berlalu (" +  ExpiredCount + ")");
+		if (tabLayout.getTabCount() >= 3) {
+			tabLayout.getTabAt(0).setText("Waiting (" + WaitingCount + ")");
+			tabLayout.getTabAt(1).setText("Ongoing (" + (OngoingGivenCount + OngoingTakenCount) + ")");
+			tabLayout.getTabAt(2).setText("Expired (" + ExpiredCount + ")");
+		}
 	}
 }

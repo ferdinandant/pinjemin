@@ -1,12 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			 xmlns:tools="http://schemas.android.com/tools"
-			 android:layout_width="match_parent"
-			 android:layout_height="match_parent"
-			 tools:context="pinjemin.menu_peminjaman.OngoingDipinjamFragment">
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="pinjemin.menu_peminjaman.OngoingDipinjamFragment">
 
 	<android.support.v7.widget.RecyclerView
 	android:id="@+id/recyclerViewDipinjam"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"/>
+	android:layout_height="wrap_content" />
 
 </FrameLayout>

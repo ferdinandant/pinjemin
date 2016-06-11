@@ -75,7 +75,7 @@ public class CustomCommentBlock
 		commentAuthor.setPadding(padding_10dp, padding_10dp, padding_10dp, 0);
 
 		if (comment.getUid() == Comment.SYSTEM_NOTIFICATION_UID) {
-			commentAuthor.setText("\u2666 NOTIFIKASI SISTEM \u2666");
+			commentAuthor.setText("[NOTIFIKASI SISTEM]");
 			commentAuthor.setTextColor(COLOR_RED);
 		}
 		else {
