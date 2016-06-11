@@ -20,7 +20,7 @@ import java.util.TreeMap;
 import pinjemin.utility.UtilityConnection;
 
 
-public class FriendTask extends AsyncTask<Void, Object, Void> {
+public class FriendActionTask extends AsyncTask<Void, Object, Void> {
     public static final String PHP_PATH_ACCEPT = "acceptrequest.php";
     public static final String PHP_PATH_REJECT = "rejectrequest.php";
     public static final String PHP_PATH_DELETE = "removefriend.php";
@@ -47,7 +47,7 @@ public class FriendTask extends AsyncTask<Void, Object, Void> {
      * @param postType - DEMAND_SEARCH atau SUPPLY_SEARCH, tergantung jenis post
      * 	yang dibuat.
      * ============================================================================== */
-    public FriendTask(Context context, int postType, TreeMap<String, String> dataToSend, String partnerName) {
+    public FriendActionTask(Context context, int postType, TreeMap<String, String> dataToSend, String partnerName) {
         this.context = context;
         this.postType = postType;
         this.dataToSend = dataToSend;

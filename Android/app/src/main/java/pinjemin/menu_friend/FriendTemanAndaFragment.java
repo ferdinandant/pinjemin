@@ -1,5 +1,6 @@
 package pinjemin.menu_friend;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,31 +19,28 @@ import pinjemin.session.SessionManager;
 
 public class FriendTemanAndaFragment extends Fragment
 {
-
 	private SessionManager session;
+	private static String currentUID;
+	private static Activity activity;
+	private static boolean isFragmentReady = false;
+
 
 	public FriendTemanAndaFragment() {
 		// Required empty public constructor
 	}
 
+	/** ==============================================================================
+	 * Dipanggil saat Fragment dibentuk, sebelum pemanggilan onCreateView()
+	 * NOTE: Hanya dipanggil kalau ada setHasOptionsMenu(true) di onCreateView
+	 * ============================================================================== */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 	}
 
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		SessionManager session = new SessionManager(getActivity());
-
-		String currentUid = session.getUserDetails().get(SessionManager.KEY_UID);
-
-		PopulateFriendTask populateFriendTask = new PopulateFriendTask(getActivity(), PopulateFriendTask.FRIEND_TEMAN_ANDA, currentUid);
-		populateFriendTask.execute();
-	}
-
+	/** ==============================================================================
+	 * Inisialisasi fragment GUI
+	 * ============================================================================== */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
@@ -51,55 +49,30 @@ public class FriendTemanAndaFragment extends Fragment
 		return view;
 	}
 
-	public interface ClickListener
-	{
-		void onClick(View view, int position);
+	/** ==============================================================================
+	 * Dipanggil saat activity yang mengandung fragment ini sudah di-create dan view
+	 * hierarchy dari fragment ini sudah diinstansiasi.
+	 * ============================================================================== */
+	@Override
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
-		void onLongClick(View view, int position);
+		SessionManager session = new SessionManager(getActivity());
+		currentUID = session.getUserDetails().get(SessionManager.KEY_UID);
+		activity = getActivity();
+
+		isFragmentReady = true;
+		performRefresh();
 	}
 
-	public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
-	{
-
-		private GestureDetector gestureDetector;
-		private FriendTemanAndaFragment.ClickListener clickListener;
-
-		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final FriendTemanAndaFragment.ClickListener clickListener) {
-			this.clickListener = clickListener;
-			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
-			{
-				@Override
-				public boolean onSingleTapUp(MotionEvent e) {
-					return true;
-				}
-
-				@Override
-				public void onLongPress(MotionEvent e) {
-					View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-					if (child != null && clickListener != null) {
-						clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-					}
-				}
-			});
-		}
-
-		@Override
-		public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-			View child = rv.findChildViewUnder(e.getX(), e.getY());
-			if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-				clickListener.onClick(child, rv.getChildPosition(child));
-			}
-			return false;
-		}
-
-		@Override
-		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-		}
-
-		@Override
-		public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
+	/** ==============================================================================
+	 * Mmeperbarui semua item yang ditampilkan pada fragment ini
+	 * ============================================================================== */
+	public static void performRefresh() {
+		if (isFragmentReady) {
+			PopulateFriendTask populateFriendTask = new PopulateFriendTask(
+				activity, PopulateFriendTask.FRIEND_TEMAN_ANDA, currentUID);
+			populateFriendTask.execute();
 		}
 	}
 }

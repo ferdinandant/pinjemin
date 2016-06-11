@@ -48,14 +48,14 @@ public class LoginActivity extends AppCompatActivity implements
 	private Button buttonSignIn;
 
 	// Sign In Google
-	private SignInButton signInButton;
 	private static final int RC_SIGN_IN = 9001;
-
+	private SignInButton signInButton;
 	private GoogleApiClient mGoogleApiClient;
 	private ProgressDialog mProgressDialog;
 
+
 	/** ==============================================================================
-	 * Inisialisasi fragments dan loaders
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
 	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,14 +71,17 @@ public class LoginActivity extends AppCompatActivity implements
 		inputPassword = (EditText) findViewById(R.id.input_password);
 		buttonSignIn = (Button) findViewById(R.id.btn_signup);
 
-		// NOTE: inner class MyTextWatcher diimplementasikan  di bawah
+		// NOTE: inner class MyTextWatcher diimplementasikan di bawah
 		inputName.addTextChangedListener(new EditTextTextWatcher(
 			this, inputName, inputLayoutName, "Masukkan username Anda"));
 		inputPassword.addTextChangedListener(new EditTextTextWatcher(
 			this, inputPassword, inputLayoutPassword, "Masukkan password Anda"));
 
-		// set action listener (submit form)
+		//--------------------------------
 		// INI UNTUK LOGIN PINJEMIN BIASA
+		//--------------------------------
+
+		// set action listener (submit form)
 		buttonSignIn.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -88,28 +91,33 @@ public class LoginActivity extends AppCompatActivity implements
 			}
 		});
 
-		// Google Sign In
+		//------------------------
 		// INI UNTUK LOGIN GOOGLE
+		//------------------------
+
+		// Google Sign In
 		signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
-		// Configure sign-in to request the user's ID, email address, and basic
-		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-			.requestEmail()
-			.build();
+		// konstruksi objek GoogleSignInOptions untuk me-request user ID dan basic profile
+		// ID dan basic profile dapat diminta dengan GoogleSignInOptions.DEFAULT_SIGN_IN
+		GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(
+			GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
 
-		// Build a GoogleApiClient with access to the Google Sign-In API and the
-		// options specified by gso.
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
-			.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-			.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-			.build();
-
+		// tombol login google
 		SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 		signInButton.setSize(SignInButton.SIZE_WIDE);
-		signInButton.setScopes(gso.getScopeArray());
+		signInButton.setScopes(googleSignInOptions.getScopeArray());
 		signInButton.setColorScheme(SignInButton.COLOR_DARK);
 
+		// bentuk GoogleApiClient dengan akses ke Google Sign-In API,
+		// menggunakan options yang di-specify oleh googleSignInOptions.
+		// NOTE: Parameter enableAutoManage(FragmentActivity, OnConnectionFailedListener)
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+			.enableAutoManage(this, this)
+			.addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+			.build();
+
+		// attach handler untuk tombol login google
 		signInButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -137,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements
 		}
 		else {
 			// If the user has not previously signed in on this device or the sign-in has expired,
-			// this asynchronous branch will attempt to sign in the user silently.  Cross-device
+			// this asynchronous branch will attempt to sign in the user silently. Cross-device
 			// single sign-on will occur in this branch.
 			showProgressDialog();
 			opr.setResultCallback(new ResultCallback<GoogleSignInResult>()
@@ -195,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements
 	}
 
 	/** ==============================================================================
-	 * Submit data login
+	 * Submit data login untuk login normal (menggunakan akun pinjemin)
 	 * ============================================================================== */
 	private void normalSignIn() {
 		// kalau form tidak valid, jangan lakukan apa-apa lagi
@@ -231,6 +239,10 @@ public class LoginActivity extends AppCompatActivity implements
 		Toast.makeText(getBaseContext(), "Tidak bisa menghubungi server.", Toast.LENGTH_LONG).show();
 	}
 
+	/** ==============================================================================
+	 * Dipanggil di onStart(), untuk menampilkan progress dialog saat sistem mencoba
+	 * men-sign-in user (silently) saat user tidak dalam keadaan login
+	 * ============================================================================== */
 	private void showProgressDialog() {
 		if (mProgressDialog == null) {
 			mProgressDialog = new ProgressDialog(this);
@@ -241,13 +253,19 @@ public class LoginActivity extends AppCompatActivity implements
 		mProgressDialog.show();
 	}
 
+	/** ==============================================================================
+	 * Dipanggil di onStart(), untuk menyembunyikan progress dialog saat sistem
+	 * sudah selesai mencoba login user (silently, menggunakan akun google)
+	 * ============================================================================== */
 	private void hideProgressDialog() {
 		if (mProgressDialog != null && mProgressDialog.isShowing()) {
 			mProgressDialog.hide();
 		}
 	}
 
-
+	/** ==============================================================================
+	 * Handler saat tombol back ditekan
+	 * ==============================================================================*/
 	@Override
 	public void onBackPressed() {
 		moveTaskToBack(true);

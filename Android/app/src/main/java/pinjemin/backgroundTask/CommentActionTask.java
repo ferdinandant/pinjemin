@@ -22,7 +22,7 @@ import pinjemin.menu_peminjaman.DetailPostPeminjamanActivity;
 import pinjemin.utility.UtilityConnection;
 
 
-public class CommentTask extends AsyncTask<Void,Object,Void>
+public class CommentActionTask extends AsyncTask<Void,Object,Void>
 {
 	public static final String PHP_PATH_CREATE_THREAD = "createthread.php";
 	public static final String PHP_PATH_REPLY_THREAD = "replythread.php";
@@ -48,7 +48,7 @@ public class CommentTask extends AsyncTask<Void,Object,Void>
 	 * @param postType - DEMAND_SEARCH atau SUPPLY_SEARCH, tergantung jenis post
 	 * 	yang dibuat.
 	 * ============================================================================== */
-	public CommentTask(Activity context, int postType, TreeMap<String,String> dataToSend) {
+	public CommentActionTask(Activity context, int postType, TreeMap<String,String> dataToSend) {
 		this.context = context;
 		this.postType = postType;
 		this.dataToSend = dataToSend;
@@ -79,7 +79,7 @@ public class CommentTask extends AsyncTask<Void,Object,Void>
 	protected Void doInBackground(Void... params) {
 		try {
 			serverResponse = UtilityConnection.runPhp(phpFilePath, dataToSend);
-			Log.d("DEBUG", "--- CommentTask ---");
+			Log.d("DEBUG", "--- CommentActionTask ---");
 			Log.d("DEBUG", "phpFilePath:" + phpFilePath);
 			Log.d("DEBUG", "dataToSend:" + dataToSend.toString());
 			Log.d("DEBUG", "serverResponse:" + serverResponse);

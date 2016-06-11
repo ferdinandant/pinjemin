@@ -20,7 +20,7 @@ import android.widget.EditText;
 
 import java.util.TreeMap;
 
-import pinjemin.backgroundTask.CommentTask;
+import pinjemin.backgroundTask.CommentActionTask;
 import pinjemin.R;
 import pinjemin.behavior.EditTextTextWatcher;
 import pinjemin.session.SessionManager;
@@ -107,13 +107,13 @@ public class CommentActivity extends AppCompatActivity
 		Log.d("Comment", "fasdf");
 
 		if (type.equalsIgnoreCase("create")) {
-			CommentTask task = new CommentTask(this, CommentTask.CREATE_THREAD, inputData);
+			CommentActionTask task = new CommentActionTask(this, CommentActionTask.CREATE_THREAD, inputData);
 			task.execute();
 			finish();
 		}
 		else {
 			inputData.put("parentUID", parentUID);
-			CommentTask task = new CommentTask(this, CommentTask.REPLY_THREAD, inputData);
+			CommentActionTask task = new CommentActionTask(this, CommentActionTask.REPLY_THREAD, inputData);
 			task.execute();
 			finish();
 		}

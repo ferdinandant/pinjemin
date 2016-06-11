@@ -27,6 +27,9 @@ import java.util.TreeMap;
 
 import pinjemin.adapter.FriendRequestAdapter;
 import pinjemin.adapter.FriendTemanAndaAdapter;
+import pinjemin.behavior.ClickListener;
+import pinjemin.behavior.RecyclerOnItemTouchListener;
+import pinjemin.menu_friend.FriendFragment;
 import pinjemin.menu_friend.FriendRequestFragment;
 import pinjemin.menu_friend.FriendTemanAndaFragment;
 import pinjemin.model.User;
@@ -99,7 +102,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new FriendTemanAndaFragment.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new FriendTemanAndaListener()));
 		}
 
@@ -116,7 +119,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new FriendRequestFragment.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new FriendRequestListener()));
 		}
 	}
@@ -132,10 +135,12 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 			input.put("ownUID", currentUid);
 
 			String serverResponse = UtilityConnection.runPhp(phpFilePath, input);
+			Log.d("DEBUG", serverResponse);
 
 			// parse data JSON yang diterima dari server (berisi daftar post)
 			JSONObject jsonResponseObject = new JSONObject(serverResponse);
 			JSONArray jsonResponseArray = jsonResponseObject.getJSONArray("server_response");
+
 			int jsonResponseArrayLength = jsonResponseArray.length();
 
 			for (int i = 0; i < jsonResponseArrayLength; i++) {
@@ -173,7 +178,18 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	}
 
 	@Override
-	protected void onPostExecute(Void aVoid) {}
+	protected void onPostExecute(Void aVoid) {
+		// update count
+		if (friendType == FRIEND_TEMAN_ANDA) {
+			FriendFragment.temanAndaCount = adapter.getItemCount();
+		}
+		else if (friendType == FRIEND_REQUEST) {
+			FriendFragment.requestCount = adapter.getItemCount();
+		}
+
+		// update tabLayout display
+		FriendFragment.updateTabLayoutDisplay();
+	}
 
 
 	// --- inner class declaration ---
@@ -182,7 +198,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineDemandFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineDemandFragment ditekan
 	 * ============================================================================== */
-	private class FriendTemanAndaListener implements FriendTemanAndaFragment.ClickListener
+	private class FriendTemanAndaListener implements ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
@@ -209,7 +225,7 @@ public class PopulateFriendTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineSupplyFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineSupplyFragment ditekan
 	 * ============================================================================== */
-	private class FriendRequestListener implements FriendRequestFragment.ClickListener
+	private class FriendRequestListener implements ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {

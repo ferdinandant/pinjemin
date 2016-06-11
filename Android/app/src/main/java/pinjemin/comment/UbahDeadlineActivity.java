@@ -12,25 +12,20 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.TreeMap;
 
-import pinjemin.backgroundTask.CommentTask;
-import pinjemin.backgroundTask.CreatePostTask;
+import pinjemin.backgroundTask.CommentActionTask;
 import pinjemin.R;
-import pinjemin.behavior.EditTextTextWatcher;
 import pinjemin.session.SessionManager;
-import pinjemin.utility.UtilityGUI;
 
 
 public class UbahDeadlineActivity extends AppCompatActivity
@@ -141,7 +136,7 @@ public class UbahDeadlineActivity extends AppCompatActivity
         inputData.put("targetUID", ""+targetUID);
         inputData.put("deadline", batas);
 
-        CommentTask task = new CommentTask(this, CommentTask.INITIATE_TRANSFER, inputData);
+        CommentActionTask task = new CommentActionTask(this, CommentActionTask.INITIATE_TRANSFER, inputData);
         task.execute();
         finish();
     }

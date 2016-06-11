@@ -35,6 +35,8 @@ import pinjemin.backgroundTask.UbahProfilFetchTask;
 import pinjemin.behavior.CustomViewPager;
 import pinjemin.behavior.CustomViewPagerAdapter;
 import pinjemin.menu_friend.FriendFragment;
+import pinjemin.menu_friend.FriendRequestFragment;
+import pinjemin.menu_friend.FriendTemanAndaFragment;
 import pinjemin.menu_notification.NotificationFragment;
 import pinjemin.menu_peminjaman.LogPeminjamanFragment;
 import pinjemin.menu_search.SearchActivity;
@@ -45,12 +47,13 @@ import pinjemin.menu_timeline.TimelineFragment;
 
 
 public class MainActivity extends AppCompatActivity implements
-		GoogleApiClient.OnConnectionFailedListener
+	GoogleApiClient.OnConnectionFailedListener
 {
 	private SessionManager sessionManager;
 	private Toolbar toolbar;
 	private TabLayout tabLayout;
 	private CustomViewPager menuTabViewPager;
+	private ViewPagerListener viewPagerListener;
 	private String currentUid;
 
 	// Google Sign Out
@@ -64,6 +67,10 @@ public class MainActivity extends AppCompatActivity implements
 		R.drawable.ic_tab_notification
 	};
 
+
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,25 +101,20 @@ public class MainActivity extends AppCompatActivity implements
 		tabLayout = (TabLayout) findViewById(R.id.tabs);
 		tabLayout.setupWithViewPager(menuTabViewPager);
 		configureTabLayout();
-		// Sign Out Google
-		// [START configure_signin]
-		// Configure sign-in to request the user's ID, email address, and basic
-		// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestEmail()
-				.build();
-		// [END configure_signin]
-		// [START build_client]
-		// Build a GoogleApiClient with access to the Google Sign-In API and the
-		// options specified by gso.
+
+		// Sign Out Google (configure objek sign in):
+		// konstruksi objek GoogleSignInOptions untuk me-request user ID dan basic profile
+		// ID dan basic profile dapat diminta dengan GoogleSignInOptions.DEFAULT_SIGN_IN
+		GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(
+			GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
+		// bentuk GoogleApiClient dengan akses ke Google Sign-In API,
+		// menggunakan options yang di-specify oleh googleSignInOptions.
+		// NOTE: Parameter enableAutoManage(FragmentActivity, OnConnectionFailedListener)
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
-		// [END build_client]
-	}
-	public void onBackPressed() {
-		moveTaskToBack(true);
+			.enableAutoManage(this, this)
+			.addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+			.build();
 	}
 
 	/** ==============================================================================
@@ -135,7 +137,8 @@ public class MainActivity extends AppCompatActivity implements
 		menuTabViewPager.setAdapter(adapter);
 
 		// menambahkan action listener untuk menuTabViewPager
-		menuTabViewPager.addOnPageChangeListener(new ViewPagerListener());
+		viewPagerListener = new ViewPagerListener();
+		menuTabViewPager.addOnPageChangeListener(viewPagerListener);
 	}
 
 	/** ==============================================================================
@@ -148,13 +151,14 @@ public class MainActivity extends AppCompatActivity implements
 		tabLayout.getTabAt(3).setIcon(tabIcons[3]);
 	}
 
+	/** ==============================================================================
+	 * dipanggil saat activity ini di-resume (i.e. saat aplikasi berpindah dari
+	 * background ke foreground, mis. saal context-switching dari aplikasi lain)
+	 * ============================================================================== */
 	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
-		// be available.
-		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+	public void onResume() {
+		super.onResume();
 	}
-
 
 	/** ==============================================================================
 	 * Handler ketika ada menu item pada yang dipilih.
@@ -175,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements
 				}
 			);
 		}
+
 		else if (id == R.id.action_lihat_profil) {
 			TreeMap<String,String> input = new TreeMap<>();
 			input.put("ownUID", currentUid);
@@ -183,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements
 			GetProfilTask lihatProfil = new GetProfilTask(this, input);
 			lihatProfil.execute();
 		}
+
 		else if (id == R.id.action_ubah_profil) {
 			TreeMap<String,String> input = new TreeMap<>();
 			input.put("ownUID", currentUid);
@@ -191,14 +197,28 @@ public class MainActivity extends AppCompatActivity implements
 			UbahProfilFetchTask ubahProfil = new UbahProfilFetchTask(this, input);
 			ubahProfil.execute();
 		}
+
 		else if (id == R.id.action_search) {
 			startActivity(new Intent(this, SearchActivity.class));
 		}
+
 		else if (id == R.id.action_refresh) {
-			Log.d("DEBUG", "Meminta refresh manual");
-			Toast.makeText(this, "Memperbarui timeline ...", Toast.LENGTH_LONG).show();
-			TimelineSupplyFragment.resetLastRequest();
-			TimelineDemandFragment.resetLastRequest();
+			if (viewPagerListener.getSelectedPage() == 0) {
+				Log.d("DEBUG", "Meminta refresh timeline");
+				Toast.makeText(this, "Memperbarui timeline ...", Toast.LENGTH_LONG).show();
+				TimelineSupplyFragment.resetLastRequest();
+				TimelineDemandFragment.resetLastRequest();
+			}
+			else if (viewPagerListener.getSelectedPage() == 1) {
+				Log.d("DEBUG", "Meminta refresh log peminjaman");
+				Toast.makeText(this, "Memperbarui log peminjaman ...", Toast.LENGTH_LONG).show();
+			}
+			else if (viewPagerListener.getSelectedPage() == 2) {
+				Log.d("DEBUG", "Meminta refresh pertemanan");
+				Toast.makeText(this, "Memperbarui daftar pertemanan ...", Toast.LENGTH_LONG).show();
+				FriendRequestFragment.performRefresh();
+				FriendTemanAndaFragment.performRefresh();
+			}
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -217,21 +237,21 @@ public class MainActivity extends AppCompatActivity implements
 	}
 
 	/** ==============================================================================
-	 * dipanggil saat activity ini di-resume (i.e. saat aplikasi berpindah dari
-	 * background ke foreground, mis. saal context-switching dari aplikasi lain)
+	 * Handler saat koneksi login google gagal.
 	 * ============================================================================== */
 	@Override
-	public void onResume() {
-		super.onResume();
-		// reset last request pada demand dan supply timeline
-		//TimelineDemandFragment.resetLastRequest();
-		//TimelineSupplyFragment.resetLastRequest();
-		//Log.d("DEBUG", "Minta refresh ulang dari context-switching");
+	public void onConnectionFailed(ConnectionResult connectionResult) {
+		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
+		// be available.
+		Log.d(TAG, "onConnectionFailed:" + connectionResult);
 	}
 
 	/** ==============================================================================
-	 * Handler ketika tombol back ditekan
-	 * ============================================================================== */
+	 * Handler saat tombol back ditekan
+	 * ==============================================================================*/
+	public void onBackPressed() {
+		moveTaskToBack(true);
+	}
 
 
 	// --- inner class declaration ---
@@ -242,17 +262,27 @@ public class MainActivity extends AppCompatActivity implements
 	 * ============================================================================== */
 	private class ViewPagerListener implements ViewPager.OnPageChangeListener
 	{
+		private int selectedPage = 0;
 		public final String[] FRAGMENT_TITLE = {
-			"Timeline", "Log Peminjaman", "Friend", "Notification"
+			"Timeline", "Log Peminjaman", "Pertemanan", "Notifikasi"
 		};
 
-		@Override
 		//--------------------------------------------------------------------------------
 		// saat menu tab item ditekan, ganti judul pada toolbar
 		// @param position: position index page yang dipilih
 		//--------------------------------------------------------------------------------
+		@Override
 		public void onPageSelected(int position) {
+			selectedPage = position;
 			toolbar.setTitle(FRAGMENT_TITLE[position]);
+		}
+
+		//--------------------------------------------------------------------------------
+		// mendapatkan indeks menu tab item yang aktif saat ini
+		// @return indeks menu tab yang aktif saat ini (0..3)
+		//--------------------------------------------------------------------------------
+		public int getSelectedPage() {
+			return selectedPage;
 		}
 
 		@Override

@@ -10,7 +10,6 @@ package pinjemin.user;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,32 +21,34 @@ import android.widget.TextView;
 import java.util.TreeMap;
 
 import pinjemin.R;
-import pinjemin.activity.MainActivity;
-import pinjemin.backgroundTask.DeletePostTask;
-import pinjemin.backgroundTask.FriendTask;
+import pinjemin.backgroundTask.FriendActionTask;
 import pinjemin.backgroundTask.ReviewTask;
 import pinjemin.backgroundTask.UbahProfilFetchTask;
+import pinjemin.menu_friend.FriendRequestFragment;
+import pinjemin.menu_friend.FriendTemanAndaFragment;
 import pinjemin.session.SessionManager;
 
 
 public class DetailProfilActivity extends AppCompatActivity
 {
-	private TextView outputRealname, outputAccountname, outputRating, outputNumRating,
-		outputBio, outputFakultas, outputProdi, outputTelepon;
+	private Toolbar toolbar;
 
-	private TextView btnUbahProfil, btnSetujuRequest, btnTolakRequest,
-		btnBatalRequest, btnTambahTeman, btnHapusTeman;
+	private TextView outputRealname, outputAccountname, outputRating, outputNumRating,
+		outputBio, outputFakultas, outputProdi, outputTelepon, btnUbahProfil, btnSetujuRequest,
+		btnTolakRequest, btnBatalRequest, btnTambahTeman, btnHapusTeman;
 
 	private LinearLayout setujuTolak;
 
-	private String uid, realName, accountName, bio, fakultas, prodi, telepon, rating, numRating, status;
-
-	private Toolbar toolbar;
+	private String uid, realName, accountName, bio, fakultas, prodi,
+		telepon, rating, numRating, status;
 
 	private SessionManager sessionManager;
-
 	private String currentUid;
 
+
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -168,7 +169,6 @@ public class DetailProfilActivity extends AppCompatActivity
 					batalRequest();
 				}
 			});
-
 		}
 		else if (status.equalsIgnoreCase("Requested")) {
 			setujuTolak.setVisibility(View.VISIBLE);
@@ -194,9 +194,21 @@ public class DetailProfilActivity extends AppCompatActivity
 		task.execute();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol back ditekan
+	 * ============================================================================== */
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		finish();
+	}
+
 
 	// --- action handlers ---
 
+	/** ==============================================================================
+	 * Handler saat tombol ubah profil ditekan
+	 * ============================================================================== */
 	public void ubahProfil() {
 		TreeMap<String,String> input = new TreeMap<>();
 		input.put("ownUID", currentUid);
@@ -206,34 +218,43 @@ public class DetailProfilActivity extends AppCompatActivity
 		ubahProfil.execute();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol tambah teman ditekan
+	 * ============================================================================== */
 	public void tambahTeman() {
 		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
-		FriendTask task = new FriendTask(this, FriendTask.ADD, inputSend, realName);
+		FriendActionTask task = new FriendActionTask(this, FriendActionTask.ADD, inputSend, realName);
 		task.execute();
 		finish();
+
+		FriendRequestFragment.performRefresh();
+		FriendTemanAndaFragment.performRefresh();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol hapus teman ditekan
+	 * ============================================================================== */
 	public void hapusTeman() {
+		// membentuk dialog yes/no
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Apakah Anda yakin untuk menghapus pertemanan ini?")
-			.setPositiveButton("OK", new DialogInterface.OnClickListener()
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					TreeMap<String,String> inputSend = new TreeMap<>();
+		builder.setMessage("Apakah Anda yakin untuk menghapus pertemanan ini?");
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				TreeMap<String,String> inputSend = new TreeMap<>();
 
-					inputSend.put("ownUID", currentUid);
-					inputSend.put("partnerUID", uid);
+				inputSend.put("ownUID", currentUid);
+				inputSend.put("partnerUID", uid);
 
-					FriendTask task = new FriendTask(getApplicationContext(), FriendTask.DELETE, inputSend, realName);
-					task.execute();
-					finish();
-				}
-			})
-			.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+				FriendActionTask task = new FriendActionTask(getApplicationContext(), FriendActionTask.DELETE, inputSend, realName);
+				task.execute();
+				finish();
+			}
+		});
+		builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener()
 			{
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -241,42 +262,52 @@ public class DetailProfilActivity extends AppCompatActivity
 				}
 			});
 
+		// tampilkan dialog
 		builder.create().show();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol batal memberikan request ditekan
+	 * ============================================================================== */
 	public void batalRequest() {
 		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
-		FriendTask task = new FriendTask(this, FriendTask.CANCEL, inputSend, realName);
+		FriendActionTask task = new FriendActionTask(this, FriendActionTask.CANCEL, inputSend, realName);
 		task.execute();
 		finish();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol tolak request ditekan
+	 * ============================================================================== */
 	public void tolakRequest() {
 		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
-		FriendTask task = new FriendTask(this, FriendTask.REJECT, inputSend, realName);
+		FriendActionTask task = new FriendActionTask(this, FriendActionTask.REJECT, inputSend, realName);
 		task.execute();
 		finish();
+
+		FriendRequestFragment.performRefresh();
+		FriendTemanAndaFragment.performRefresh();
 	}
 
+	/** ==============================================================================
+	 * Handler saat tombol setujui request ditekan
+	 * ============================================================================== */
 	public void setujuRequest() {
 		TreeMap<String,String> inputSend = new TreeMap<>();
 		inputSend.put("ownUID", currentUid);
 		inputSend.put("partnerUID", uid);
 
-		FriendTask task = new FriendTask(this, FriendTask.ACCEPT, inputSend, realName);
+		FriendActionTask task = new FriendActionTask(this, FriendActionTask.ACCEPT, inputSend, realName);
 		task.execute();
 		finish();
-	}
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		finish();
+		FriendRequestFragment.performRefresh();
+		FriendTemanAndaFragment.performRefresh();
 	}
 }

@@ -47,7 +47,7 @@ public class TimelineFragment extends Fragment
 		// beritahu bahwa fragment ini ingin mem-populate menu sendiri
 		// (akan memanggil onCreateOptionsMenu() dan method-method terkait)
 		setHasOptionsMenu(true);
-		Log.d("DEBUG", "setHasOptionsMenu(true)");
+		Log.d("DEBUG", "timeline setHasOptionsMenu(true)");
 
 		// Inflate (render) layout pada fragment ini:
 		// Syntax: inflate(xmlLayoutFile, parentViewGroup, attachToRoot)
@@ -140,6 +140,9 @@ public class TimelineFragment extends Fragment
 		@Override
 		public void onPageScrollStateChanged(int state) {}
 	}
+
+
+	// --- inner class declaration ---
 
 	/** ==============================================================================
 	 * Action Listener untuk FloatingActionButtonListener, berguna untuk handling

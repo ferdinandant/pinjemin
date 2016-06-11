@@ -22,7 +22,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import pinjemin.backgroundTask.CommentTask;
+import pinjemin.backgroundTask.CommentActionTask;
 import pinjemin.session.SessionManager;
 import pinjemin.utility.UtilityGUI;
 
@@ -169,7 +169,7 @@ public class CustomCommentActionBlock
 					inputData.put("ownUID", "" + loggedInUID);
 					inputData.put("targetUID", "" + targetUID);
 
-					CommentTask task = new CommentTask(activity, CommentTask.CONFIRM_TRANSFER, inputData);
+					CommentActionTask task = new CommentActionTask(activity, CommentActionTask.CONFIRM_TRANSFER, inputData);
 					task.execute();
 				}
 			});
@@ -189,7 +189,7 @@ public class CustomCommentActionBlock
 					inputData.put("ownUID", "" + loggedInUID);
 					inputData.put("targetUID", "" + targetUID);
 
-					CommentTask task = new CommentTask(activity, CommentTask.CANCEL_TRANSFER, inputData);
+					CommentActionTask task = new CommentActionTask(activity, CommentActionTask.CANCEL_TRANSFER, inputData);
 					task.execute();
 				}
 			});

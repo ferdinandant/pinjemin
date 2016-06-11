@@ -1,6 +1,6 @@
 /** ===================================================================================
  * [SETTING ACTIVITY]
- * BAHKAN SAYA PUN TAK MENGERTI (?)
+ * Tidak jadi dipakai.
  * ----------------------------------------------------------------------------------
  * Author: Kemal Amru Ramadhan
  * Refactoring & Documentation: Ferdinand Antonius

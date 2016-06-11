@@ -33,6 +33,9 @@ import pinjemin.adapter.PeminjamanExpiredAdapter;
 import pinjemin.adapter.PeminjamanOngoingPinjamAdapter;
 import pinjemin.adapter.PeminjamanOngoingPinjamkanAdapter;
 import pinjemin.adapter.PeminjamanWaitingAdapter;
+import pinjemin.behavior.ClickListener;
+import pinjemin.behavior.RecyclerOnItemTouchListener;
+import pinjemin.menu_peminjaman.LogPeminjamanFragment;
 import pinjemin.menu_timeline.DetailPostDemandActivity;
 import pinjemin.menu_timeline.DetailPostSupplyActivity;
 import pinjemin.model.PostPeminjaman;
@@ -118,7 +121,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new PopulatePeminjamanTask.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new PeminjamanListener()));
 
 		}
@@ -134,7 +137,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			recyclerView.addOnItemTouchListener(
-				new PopulatePeminjamanTask.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new PeminjamanListener()));
 
 
@@ -151,7 +154,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 			recyclerView.setAdapter(adapter);
 
 			recyclerView.addOnItemTouchListener(
-				new PopulatePeminjamanTask.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new PeminjamanListener()));
 
 
@@ -171,7 +174,7 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 
 			// tambahkan listener ke RecyclerView
 			recyclerView.addOnItemTouchListener(
-				new PopulatePeminjamanTask.RecyclerTouchListener
+				new RecyclerOnItemTouchListener
 					(context, recyclerView, new PeminjamanListener()));
 		}
 	}
@@ -305,12 +308,25 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 		adapter.notifyDataSetChanged();
 	}
 
-	public void update() {
-	}
 
 	@Override
 	protected void onPostExecute(Void aVoid) {
+		if (peminjamanType == PEMINJAMAN_WAITING) {
+			LogPeminjamanFragment.WaitingCount = adapter.getItemCount();
+		}
+		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAM) {
+			LogPeminjamanFragment.OngoingTakenCount = adapter.getItemCount();
+		}
+		else if (peminjamanType == PEMINJAMAN_ONGOING_DIPINJAMKAN) {
+			LogPeminjamanFragment.OngoingGivenCount = adapter.getItemCount();
+		}
+		else if (peminjamanType == PEMINJAMAN_EXPIRED) {
+			LogPeminjamanFragment.ExpiredCount = adapter.getItemCount();
+		}
+
+		LogPeminjamanFragment.updateTabLayoutDisplay();
 	}
+
 
 	// --- inner class declaration ---
 
@@ -318,12 +334,11 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 	 * Custom implementation kelas TimelineSupplyFragment.ClickListener, digunakan
 	 * untuk mengatur behavior saat item di TimelineSupplyFragment ditekan
 	 * ============================================================================== */
-	private class PeminjamanListener implements PopulatePeminjamanTask.ClickListener
+	private class PeminjamanListener implements ClickListener
 	{
 		@Override
 		public void onClick(View view, int position) {
-			// dapatkan instance post yang
-
+			// dapatkan instance post yang dipilih
 			PostPeminjaman peminjaman = arrayPeminjaman.get(position);
 
 			// sisipkan data post yang akan ditampilkan ke intent
@@ -354,58 +369,6 @@ public class PopulatePeminjamanTask extends AsyncTask<Void,Object,Void>
 
 		@Override
 		public void onLongClick(View view, int position) {
-		}
-	}
-
-	public interface ClickListener
-	{
-		void onClick(View view, int position);
-
-		void onLongClick(View view, int position);
-	}
-
-	public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener
-	{
-
-		private GestureDetector gestureDetector;
-		private PopulatePeminjamanTask.ClickListener clickListener;
-
-		public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final PopulatePeminjamanTask.ClickListener clickListener) {
-			this.clickListener = clickListener;
-			gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
-			{
-				@Override
-				public boolean onSingleTapUp(MotionEvent e) {
-					return true;
-				}
-
-				@Override
-				public void onLongPress(MotionEvent e) {
-					View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-					if (child != null && clickListener != null) {
-						clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-					}
-				}
-			});
-		}
-
-		@Override
-		public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-			View child = rv.findChildViewUnder(e.getX(), e.getY());
-			if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-				clickListener.onClick(child, rv.getChildPosition(child));
-			}
-			return false;
-		}
-
-		@Override
-		public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-		}
-
-		@Override
-		public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
 		}
 	}
 }

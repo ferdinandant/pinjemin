@@ -18,7 +18,7 @@ import pinjemin.behavior.CustomViewPagerAdapter;
 public class OngoingFragment extends Fragment
 {
 
-	private TabLayout tabLayout;
+	private static TabLayout tabLayout;
 	private CustomViewPager viewPager;
 	private CustomViewPagerAdapter adapter;
 
@@ -56,6 +56,9 @@ public class OngoingFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 	}
 
+	/** ==============================================================================
+	 * Mengubah text pada tabLayout sehingga menampilkan jumlah items
+	 * ============================================================================== */
 	private void setupViewPager(ViewPager viewPager) {
 		adapter = new CustomViewPagerAdapter(
 			getChildFragmentManager());
@@ -65,6 +68,15 @@ public class OngoingFragment extends Fragment
 
 		Log.d("debug", "bikin tab");
 		viewPager.setAdapter(adapter);
+	}
 
+	/** ==============================================================================
+	 * Mengubah text pada tabLayout sehingga menampilkan jumlah items
+	 * ============================================================================== */
+	public static void updateTabLayoutDisplay() {
+		tabLayout.getTabAt(0).setText("Dipinjam ("
+			+ LogPeminjamanFragment.OngoingTakenCount + ")");
+		tabLayout.getTabAt(1).setText("Dipinjamkan ("
+			+ LogPeminjamanFragment.OngoingGivenCount+ ")");
 	}
 }

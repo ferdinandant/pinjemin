@@ -48,8 +48,11 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		dataNamaBarang, dataDeadline, dataDeskripsi, dataStatus;
 	private String dataRealNamePemberi, dataRealNamePenerima;
 	private String dataUIDPemberi, dataUIDPenerima;
-	
-	
+
+
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,12 +106,18 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 		loadPeminjamanDetails();
 	}
 
+	/** ==============================================================================
+	 * Handler saat activity ini kembali ke foreground
+	 * ============================================================================== */
 	@Override
 	protected void onResume() {
 		super.onResume();
 		loadPeminjamanDetails();
 	}
 
+	/** ==============================================================================
+	 * Mengonfigurasi (set text) text views yang ada di activity ini
+	 * ============================================================================== */
 	public void configureTextViews() {
 		try {
 			// ambil detail post dari jsonResponseArrayPost

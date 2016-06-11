@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 import pinjemin.R;
-import pinjemin.backgroundTask.FriendTask;
+import pinjemin.backgroundTask.FriendActionTask;
 import pinjemin.model.User;
 
 
@@ -77,7 +77,7 @@ public class FriendRequestAdapter
 				inputSend.put("ownUID", currentUid);
 				inputSend.put("partnerUID", user.getUid());
 
-				FriendTask task = new FriendTask(activity.getApplicationContext(), FriendTask.ACCEPT, inputSend, user.getRealName());
+				FriendActionTask task = new FriendActionTask(activity.getApplicationContext(), FriendActionTask.ACCEPT, inputSend, user.getRealName());
 				task.execute();
 			}
 		});
@@ -89,7 +89,7 @@ public class FriendRequestAdapter
 				inputSend.put("ownUID", currentUid);
 				inputSend.put("partnerUID", user.getUid());
 
-				FriendTask task = new FriendTask(activity.getApplicationContext(), FriendTask.REJECT, inputSend, user.getRealName());
+				FriendActionTask task = new FriendActionTask(activity.getApplicationContext(), FriendActionTask.REJECT, inputSend, user.getRealName());
 				task.execute();
 
 				Log.d("Clicked", "");

@@ -55,6 +55,7 @@ public class UbahProfilActivity extends AppCompatActivity
 
 	private String intentName, intentFakultas, intentProdi, intentTelepon, intentBio;
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
