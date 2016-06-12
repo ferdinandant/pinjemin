@@ -29,6 +29,9 @@ public class SearchActivity extends AppCompatActivity
 	public String searchKeyword = "";
 	public int searchMenuSelectedPage = 0;
 
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
