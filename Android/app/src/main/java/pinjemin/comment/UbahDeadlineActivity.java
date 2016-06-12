@@ -38,7 +38,7 @@ public class UbahDeadlineActivity extends AppCompatActivity
 	private static final int DATEPICKER_DIALOG = 0;
 	private static final int TIMEPICKER_DIALOG = 1;
 
-	private Toolbar toolbar;s
+	private Toolbar toolbar;
 	private Button btnSubmit;
 
 	private ImageButton btnDatePicker, btnTimePicker;
