@@ -38,7 +38,7 @@ public class UbahDeadlineActivity extends AppCompatActivity
 	private static final int DATEPICKER_DIALOG = 0;
 	private static final int TIMEPICKER_DIALOG = 1;
 
-	private Toolbar toolbar;
+	private Toolbar toolbar;s
 	private Button btnSubmit;
 
 	private ImageButton btnDatePicker, btnTimePicker;
@@ -54,6 +54,10 @@ public class UbahDeadlineActivity extends AppCompatActivity
 	private static int inPx_1dp = 0;
 	private static int inPx_neg6dp = 0;
 
+
+	/** ==============================================================================
+	 * Inisialisasi fragments dan loaders, dipanggil sebelum activity di-start
+	 * ============================================================================== */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

@@ -31,6 +31,9 @@ public class OngoingFragment extends Fragment
 		super.onCreate(savedInstanceState);
 	}
 
+	/** ==============================================================================
+	 * Untuk instansiasi GUI
+	 * ============================================================================== */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
@@ -51,6 +54,10 @@ public class OngoingFragment extends Fragment
 		return view;
 	}
 
+	/** ==============================================================================
+	 * Dipanggil saat activity yang mengandung fragment ini sudah di-create dan view
+	 * hierarchy dari fragment ini sudah diinstansiasi.
+	 * ============================================================================== */
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
