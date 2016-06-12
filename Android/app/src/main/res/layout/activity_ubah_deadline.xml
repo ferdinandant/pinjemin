@@ -31,7 +31,7 @@ android:layout_height="match_parent">
 		android:layout_height="wrap_content"
 		android:layout_marginLeft="1dp"
 		android:layout_marginTop="15dp"
-		android:text="Masukkan Deadline Pengembalian Barang:"
+		android:text="Masukkan deadline pengembalian barang:"
 		android:textSize="15sp" />
 
 		<LinearLayout
@@ -43,7 +43,7 @@ android:layout_height="match_parent">
 			android:id="@+id/dateView"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
-			android:text="10/8/2016"
+			android:text="10/18/2016"
 			android:textSize="20sp" />
 
 			<ImageButton
@@ -54,6 +54,18 @@ android:layout_height="match_parent">
 			android:src="@drawable/ic_date_picker" />
 		</LinearLayout>
 
+		<View
+		android:id="@+id/garisBawahDate"
+		android:layout_width="20dp"
+		android:layout_height="1dp"
+		android:layout_marginTop="-6dp"
+		android:background="#999999" />
+
+		<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content">
+		</RelativeLayout>
+
 		<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -63,7 +75,7 @@ android:layout_height="match_parent">
 			android:id="@+id/timeView"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
-			android:text="10/8/2016"
+			android:text="25:55"
 			android:textSize="20sp" />
 
 			<ImageButton
@@ -71,12 +83,12 @@ android:layout_height="match_parent">
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:background="#0000"
-			android:src="@drawable/ic_date_picker" />
+			android:src="@drawable/ic_time_picker" />
 		</LinearLayout>
 
 		<View
-		android:id="@+id/garisBawah"
-		android:layout_width="95dp"
+		android:id="@+id/garisBawahTime"
+		android:layout_width="20dp"
 		android:layout_height="1dp"
 		android:layout_marginTop="-6dp"
 		android:background="#999999" />

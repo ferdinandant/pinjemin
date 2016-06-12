@@ -161,12 +161,19 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 	 * ini, serta assign listener yang sesuai.
 	 * ============================================================================== */
 	public void configureActionButtons() {
-		// pembedaan jika
+		// pembedaan antara pemilik barang dan peminjam
 		if (currentUid.equalsIgnoreCase(dataUIDPemberi)) {
 			partnerName.setText("Anda meminjamkan kepada " + dataRealNamePenerima);
+
+			btnUbahStatus.setVisibility(View.VISIBLE);
+			btnUbahDeadline.setVisibility(View.VISIBLE);
+
+			// tampilkan tombol untuk mengubah jika statusnya belum dikembalikan
+			if (!dataStatus.equals("DIKEMBALIKAN")) {
+
+			}
 		}
 		else {
-			btnUbahStatus.setVisibility(View.GONE);
 			partnerName.setText("Anda diberi pinjam oleh " + dataRealNamePemberi);
 		}
 
@@ -360,9 +367,10 @@ public class DetailPostPeminjamanActivity extends AppCompatActivity
 	}
 
 	public void ubahDeadline() {
-		//Intent intent = new Intent(this, UbahDeadlineActivity.class);
-		//intent.putExtra("PID", intentPID);
+		Intent intent = new Intent(this, UbahDeadlineActivity.class);
+		intent.putExtra("pid", intentPID);
+		intent.putExtra("updatePeminjaman", "true");
 
-		//startActivity(intent);
+		startActivity(intent);
 	}
 }
